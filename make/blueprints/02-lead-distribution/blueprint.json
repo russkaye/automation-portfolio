@@ -1,0 +1,146 @@
+{
+  "name": "Lead Distribution — Real Estate",
+  "flow": [
+    {
+      "id": 1,
+      "module": "typeform:WatchResponses",
+      "version": 1,
+      "parameters": {
+        "hook": null,
+        "formId": "YOUR_TYPEFORM_FORM_ID"
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {"x": -46, "y": 47}
+      }
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {"x": 254, "y": 47}
+      },
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 3,
+              "module": "hubspot:CreateUpdateContact",
+              "version": 2,
+              "parameters": {},
+              "mapper": {
+                "email": "{{1.answers.email}}",
+                "properties": {
+                  "firstname": "{{1.answers.first_name}}",
+                  "lastname": "{{1.answers.last_name}}",
+                  "phone": "{{1.answers.phone}}",
+                  "lead_score__c": "9",
+                  "hs_lead_status": "NEW",
+                  "lead_source": "Website Form - High Priority"
+                }
+              },
+              "metadata": {"designer": {"x": 544, "y": -150}},
+              "filter": {
+                "name": "High Priority Lead",
+                "conditions": [
+                  {
+                    "a": "{{parseNumber(1.answers.budget)}}",
+                    "b": "5000000",
+                    "o": "number:greater"
+                  }
+                ],
+                "restore": {
+                  "conditions": [{"mode": "AND"}]
+                }
+              }
+            },
+            {
+              "id": 4,
+              "module": "google-calendar:CreateAnEvent",
+              "version": 5,
+              "parameters": {},
+              "mapper": {
+                "summary": "Follow-up: {{1.answers.first_name}} {{1.answers.last_name}}",
+                "start": {
+                  "dateTime": "{{addHours(now; 2)}}"
+                },
+                "end": {
+                  "dateTime": "{{addHours(now; 2.5)}}"
+                },
+                "description": "High-priority lead\nEmail: {{1.answers.email}}\nPhone: {{1.answers.phone}}\nBudget: {{1.answers.budget}}\nTimeline: {{1.answers.timeline}}"
+              },
+              "metadata": {"designer": {"x": 844, "y": -150}}
+            },
+            {
+              "id": 5,
+              "module": "slack:CreateMessage",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "channel": "#hot-leads",
+                "text": "HIGH PRIORITY LEAD!\n\nName: {{1.answers.first_name}} {{1.answers.last_name}}\nEmail: {{1.answers.email}}\nPhone: {{1.answers.phone}}\nBudget: {{1.answers.budget}}\nTimeline: {{1.answers.timeline}}\nProperty Type: {{1.answers.property_type}}\n\nFollow-up call scheduled in 2 hours. Check Google Calendar."
+              },
+              "metadata": {"designer": {"x": 1144, "y": -150}}
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 6,
+              "module": "hubspot:CreateUpdateContact",
+              "version": 2,
+              "parameters": {},
+              "mapper": {
+                "email": "{{1.answers.email}}",
+                "properties": {
+                  "firstname": "{{1.answers.first_name}}",
+                  "lastname": "{{1.answers.last_name}}",
+                  "phone": "{{1.answers.phone}}",
+                  "lead_score__c": "5",
+                  "hs_lead_status": "IN_PROGRESS",
+                  "lead_source": "Website Form - Nurture"
+                }
+              },
+              "metadata": {"designer": {"x": 544, "y": 247}}
+            },
+            {
+              "id": 7,
+              "module": "mailchimp:AddUpdateSubscriber",
+              "version": 5,
+              "parameters": {
+                "listId": "YOUR_MAILCHIMP_LIST_ID"
+              },
+              "mapper": {
+                "email_address": "{{1.answers.email}}",
+                "status": "subscribed",
+                "merge_fields": {
+                  "FNAME": "{{1.answers.first_name}}",
+                  "LNAME": "{{1.answers.last_name}}",
+                  "BUDGET": "{{1.answers.budget}}"
+                },
+                "tags": ["real-estate-lead", "nurture-sequence"]
+              },
+              "metadata": {"designer": {"x": 844, "y": 247}}
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "dataloss": false
+    }
+  }
+}

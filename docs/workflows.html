@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workflow Gallery — Russell Abregande</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-primary:    #0d0f1a;
+      --bg-secondary:  #111525;
+      --bg-card:       #161b2e;
+      --bg-card-hover: #1c2340;
+      --electric-blue: #4361ee;
+      --cyan-accent:   #06d6a0;
+      --text-primary:  #f0f0f5;
+      --text-secondary:#8b92b3;
+      --text-muted:    #555d7a;
+      --border-color:  #1f2645;
+      --n8n-orange:    #ff6d00;
+      --make-purple:   #a855f7;
+      --zapier-red:    #f97316;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Outfit', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .font-display { font-family: 'Sora', sans-serif; }
+    .font-mono    { font-family: 'JetBrains Mono', monospace; }
+
+    /* Nav glass */
+    .nav-glass {
+      background: rgba(13,15,26,0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover { color: var(--text-primary); }
+
+    /* Gradient divider */
+    .gradient-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--electric-blue) 30%, var(--cyan-accent) 60%, transparent 100%);
+      opacity: 0.4;
+    }
+
+    /* Hero sub-header */
+    .page-header {
+      background-color: var(--bg-primary);
+      background-image:
+        radial-gradient(ellipse 70% 60% at 20% 50%, rgba(67,97,238,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 30%, rgba(6,214,160,0.07) 0%, transparent 55%);
+    }
+    .grid-overlay {
+      background-image:
+        linear-gradient(rgba(67,97,238,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(67,97,238,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* Section label */
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cyan-accent);
+    }
+
+    /* Filter tabs */
+    .filter-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 6px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .filter-btn:hover {
+      border-color: rgba(67,97,238,0.4);
+      color: var(--text-secondary);
+    }
+    .filter-btn.active-platform,
+    .filter-btn.active-industry {
+      color: var(--text-primary);
+    }
+
+    /* Active state by platform */
+    .filter-btn[data-platform-filter="all"].active-platform,
+    .filter-btn[data-platform-filter=""].active-platform {
+      background: rgba(67,97,238,0.15);
+      border-color: rgba(67,97,238,0.5);
+      color: var(--electric-blue);
+    }
+    .filter-btn[data-platform-filter="n8n"].active-platform {
+      background: rgba(255,109,0,0.12);
+      border-color: rgba(255,109,0,0.5);
+      color: var(--n8n-orange);
+    }
+    .filter-btn[data-platform-filter="make"].active-platform {
+      background: rgba(168,85,247,0.12);
+      border-color: rgba(168,85,247,0.5);
+      color: var(--make-purple);
+    }
+    .filter-btn[data-platform-filter="zapier"].active-platform {
+      background: rgba(249,115,22,0.12);
+      border-color: rgba(249,115,22,0.5);
+      color: var(--zapier-red);
+    }
+    .filter-btn[data-platform-filter="cross-platform"].active-platform {
+      background: rgba(6,214,160,0.12);
+      border-color: rgba(6,214,160,0.5);
+      color: var(--cyan-accent);
+    }
+    .filter-btn[data-industry-filter].active-industry {
+      background: rgba(67,97,238,0.12);
+      border-color: rgba(67,97,238,0.4);
+      color: #7b9aff;
+    }
+
+    /* Workflow Cards */
+    .wf-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .wf-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.45), 0 0 24px rgba(67,97,238,0.08);
+    }
+    .wf-card.n8n-card:hover   { border-color: rgba(255,109,0,0.4); }
+    .wf-card.make-card:hover  { border-color: rgba(168,85,247,0.4); }
+    .wf-card.zapier-card:hover{ border-color: rgba(249,115,22,0.4); }
+    .wf-card.cross-card:hover { border-color: rgba(6,214,160,0.4); }
+
+    /* Card top stripe */
+    .wf-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .wf-card:hover::before { opacity: 1; }
+    .n8n-card::before    { background: linear-gradient(90deg, var(--n8n-orange), transparent); }
+    .make-card::before   { background: linear-gradient(90deg, var(--make-purple), transparent); }
+    .zapier-card::before { background: linear-gradient(90deg, var(--zapier-red), transparent); }
+    .cross-card::before  { background: linear-gradient(90deg, var(--cyan-accent), var(--electric-blue)); }
+
+    /* Badge styles */
+    .badge-n8n    { background: rgba(255,109,0,0.15); color: var(--n8n-orange); border: 1px solid rgba(255,109,0,0.3); }
+    .badge-make   { background: rgba(168,85,247,0.15); color: var(--make-purple); border: 1px solid rgba(168,85,247,0.3); }
+    .badge-zapier { background: rgba(249,115,22,0.15); color: var(--zapier-red); border: 1px solid rgba(249,115,22,0.3); }
+    .badge-cross  { background: linear-gradient(135deg, rgba(6,214,160,0.12), rgba(67,97,238,0.12)); color: var(--cyan-accent); border: 1px solid rgba(6,214,160,0.3); }
+
+    /* Industry tag */
+    .industry-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .tag-real-estate { background: rgba(67,97,238,0.12); color: #7b9aff; }
+    .tag-ecommerce   { background: rgba(6,214,160,0.12); color: var(--cyan-accent); }
+    .tag-agency      { background: rgba(168,85,247,0.12); color: var(--make-purple); }
+    .tag-healthcare  { background: rgba(20,184,166,0.12); color: #2dd4bf; }
+
+    /* Complexity dots */
+    .complexity-dot { display: inline; }
+    .complexity-dot.active { }
+
+    /* Action links */
+    .action-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      transition: color 0.2s ease;
+      text-decoration: none;
+    }
+    .action-link:hover { color: var(--cyan-accent); }
+    .action-link.primary { color: var(--electric-blue); }
+    .action-link.primary:hover { color: var(--cyan-accent); }
+
+    /* Hidden card */
+    .wf-card.hidden-card {
+      display: none;
+    }
+
+    /* Empty state */
+    #empty-state {
+      display: none;
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    /* Results count */
+    #results-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Glow CTA */
+    .btn-glow {
+      background: var(--electric-blue);
+      color: white;
+      box-shadow: 0 0 20px rgba(67,97,238,0.4), 0 0 40px rgba(67,97,238,0.12);
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 28px rgba(67,97,238,0.65), 0 0 60px rgba(67,97,238,0.2);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+    .btn-outline:hover {
+      border-color: var(--cyan-accent);
+      color: var(--cyan-accent);
+      transform: translateY(-2px);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+
+    /* Fade in for initial load */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════ -->
+<nav class="nav-glass fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3 group">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(67,97,238,0.2); border:1px solid rgba(67,97,238,0.4);">
+        <span class="font-mono text-xs font-bold" style="color:var(--electric-blue);">RK</span>
+      </div>
+      <span class="font-display font-semibold text-sm" style="color:var(--text-primary);">Russell Abregande</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="workflows.html" class="nav-link" style="color:var(--text-primary);">Workflows</a>
+      <a href="mailto:russabregande@gmail.com" class="nav-link">Contact</a>
+      <a href="https://russkaye.github.io/" target="_blank" class="font-mono text-xs px-4 py-2 rounded-lg transition-all duration-200" style="border:1px solid rgba(67,97,238,0.5); color:var(--electric-blue);" onmouseover="this.style.background='rgba(67,97,238,0.12)'" onmouseout="this.style.background='transparent'">View CV →</a>
+    </div>
+    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg" style="color:var(--text-secondary);">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden border-t" style="border-color:var(--border-color); background:var(--bg-secondary);">
+    <div class="px-6 py-4 flex flex-col gap-4">
+      <a href="workflows.html" class="nav-link">Workflows</a>
+      <a href="mailto:russabregande@gmail.com" class="nav-link">Contact</a>
+      <a href="https://russkaye.github.io/" target="_blank" class="nav-link">View CV</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     PAGE HEADER
+═══════════════════════════════════════════ -->
+<header class="page-header grid-overlay pt-28 pb-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="max-w-2xl">
+      <div class="section-label mb-4 fade-in" style="animation-delay:0.1s;">Workflow Gallery</div>
+      <h1 class="font-display text-4xl lg:text-5xl font-bold leading-tight mb-5 fade-in" style="animation-delay:0.2s; color:var(--text-primary);">17 Production<br/><span style="color:var(--electric-blue);">Automations</span></h1>
+      <p class="text-base leading-relaxed fade-in" style="animation-delay:0.3s; color:var(--text-secondary); max-width:520px;">Documented workflows across n8n, Make, and Zapier — each with full technical specs, architecture notes, and downloadable files.</p>
+    </div>
+    <!-- Quick stats -->
+    <div class="flex flex-wrap gap-6 mt-10 fade-in" style="animation-delay:0.4s;">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full" style="background:var(--n8n-orange);"></span>
+        <span class="font-mono text-xs" style="color:var(--text-muted);">5 n8n workflows</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full" style="background:var(--make-purple);"></span>
+        <span class="font-mono text-xs" style="color:var(--text-muted);">5 Make blueprints</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full" style="background:var(--zapier-red);"></span>
+        <span class="font-mono text-xs" style="color:var(--text-muted);">5 Zapier SOPs</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full" style="background:var(--cyan-accent);"></span>
+        <span class="font-mono text-xs" style="color:var(--text-muted);">2 Cross-platform architectures</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="gradient-divider"></div>
+
+<!-- ═══════════════════════════════════════════
+     FILTER BAR
+═══════════════════════════════════════════ -->
+<div class="sticky top-16 z-40" style="background:rgba(13,15,26,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border-color);">
+  <div class="max-w-6xl mx-auto px-6 py-4">
+    <!-- Platform tabs -->
+    <div class="flex flex-wrap gap-2 mb-3">
+      <span class="font-mono text-xs self-center mr-2" style="color:var(--text-muted);">Platform:</span>
+      <button class="filter-btn active-platform" data-platform-filter="all">All</button>
+      <button class="filter-btn" data-platform-filter="n8n">n8n</button>
+      <button class="filter-btn" data-platform-filter="make">Make</button>
+      <button class="filter-btn" data-platform-filter="zapier">Zapier</button>
+      <button class="filter-btn" data-platform-filter="cross-platform">Cross-Platform</button>
+    </div>
+    <!-- Industry pills -->
+    <div class="flex flex-wrap gap-2 items-center">
+      <span class="font-mono text-xs self-center mr-2" style="color:var(--text-muted);">Industry:</span>
+      <button class="filter-btn active-industry" data-industry-filter="all">All</button>
+      <button class="filter-btn" data-industry-filter="real-estate">Real Estate</button>
+      <button class="filter-btn" data-industry-filter="ecommerce">E-commerce</button>
+      <button class="filter-btn" data-industry-filter="agency">Agency</button>
+      <button class="filter-btn" data-industry-filter="healthcare">Healthcare</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     WORKFLOW GRID
+═══════════════════════════════════════════ -->
+<section class="py-12" style="background:var(--bg-primary);">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Results count -->
+    <div class="mb-6 flex items-center justify-between">
+      <span id="results-count">Showing 17 workflows</span>
+      <a href="index.html" class="btn-outline inline-flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-xs">
+        ← Back to Portfolio
+      </a>
+    </div>
+
+    <div id="workflow-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- ── n8n 1 ── -->
+      <div class="wf-card n8n-card reveal"
+           data-platform="n8n"
+           data-industry="real-estate">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-n8n font-mono text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
+            <span class="industry-tag tag-real-estate">Real Estate</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">AI Lead Scoring</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">GPT-4o-mini scores inbound leads 1–10 and routes hot leads to Slack + HubSpot instantly.</p>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--n8n-orange); font-size:0.85rem;">⚡⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../n8n/workflows/01-ai-lead-scoring/README.md" class="action-link primary">View README →</a>
+          <a href="../n8n/workflows/01-ai-lead-scoring/" class="action-link">Download JSON</a>
+        </div>
+      </div>
+
+      <!-- ── n8n 2 ── -->
+      <div class="wf-card n8n-card reveal"
+           data-platform="n8n"
+           data-industry="ecommerce">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-n8n font-mono text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
+            <span class="industry-tag tag-ecommerce">E-commerce</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Smart Customer Support</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">AI triage for support emails — auto-resolves routine inquiries, creates Notion tickets for complex cases.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--n8n-orange); font-size:0.85rem;">⚡⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../n8n/workflows/02-smart-customer-support/README.md" class="action-link primary">View README →</a>
+          <a href="../n8n/workflows/02-smart-customer-support/" class="action-link">Download JSON</a>
+        </div>
+      </div>
+
+      <!-- ── n8n 3 ── -->
+      <div class="wf-card n8n-card reveal"
+           data-platform="n8n"
+           data-industry="agency">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-n8n font-mono text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
+            <span class="industry-tag tag-agency">Agency</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Client Onboarding</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Contract signed → Notion workspace + Slack channel + Gmail + Asana project in under 30 seconds.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--n8n-orange); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../n8n/workflows/03-client-onboarding/README.md" class="action-link primary">View README →</a>
+          <a href="../n8n/workflows/03-client-onboarding/" class="action-link">Download JSON</a>
+        </div>
+      </div>
+
+      <!-- ── n8n 4 ── -->
+      <div class="wf-card n8n-card reveal"
+           data-platform="n8n"
+           data-industry="healthcare">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-n8n font-mono text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
+            <span class="industry-tag tag-healthcare">Healthcare</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Appointment Management</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Typeform booking → Google Calendar → 24h email reminder → 1h SMS reminder, fully automated.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--n8n-orange); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../n8n/workflows/04-appointment-management/README.md" class="action-link primary">View README →</a>
+          <a href="../n8n/workflows/04-appointment-management/" class="action-link">Download JSON</a>
+        </div>
+      </div>
+
+      <!-- ── n8n 5 ── -->
+      <div class="wf-card n8n-card reveal"
+           data-platform="n8n"
+           data-industry="agency">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-n8n font-mono text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
+            <span class="industry-tag tag-agency">Agency</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">AI Content Pipeline</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Content brief in → 3 AI-generated social post variants out → logged to Sheets → scheduled to Buffer.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--n8n-orange); font-size:0.85rem;">⚡⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../n8n/workflows/05-ai-content-pipeline/README.md" class="action-link primary">View README →</a>
+          <a href="../n8n/workflows/05-ai-content-pipeline/" class="action-link">Download JSON</a>
+        </div>
+      </div>
+
+      <!-- ── Make 6 ── -->
+      <div class="wf-card make-card reveal"
+           data-platform="make"
+           data-industry="ecommerce">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-make font-mono text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
+            <span class="industry-tag tag-ecommerce">E-commerce</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">E-commerce Order Fulfillment</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">New Shopify order → Google Sheets log + customer confirmation email + Slack team alert, simultaneously.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--make-purple); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../make/blueprints/06-ecommerce-order-fulfillment/README.md" class="action-link primary">View README →</a>
+          <a href="../make/blueprints/06-ecommerce-order-fulfillment/" class="action-link">Download JSON</a>
+        </div>
+      </div>
+
+      <!-- ── Make 7 ── -->
+      <div class="wf-card make-card reveal"
+           data-platform="make"
+           data-industry="real-estate">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-make font-mono text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
+            <span class="industry-tag tag-real-estate">Real Estate</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Lead Distribution</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Typeform lead → high-budget: HubSpot + Calendar + Slack | low-budget: HubSpot + Mailchimp nurture.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--make-purple); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../make/blueprints/07-lead-distribution/README.md" class="action-link primary">View README →</a>
+          <a href="../make/blueprints/07-lead-distribution/" class="action-link">Download JSON</a>
+        </div>
+      </div>
+
+      <!-- ── Make 8 ── -->
+      <div class="wf-card make-card reveal"
+           data-platform="make"
+           data-industry="agency">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-make font-mono text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
+            <span class="industry-tag tag-agency">Agency</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Multi-channel Marketing Publisher</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Google Sheets content calendar row → auto-publish to Instagram, Facebook, LinkedIn simultaneously.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--make-purple); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../make/blueprints/08-multi-channel-marketing/README.md" class="action-link primary">View README →</a>
+          <a href="../make/blueprints/08-multi-channel-marketing/" class="action-link">Download JSON</a>
+        </div>
+      </div>
+
+      <!-- ── Make 9 ── -->
+      <div class="wf-card make-card reveal"
+           data-platform="make"
+           data-industry="healthcare">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-make font-mono text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
+            <span class="industry-tag tag-healthcare">Healthcare</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Insurance Verification</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Patient form → insurance API verification → confirmed: email patient | pending: alert staff for manual review.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--make-purple); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../make/blueprints/09-insurance-verification/README.md" class="action-link primary">View README →</a>
+          <a href="../make/blueprints/09-insurance-verification/" class="action-link">Download JSON</a>
+        </div>
+      </div>
+
+      <!-- ── Make 10 ── -->
+      <div class="wf-card make-card reveal"
+           data-platform="make"
+           data-industry="ecommerce">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-make font-mono text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
+            <span class="industry-tag tag-ecommerce">E-commerce</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Inventory Replenishment</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Daily 6 AM scan of all Shopify variants → auto-email PO to supplier + Slack alert for every low-stock item.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--make-purple); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../make/blueprints/10-inventory-replenishment/README.md" class="action-link primary">View README →</a>
+          <a href="../make/blueprints/10-inventory-replenishment/" class="action-link">Download JSON</a>
+        </div>
+      </div>
+
+      <!-- ── Zapier 11 ── -->
+      <div class="wf-card zapier-card reveal"
+           data-platform="zapier"
+           data-industry="real-estate">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-zapier font-mono text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
+            <span class="industry-tag tag-real-estate">Real Estate</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Facebook Lead Ads → CRM</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Every Facebook lead → HubSpot contact + personalized Gmail + Slack team notification in under 30 seconds.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--zapier-red); font-size:0.85rem;">⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../zapier/sops/11-facebook-lead-ads-crm/sop.md" class="action-link primary">View SOP →</a>
+        </div>
+      </div>
+
+      <!-- ── Zapier 12 ── -->
+      <div class="wf-card zapier-card reveal"
+           data-platform="zapier"
+           data-industry="ecommerce">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-zapier font-mono text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
+            <span class="industry-tag tag-ecommerce">E-commerce</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Abandoned Cart Recovery</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Shopify abandoned checkout → 1h email → 24h discount email (SAVE10) → 48h SMS sequence.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--zapier-red); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../zapier/sops/12-abandoned-cart-recovery/sop.md" class="action-link primary">View SOP →</a>
+        </div>
+      </div>
+
+      <!-- ── Zapier 13 ── -->
+      <div class="wf-card zapier-card reveal"
+           data-platform="zapier"
+           data-industry="agency">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-zapier font-mono text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
+            <span class="industry-tag tag-agency">Agency</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Client Review Request</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Asana 'Project Delivery' complete → 3-day delay → Typeform review request → 5-star responses logged to Sheets.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--zapier-red); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../zapier/sops/13-client-review-request/sop.md" class="action-link primary">View SOP →</a>
+        </div>
+      </div>
+
+      <!-- ── Zapier 14 ── -->
+      <div class="wf-card zapier-card reveal"
+           data-platform="zapier"
+           data-industry="healthcare">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-zapier font-mono text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
+            <span class="industry-tag tag-healthcare">Healthcare</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Appointment Reminder</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Calendly booking → Google Sheets log → 24h email reminder → 1h Twilio SMS reminder.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--zapier-red); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../zapier/sops/14-appointment-reminder/sop.md" class="action-link primary">View SOP →</a>
+        </div>
+      </div>
+
+      <!-- ── Zapier 15 ── -->
+      <div class="wf-card zapier-card reveal"
+           data-platform="zapier"
+           data-industry="agency">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-zapier font-mono text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
+            <span class="industry-tag tag-agency">Agency</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Monthly Analytics Report</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">1st of every month → pull GA4 data → format metrics → append to Sheets → email client report.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--zapier-red); font-size:0.85rem;">⚡⚡</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../zapier/sops/15-monthly-analytics-report/sop.md" class="action-link primary">View SOP →</a>
+        </div>
+      </div>
+
+      <!-- ── Cross-Platform 16 ── -->
+      <div class="wf-card cross-card reveal"
+           data-platform="cross-platform"
+           data-industry="real-estate">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-cross font-mono text-xs font-bold px-2.5 py-1 rounded-full">Cross-Platform</span>
+            <span class="industry-tag tag-real-estate">Real Estate</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">Full Funnel Lead Management</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Zapier captures Facebook leads → n8n AI-qualifies → Make routes to hot pipeline or nurture BI dashboard.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--cyan-accent); font-size:0.85rem;">⚡⚡⚡</span>
+          </div>
+          <!-- Platform chain -->
+          <div class="flex items-center gap-1.5 mt-3 flex-wrap">
+            <span class="font-mono text-xs px-1.5 py-0.5 rounded" style="background:rgba(249,115,22,0.12); color:var(--zapier-red);">Zapier</span>
+            <span class="font-mono text-xs" style="color:var(--text-muted);">→</span>
+            <span class="font-mono text-xs px-1.5 py-0.5 rounded" style="background:rgba(255,109,0,0.12); color:var(--n8n-orange);">n8n</span>
+            <span class="font-mono text-xs" style="color:var(--text-muted);">→</span>
+            <span class="font-mono text-xs px-1.5 py-0.5 rounded" style="background:rgba(168,85,247,0.12); color:var(--make-purple);">Make</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../cross-platform/01-full-funnel-lead-management/architecture.md" class="action-link primary">View Architecture →</a>
+        </div>
+      </div>
+
+      <!-- ── Cross-Platform 17 ── -->
+      <div class="wf-card cross-card reveal"
+           data-platform="cross-platform"
+           data-industry="ecommerce">
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="badge-cross font-mono text-xs font-bold px-2.5 py-1 rounded-full">Cross-Platform</span>
+            <span class="industry-tag tag-ecommerce">E-commerce</span>
+          </div>
+          <h3 class="font-display text-base font-bold mb-2" style="color:var(--text-primary);">E-commerce Intelligence</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Zapier forwards high-value orders → n8n fraud detection → Make logs approved orders + weekly revenue report.</p>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
+            <span style="color:var(--cyan-accent); font-size:0.85rem;">⚡⚡⚡</span>
+          </div>
+          <!-- Platform chain -->
+          <div class="flex items-center gap-1.5 mt-3 flex-wrap">
+            <span class="font-mono text-xs px-1.5 py-0.5 rounded" style="background:rgba(249,115,22,0.12); color:var(--zapier-red);">Zapier</span>
+            <span class="font-mono text-xs" style="color:var(--text-muted);">→</span>
+            <span class="font-mono text-xs px-1.5 py-0.5 rounded" style="background:rgba(255,109,0,0.12); color:var(--n8n-orange);">n8n</span>
+            <span class="font-mono text-xs" style="color:var(--text-muted);">→</span>
+            <span class="font-mono text-xs px-1.5 py-0.5 rounded" style="background:rgba(168,85,247,0.12); color:var(--make-purple);">Make</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t flex items-center gap-4 flex-wrap" style="border-color:var(--border-color);">
+          <a href="../cross-platform/02-ecommerce-intelligence/architecture.md" class="action-link primary">View Architecture →</a>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div id="empty-state">
+        <div class="py-16">
+          <div class="font-mono text-4xl mb-4" style="color:var(--border-color);">[ ]</div>
+          <p class="font-mono text-sm mb-2" style="color:var(--text-muted);">No workflows match your filters.</p>
+          <button id="reset-filters" class="font-mono text-xs mt-4 px-4 py-2 rounded-lg transition-all" style="border:1px solid var(--border-color); color:var(--text-secondary);" onmouseover="this.style.borderColor='var(--cyan-accent)'; this.style.color='var(--cyan-accent)'" onmouseout="this.style.borderColor='var(--border-color)'; this.style.color='var(--text-secondary)'">Reset filters</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer style="background:var(--bg-secondary); border-top:1px solid var(--border-color);">
+  <div class="max-w-6xl mx-auto px-6 py-10">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <p class="font-display font-semibold text-sm mb-1" style="color:var(--text-primary);">Russell Kaye M. Abregande</p>
+        <p class="font-mono text-xs" style="color:var(--text-muted);">AI Automation &amp; Systems Specialist · Manila, Philippines</p>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="mailto:russabregande@gmail.com" class="font-mono text-xs transition-colors hover:opacity-80" style="color:var(--text-muted);">russabregande@gmail.com</a>
+        <a href="https://linkedin.com/in/russabregande" target="_blank" class="font-mono text-xs transition-colors hover:opacity-80" style="color:var(--text-muted);">LinkedIn</a>
+        <a href="https://github.com/russkaye" target="_blank" class="font-mono text-xs transition-colors hover:opacity-80" style="color:var(--text-muted);">GitHub</a>
+      </div>
+      <p class="font-mono text-xs" style="color:var(--text-muted);">&copy; 2026 Russell Abregande</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT — Filter Logic
+═══════════════════════════════════════════ -->
+<script>
+  // Mobile menu
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+
+  // ─── Filter State ───────────────────────────
+  let activePlatform = 'all';
+  let activeIndustry = 'all';
+
+  // ─── DOM Refs ────────────────────────────────
+  const cards       = document.querySelectorAll('.wf-card');
+  const emptyState  = document.getElementById('empty-state');
+  const resultsCount = document.getElementById('results-count');
+  const platformBtns = document.querySelectorAll('[data-platform-filter]');
+  const industryBtns = document.querySelectorAll('[data-industry-filter]');
+
+  // ─── Apply Filters ───────────────────────────
+  function applyFilters() {
+    let visible = 0;
+
+    cards.forEach(card => {
+      const platform = card.dataset.platform;
+      const industry = card.dataset.industry;
+
+      const platformMatch = activePlatform === 'all' || platform === activePlatform;
+      const industryMatch = activeIndustry === 'all' || industry === activeIndustry;
+
+      if (platformMatch && industryMatch) {
+        card.classList.remove('hidden-card');
+        visible++;
+      } else {
+        card.classList.add('hidden-card');
+      }
+    });
+
+    // Empty state
+    if (visible === 0) {
+      emptyState.style.display = 'block';
+    } else {
+      emptyState.style.display = 'none';
+    }
+
+    // Results count
+    const label = visible === 1 ? 'workflow' : 'workflows';
+    resultsCount.textContent = `Showing ${visible} ${label}`;
+  }
+
+  // ─── Platform Filter ─────────────────────────
+  platformBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      activePlatform = btn.dataset.platformFilter;
+
+      // Update active state
+      platformBtns.forEach(b => b.classList.remove('active-platform'));
+      btn.classList.add('active-platform');
+
+      applyFilters();
+    });
+  });
+
+  // ─── Industry Filter ─────────────────────────
+  industryBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeIndustry = btn.dataset.industryFilter;
+
+      // Update active state
+      industryBtns.forEach(b => b.classList.remove('active-industry'));
+      btn.classList.add('active-industry');
+
+      applyFilters();
+    });
+  });
+
+  // ─── Reset Filters ───────────────────────────
+  document.getElementById('reset-filters').addEventListener('click', () => {
+    activePlatform = 'all';
+    activeIndustry = 'all';
+
+    platformBtns.forEach(b => b.classList.remove('active-platform'));
+    industryBtns.forEach(b => b.classList.remove('active-industry'));
+
+    document.querySelector('[data-platform-filter="all"]').classList.add('active-platform');
+    document.querySelector('[data-industry-filter="all"]').classList.add('active-industry');
+
+    applyFilters();
+  });
+
+  // ─── Scroll Reveal ───────────────────────────
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+  reveals.forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 3) * 0.06}s`;
+    observer.observe(el);
+  });
+
+  // ─── Initial count ───────────────────────────
+  applyFilters();
+</script>
+</body>
+</html>

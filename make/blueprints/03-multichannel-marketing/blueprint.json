@@ -1,0 +1,139 @@
+{
+  "name": "Multi-channel Marketing Publisher",
+  "flow": [
+    {
+      "id": 1,
+      "module": "google-sheets:WatchRows",
+      "version": 2,
+      "parameters": {
+        "spreadsheetId": "YOUR_SPREADSHEET_ID",
+        "sheetId": "Content Calendar",
+        "limit": 1
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {"x": -46, "y": 47}
+      }
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {"x": 254, "y": 47}
+      },
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 3,
+              "module": "instagram:CreateImagePost",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "caption": "{{1.Caption}} {{1.Hashtags}}",
+                "image_url": "{{1.Image_URL}}"
+              },
+              "metadata": {"designer": {"x": 544, "y": -200}},
+              "filter": {
+                "name": "Instagram enabled",
+                "conditions": [
+                  {
+                    "a": "{{1.Post_Instagram}}",
+                    "b": "Yes",
+                    "o": "text:equal"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 4,
+              "module": "facebook-pages:CreatePost",
+              "version": 4,
+              "parameters": {},
+              "mapper": {
+                "message": "{{1.Caption}} {{1.Hashtags}}",
+                "link": "{{1.Link_URL}}"
+              },
+              "metadata": {"designer": {"x": 544, "y": 0}},
+              "filter": {
+                "name": "Facebook enabled",
+                "conditions": [
+                  {
+                    "a": "{{1.Post_Facebook}}",
+                    "b": "Yes",
+                    "o": "text:equal"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 5,
+              "module": "linkedin:CreateShare",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "text": "{{1.Caption}}\n\n{{1.Hashtags}}",
+                "visibility": "PUBLIC"
+              },
+              "metadata": {"designer": {"x": 544, "y": 200}},
+              "filter": {
+                "name": "LinkedIn enabled",
+                "conditions": [
+                  {
+                    "a": "{{1.Post_LinkedIn}}",
+                    "b": "Yes",
+                    "o": "text:equal"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 6,
+              "module": "google-sheets:UpdateRow",
+              "version": 2,
+              "parameters": {
+                "spreadsheetId": "YOUR_SPREADSHEET_ID",
+                "sheetId": "Content Calendar"
+              },
+              "mapper": {
+                "rowNumber": "{{1.__ROW_NUMBER__}}",
+                "values": {
+                  "Status": "Published",
+                  "Published_At": "{{formatDate(now; \"YYYY-MM-DD HH:mm\")}}"
+                }
+              },
+              "metadata": {"designer": {"x": 544, "y": 400}}
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": true,
+      "dataloss": false
+    }
+  }
+}

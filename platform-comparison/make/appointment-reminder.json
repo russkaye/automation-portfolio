@@ -1,0 +1,92 @@
+{
+  "name": "Appointment Reminder — Platform Comparison (Make)",
+  "flow": [
+    {
+      "id": 1,
+      "module": "calendly:WatchInvitees",
+      "version": 1,
+      "parameters": {
+        "hook": null,
+        "event_type": "invitee.created"
+      },
+      "mapper": {},
+      "metadata": {"designer": {"x": -46, "y": 47}}
+    },
+    {
+      "id": 2,
+      "module": "google-sheets:AddRow",
+      "version": 2,
+      "parameters": {
+        "spreadsheetId": "YOUR_SPREADSHEET_ID",
+        "sheetId": "Appointments"
+      },
+      "mapper": {
+        "values": {
+          "A": "{{1.invitee.name}}",
+          "B": "{{1.invitee.email}}",
+          "C": "{{1.event_type.name}}",
+          "D": "{{1.event.start_time}}",
+          "E": "Confirmed",
+          "F": "{{formatDate(now; \"YYYY-MM-DD HH:mm\")}}"
+        }
+      },
+      "metadata": {"designer": {"x": 254, "y": 47}}
+    },
+    {
+      "id": 3,
+      "module": "builtin:Sleep",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "delay": "{{dateDifference(subtractHours(parseDate(1.event.start_time; \"YYYY-MM-DDTHH:mm:ssZ\"); 24); now; \"seconds\")}}"
+      },
+      "metadata": {"designer": {"x": 554, "y": 47}}
+    },
+    {
+      "id": 4,
+      "module": "gmail:ActionSendEmail",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "to": "{{1.invitee.email}}",
+        "subject": "Reminder: Your appointment is tomorrow",
+        "html": "<p>Hi {{1.invitee.name}},</p><p>Your appointment <strong>{{1.event_type.name}}</strong> is scheduled for tomorrow at {{formatDate(parseDate(1.event.start_time; \"YYYY-MM-DDTHH:mm:ssZ\"); \"h:mm A\")}}.</p><p><a href='{{1.invitee.reschedule_url}}'>Need to reschedule?</a></p><p>See you tomorrow!</p>"
+      },
+      "metadata": {"designer": {"x": 854, "y": 47}}
+    },
+    {
+      "id": 5,
+      "module": "builtin:Sleep",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "delay": "{{dateDifference(subtractHours(parseDate(1.event.start_time; \"YYYY-MM-DDTHH:mm:ssZ\"); 1); now; \"seconds\")}}"
+      },
+      "metadata": {"designer": {"x": 1154, "y": 47}}
+    },
+    {
+      "id": 6,
+      "module": "twilio:CreateMessage",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "from": "+1XXXXXXXXXX",
+        "to": "{{1.invitee.phone_number}}",
+        "body": "Reminder: Your appointment \"{{1.event_type.name}}\" is in 1 hour. See you soon! Reply STOP to opt out."
+      },
+      "metadata": {"designer": {"x": 1454, "y": 47}}
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": true,
+      "dataloss": false
+    }
+  }
+}

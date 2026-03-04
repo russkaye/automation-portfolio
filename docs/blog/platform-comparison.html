@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>n8n vs Make vs Zapier — Platform Comparison · Russell Abregande</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0f1a; --bg-card: #13162a; --border: rgba(99,112,190,0.18);
+      --blue: #4361ee; --cyan: #06d6a0; --text: #f0f0f5; --muted: #8b92b3;
+      --n8n: #ff6d00; --make: #a855f7; --zapier: #f97316;
+      --font-heading: 'Sora', sans-serif; --font-body: 'Outfit', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.75; }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(67,97,238,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(67,97,238,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    nav { position: sticky; top: 0; z-index: 50; background: rgba(13,15,26,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .nav-logo { font-family: var(--font-heading); font-weight: 700; font-size: 15px; color: var(--text); text-decoration: none; }
+    .nav-logo span { color: var(--blue); }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links .btn-cv { background: var(--blue); color: white; padding: 7px 18px; border-radius: 8px; font-weight: 500; font-size: 13px; }
+
+    article { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 72px 24px 120px; }
+
+    .breadcrumb { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 32px; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--cyan); }
+    .breadcrumb span { margin: 0 8px; }
+
+    .post-meta { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    .meta-tag { font-family: var(--font-mono); font-size: 11px; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); }
+    .meta-tag.highlight { border-color: var(--blue); color: var(--blue); }
+
+    h1 { font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+    .subtitle { font-size: 18px; color: var(--muted); margin-bottom: 48px; border-bottom: 1px solid var(--border); padding-bottom: 32px; }
+    h2 { font-family: var(--font-heading); font-size: 1.45rem; font-weight: 700; color: var(--text); margin: 52px 0 18px; }
+    p { color: #c8cce6; margin-bottom: 18px; }
+    strong { color: var(--text); }
+
+    /* Platform header cards */
+    .platform-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 40px 0; }
+    @media (max-width: 640px) { .platform-cards { grid-template-columns: 1fr; } }
+    .plat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+    .plat-card .plat-name { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+    .plat-card .plat-tagline { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+    .plat-card .plat-score { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .score-bar { height: 6px; border-radius: 3px; margin-bottom: 10px; }
+    .plat-card.n8n .plat-name { color: var(--n8n); }
+    .plat-card.make .plat-name { color: var(--make); }
+    .plat-card.zapier .plat-name { color: var(--zapier); }
+
+    /* Big comparison table */
+    .big-table { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin: 32px 0; width: 100%; overflow-x: auto; }
+    .big-table table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    .big-table th { background: rgba(67,97,238,0.1); font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; padding: 14px 20px; text-align: left; color: var(--muted); }
+    .big-table th.n8n { color: var(--n8n); }
+    .big-table th.make { color: var(--make); }
+    .big-table th.zapier { color: var(--zapier); }
+    .big-table td { padding: 13px 20px; font-size: 14px; color: #c8cce6; border-top: 1px solid var(--border); vertical-align: top; }
+    .big-table td.row-label { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-weight: 500; white-space: nowrap; }
+    .big-table tr:hover td { background: rgba(67,97,238,0.04); }
+    .win { color: var(--cyan); font-weight: 600; }
+    .check { color: var(--cyan); }
+    .cross { color: #ef4444; }
+    .neutral { color: var(--muted); }
+
+    .callout { background: var(--bg-card); border: 1px solid var(--border); border-left: 4px solid var(--blue); border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 28px 0; font-size: 15px; color: #c8cce6; }
+    .callout.tip { border-left-color: var(--cyan); }
+
+    .decision-tree { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin: 32px 0; font-family: var(--font-mono); font-size: 13px; color: #a0a8d4; line-height: 2.2; }
+    .decision-tree .q { color: var(--text); font-weight: 600; }
+    .decision-tree .ans { color: var(--cyan); }
+
+    .author-block { display: flex; align-items: center; gap: 16px; margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--border); }
+    .author-avatar { width: 52px; height: 52px; border-radius: 50%; background: rgba(67,97,238,0.2); border: 2px solid var(--blue); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; font-size: 18px; color: var(--blue); flex-shrink: 0; }
+    .author-info .name { font-family: var(--font-heading); font-weight: 700; font-size: 15px; }
+    .author-info .role { font-size: 13px; color: var(--muted); }
+
+    footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; }
+    footer p { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">Russell <span>·</span> Automation</a>
+    <div class="nav-links">
+      <a href="../workflows.html">Workflows</a>
+      <a href="../contact.html">Contact</a>
+      <a href="https://russkaye.github.io/" class="btn-cv" target="_blank">View CV</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="breadcrumb">
+    <a href="../index.html">Portfolio</a><span>/</span><a href="#">Platform Guide</a>
+  </div>
+  <div class="post-meta">
+    <span class="meta-tag highlight">Platform Guide</span>
+    <span class="meta-tag">n8n</span>
+    <span class="meta-tag">Make</span>
+    <span class="meta-tag">Zapier</span>
+    <span class="meta-tag">March 2026</span>
+  </div>
+
+  <h1>n8n vs Make vs Zapier — the honest comparison</h1>
+  <p class="subtitle">After building 15+ workflows across all three platforms, here's what I actually think — including when NOT to use each one.</p>
+
+  <div class="platform-cards">
+    <div class="plat-card n8n">
+      <div class="plat-name">n8n</div>
+      <div class="plat-tagline">The developer's automation platform</div>
+      <div class="plat-score">AI capabilities</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--n8n) 95%, transparent 95%)"></div>
+      <div class="plat-score">Ease of use</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--n8n) 55%, transparent 55%)"></div>
+      <div class="plat-score">App integrations</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--n8n) 40%, transparent 40%)"></div>
+      <div class="plat-score">Cost efficiency</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--n8n) 92%, transparent 92%)"></div>
+    </div>
+    <div class="plat-card make">
+      <div class="plat-name">Make</div>
+      <div class="plat-tagline">The visual automation builder</div>
+      <div class="plat-score">AI capabilities</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--make) 35%, transparent 35%)"></div>
+      <div class="plat-score">Ease of use</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--make) 80%, transparent 80%)"></div>
+      <div class="plat-score">App integrations</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--make) 60%, transparent 60%)"></div>
+      <div class="plat-score">Cost efficiency</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--make) 85%, transparent 85%)"></div>
+    </div>
+    <div class="plat-card zapier">
+      <div class="plat-name">Zapier</div>
+      <div class="plat-tagline">The no-code standard</div>
+      <div class="plat-score">AI capabilities</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--zapier) 30%, transparent 30%)"></div>
+      <div class="plat-score">Ease of use</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--zapier) 95%, transparent 95%)"></div>
+      <div class="plat-score">App integrations</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--zapier) 98%, transparent 98%)"></div>
+      <div class="plat-score">Cost efficiency</div>
+      <div class="score-bar" style="background:linear-gradient(90deg, var(--zapier) 35%, transparent 35%)"></div>
+    </div>
+  </div>
+
+  <h2>Feature-by-feature breakdown</h2>
+
+  <div class="big-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="n8n">n8n</th>
+          <th class="make">Make</th>
+          <th class="zapier">Zapier</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">Pricing model</td>
+          <td>Per execution (cloud) / Free (self-host)</td>
+          <td>Per operation</td>
+          <td>Per task (action step)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Starting price</td>
+          <td><span class="win">$0 self-hosted</span> / $20 cloud</td>
+          <td>$9/mo (Core)</td>
+          <td>$19.99/mo (Starter)</td>
+        </tr>
+        <tr>
+          <td class="row-label">App integrations</td>
+          <td>400+</td>
+          <td>1,500+</td>
+          <td class="win">6,000+</td>
+        </tr>
+        <tr>
+          <td class="row-label">AI / LLM support</td>
+          <td class="win">Native LangChain, OpenAI, Claude, AI Agent node</td>
+          <td>HTTP Request only (no native AI nodes)</td>
+          <td>Basic AI Actions (limited, expensive per task)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Custom code</td>
+          <td class="win">Full JavaScript + Python (Code node)</td>
+          <td>Limited (formulas only)</td>
+          <td>Code by Zapier (JS or Python, limited)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Self-hosting</td>
+          <td class="win check">✓ Docker, free</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+        </tr>
+        <tr>
+          <td class="row-label">Visual flow builder</td>
+          <td>Yes (node canvas)</td>
+          <td class="win">Yes (best UX)</td>
+          <td>Yes (linear step list)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Parallel execution</td>
+          <td class="win">Yes (branch nodes)</td>
+          <td class="win">Yes (Router, instant)</td>
+          <td>Paths (Pro plan only)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Trigger types</td>
+          <td>Webhook, schedule, polling, event</td>
+          <td>Webhook (instant), schedule, polling</td>
+          <td>Polling (15min free) or instant (per app)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Error handling</td>
+          <td class="win">Advanced (try/catch, retry logic)</td>
+          <td>Error routes, max errors</td>
+          <td>Basic (email alerts, task history)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Execution history</td>
+          <td>Full logs, variable inspection</td>
+          <td class="win">30-day history, timeline view</td>
+          <td>7 days (Starter), 30 days (Pro)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Learning curve</td>
+          <td>Medium-High (developer-friendly)</td>
+          <td>Medium (visual but has gotchas)</td>
+          <td class="win">Low (most intuitive)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Best use case</td>
+          <td class="win">AI/LLM workflows, complex logic, high volume</td>
+          <td class="win">Batch processing, visual builders, mid-volume</td>
+          <td class="win">Quick deploys, non-technical teams, wide integrations</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>The honest verdict</h2>
+
+  <p><strong>n8n wins on AI and cost at scale.</strong> If your workflow needs LLM processing — scoring, summarizing, drafting, classifying — n8n's native LangChain nodes and Code node make it the only serious option. Self-hosted n8n at $6/month handles thousands of AI-powered executions that would cost $100+ in Zapier.</p>
+
+  <p><strong>Make wins on visual clarity and batch operations.</strong> The Router module (parallel branches) is genuinely better than anything Zapier or n8n offers for splitting flows. The Iterator + Aggregator pattern for batch processing is unmatched. The scenario editor is the most intuitive visual builder available.</p>
+
+  <p><strong>Zapier wins on integrations and accessibility.</strong> 6,000+ apps means you'll always find the connector you need. Non-technical team members can build and modify Zaps without developer help. For simple, linear automations that don't need AI or batch processing, Zapier's speed of setup often beats the alternatives.</p>
+
+  <div class="callout tip">
+    <strong>The real answer:</strong> Most production automation stacks use more than one platform. The right question isn't "which platform?" — it's "which platform handles which segment of this pipeline best?"
+  </div>
+
+  <h2>My personal recommendation framework</h2>
+
+  <div class="decision-tree">
+    <div class="q">Does the workflow need AI/LLM processing?</div>
+    <div>├── YES → <span class="ans">n8n</span> (cheapest, most capable)</div>
+    <div>└── NO → continue ↓</div>
+    <br/>
+    <div class="q">Is the team non-technical?</div>
+    <div>├── YES → <span class="ans">Zapier</span> (they can maintain it themselves)</div>
+    <div>└── NO → continue ↓</div>
+    <br/>
+    <div class="q">Does it process batches or high volumes (&gt;1,000 items/mo)?</div>
+    <div>├── YES → <span class="ans">Make</span> (cheapest per-operation pricing)</div>
+    <div>└── NO → continue ↓</div>
+    <br/>
+    <div class="q">Do you need a specific app integration not in n8n or Make?</div>
+    <div>├── YES → <span class="ans">Zapier</span> (6,000+ apps)</div>
+    <div>└── NO → <span class="ans">Make</span> (best value for mid-complexity workflows)</div>
+  </div>
+
+  <h2>The Appointment Reminder test</h2>
+  <p>In my portfolio, I built the same Appointment Reminder workflow on all three platforms. It's the best way to compare them on equal footing. The same trigger (Calendly), the same actions (Sheets log → 24h email → 1h SMS), the same outcome — three completely different approaches.</p>
+  <p>See the comparison: <a href="../platform-comparison/appointment-reminder-comparison.md" style="color:var(--cyan)">appointment-reminder-comparison.md</a></p>
+
+  <div class="author-block">
+    <div class="author-avatar">R</div>
+    <div class="author-info">
+      <div class="name">Russell Kaye M. Abregande</div>
+      <div class="role">AI Automation & Systems Specialist · Manila, Philippines</div>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <p>© 2026 Russell Kaye M. Abregande &nbsp;·&nbsp; <a href="mailto:russabregande@gmail.com">russabregande@gmail.com</a> &nbsp;·&nbsp; <a href="https://linkedin.com/in/russabregande" target="_blank">LinkedIn</a></p>
+</footer>
+</body>
+</html>

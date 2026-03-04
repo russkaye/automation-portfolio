@@ -1,0 +1,58 @@
+{
+  "name": "Bridge 02: Order Logging Segment",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {"hook": null},
+      "mapper": {},
+      "metadata": {"designer": {"x": -46, "y": 47}},
+      "label": "Receive Approved Order from n8n"
+    },
+    {
+      "id": 2,
+      "module": "google-sheets:AddRow",
+      "version": 2,
+      "parameters": {
+        "spreadsheetId": "YOUR_SPREADSHEET_ID",
+        "sheetId": "Orders"
+      },
+      "mapper": {
+        "values": {
+          "A": "{{1.order_number}}",
+          "B": "{{1.customer_email}}",
+          "C": "{{1.customer_name}}",
+          "D": "{{1.total_price}}",
+          "E": "{{1.ai_assessment.risk_level}}",
+          "F": "{{1.financial_status}}",
+          "G": "{{formatDate(now; \"YYYY-MM-DD HH:mm\")}}"
+        }
+      },
+      "metadata": {"designer": {"x": 254, "y": 47}}
+    },
+    {
+      "id": 3,
+      "module": "slack:CreateMessage",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "channel": "#approved-orders",
+        "text": "Order Approved — Risk: {{1.ai_assessment.risk_level}}\nOrder: #{{1.order_number}}\nCustomer: {{1.customer_email}}\nTotal: ${{1.total_price}}\nLogged to Google Sheets."
+      },
+      "metadata": {"designer": {"x": 554, "y": 47}}
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": true,
+      "dataloss": false
+    }
+  }
+}

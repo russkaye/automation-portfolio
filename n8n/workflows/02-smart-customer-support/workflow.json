@@ -1,0 +1,187 @@
+{
+  "name": "Smart Customer Support — E-commerce",
+  "nodes": [
+    {
+      "id": "node-01",
+      "name": "Email Trigger (IMAP)",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "parameters": {
+        "mailbox": "INBOX",
+        "action": "read",
+        "downloadAttachments": false,
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "customEmailConfig": ""
+        }
+      },
+      "credentials": {
+        "imap": {
+          "id": "4",
+          "name": "Support Email IMAP"
+        }
+      }
+    },
+    {
+      "id": "node-02",
+      "name": "AI Agent — Categorize and Draft",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1,
+      "position": [480, 300],
+      "parameters": {
+        "text": "=You are a customer support AI for an e-commerce store. Analyze this customer email and:\n1. Categorize it as: ORDER_STATUS, REFUND_REQUEST, PRODUCT_QUESTION, COMPLAINT, or OTHER\n2. Determine if it can be auto-resolved (YES) or needs human review (NO)\n3. Draft a professional reply if auto-resolvable\n\nEmail Subject: {{ $json.subject }}\nEmail From: {{ $json.from }}\nEmail Body: {{ $json.text }}\n\nReturn ONLY valid JSON:\n{\"category\": \"ORDER_STATUS\", \"auto_resolve\": true, \"confidence\": 0.92, \"draft_reply\": \"Hi [Name], Thank you for contacting us...\", \"reason\": \"Standard order status inquiry\"}",
+        "options": {},
+        "promptType": "define"
+      }
+    },
+    {
+      "id": "node-03",
+      "name": "Code — Parse AI Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 300],
+      "parameters": {
+        "jsCode": "const response = $input.item.json.output || $input.item.json.text || '';\nlet parsed;\ntry {\n  const jsonMatch = response.match(/\\{[\\s\\S]*\\}/);\n  parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : null;\n} catch(e) {\n  parsed = null;\n}\n\nif (!parsed) {\n  parsed = {\n    category: 'OTHER',\n    auto_resolve: false,\n    confidence: 0,\n    draft_reply: '',\n    reason: 'Failed to parse AI response — manual review required'\n  };\n}\n\nreturn {\n  ...parsed,\n  original_email: {\n    from: $input.item.json.from,\n    subject: $input.item.json.subject,\n    body: $input.item.json.text\n  },\n  processed_at: new Date().toISOString()\n};"
+      }
+    },
+    {
+      "id": "node-04",
+      "name": "IF — Auto-Resolve?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [960, 300],
+      "parameters": {
+        "conditions": {
+          "conditions": [
+            {
+              "id": "cond-auto",
+              "leftValue": "={{ $json.auto_resolve }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "cond-confidence",
+              "leftValue": "={{ $json.confidence }}",
+              "rightValue": 0.8,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-05a",
+      "name": "Gmail — Send Auto Reply",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [1200, 200],
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "toList": "={{ $('Code — Parse AI Response').item.json.original_email.from }}",
+        "subject": "=Re: {{ $('Code — Parse AI Response').item.json.original_email.subject }}",
+        "message": "={{ $('Code — Parse AI Response').item.json.draft_reply }}\n\n---\nThis is an automated response. If you need further assistance, reply to this email and a human agent will follow up within 24 hours.",
+        "options": {
+          "threadId": ""
+        }
+      },
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "5",
+          "name": "Gmail Support Account"
+        }
+      }
+    },
+    {
+      "id": "node-05b",
+      "name": "Notion — Create Review Ticket",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [1200, 400],
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "create",
+        "databaseId": {
+          "__rl": true,
+          "value": "YOUR_NOTION_DATABASE_ID",
+          "mode": "id"
+        },
+        "title": "={{ $('Code — Parse AI Response').item.json.original_email.subject }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Category",
+              "textValue": "={{ $('Code — Parse AI Response').item.json.category }}"
+            },
+            {
+              "key": "From",
+              "textValue": "={{ $('Code — Parse AI Response').item.json.original_email.from }}"
+            },
+            {
+              "key": "Status",
+              "selectValue": "Needs Review"
+            },
+            {
+              "key": "AI Confidence",
+              "numberValue": "={{ $('Code — Parse AI Response').item.json.confidence }}"
+            }
+          ]
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "type": "paragraph",
+              "textContent": "={{ $('Code — Parse AI Response').item.json.original_email.body }}"
+            }
+          ]
+        }
+      },
+      "credentials": {
+        "notionApi": {
+          "id": "6",
+          "name": "Notion API"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Email Trigger (IMAP)": {
+      "main": [[{"node": "AI Agent — Categorize and Draft", "type": "main", "index": 0}]]
+    },
+    "AI Agent — Categorize and Draft": {
+      "main": [[{"node": "Code — Parse AI Response", "type": "main", "index": 0}]]
+    },
+    "Code — Parse AI Response": {
+      "main": [[{"node": "IF — Auto-Resolve?", "type": "main", "index": 0}]]
+    },
+    "IF — Auto-Resolve?": {
+      "main": [
+        [{"node": "Gmail — Send Auto Reply", "type": "main", "index": 0}],
+        [{"node": "Notion — Create Review Ticket", "type": "main", "index": 0}]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true
+  },
+  "staticData": null,
+  "meta": {"templateCredsSetupCompleted": false, "instanceId": ""},
+  "pinData": {},
+  "versionId": "v1-smart-support",
+  "triggerCount": 0,
+  "tags": [
+    {"id": "tag-ecommerce", "name": "e-commerce"},
+    {"id": "tag-ai", "name": "ai"},
+    {"id": "tag-support", "name": "customer-support"}
+  ]
+}

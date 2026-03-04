@@ -1,0 +1,58 @@
+{
+  "name": "Bridge 02: Weekly Revenue Report",
+  "flow": [
+    {
+      "id": 1,
+      "module": "google-sheets:GetRows",
+      "version": 2,
+      "parameters": {
+        "spreadsheetId": "YOUR_SPREADSHEET_ID",
+        "sheetId": "Orders",
+        "limit": 1000
+      },
+      "mapper": {},
+      "metadata": {"designer": {"x": -46, "y": 47}},
+      "label": "Pull last 7 days of orders"
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicAggregator",
+      "version": 1,
+      "parameters": {
+        "groupBy": "",
+        "stopProcessing": false
+      },
+      "mapper": {},
+      "metadata": {"designer": {"x": 254, "y": 47}}
+    },
+    {
+      "id": 3,
+      "module": "gmail:ActionSendEmail",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "to": "owner@yourstore.com",
+        "subject": "Weekly E-commerce Report — {{formatDate(addDays(now; -7); \"MMM D\")}} to {{formatDate(now; \"MMM D, YYYY\")}}",
+        "html": "<h2>Weekly Revenue Report</h2><p><strong>Period:</strong> {{formatDate(addDays(now; -7); \"YYYY-MM-DD\")}} to {{formatDate(now; \"YYYY-MM-DD\")}}</p><table border='1' cellpadding='8' style='border-collapse:collapse;width:100%'><thead style='background:#f3f4f6'><tr><th>Metric</th><th>This Week</th></tr></thead><tbody><tr><td>Total Orders Processed</td><td><strong>{{2.length}}</strong></td></tr><tr><td>Flagged High Risk</td><td><strong>{{length(filter(1.array; 'E'; 'HIGH'))}}</strong></td></tr><tr><td>Approved (Low/Medium Risk)</td><td><strong>{{subtract(2.length; length(filter(1.array; 'E'; 'HIGH')))}}</strong></td></tr></tbody></table><p>Full data in your <a href='https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID'>Google Sheet</a>.</p>"
+      },
+      "metadata": {"designer": {"x": 554, "y": 47}}
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": true,
+      "dataloss": false
+    },
+    "scheduling": {
+      "type": "cron",
+      "interval": 10080,
+      "cron": "0 8 * * 1"
+    }
+  }
+}

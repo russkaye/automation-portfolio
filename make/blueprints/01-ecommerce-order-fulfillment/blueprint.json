@@ -1,0 +1,101 @@
+{
+  "name": "E-commerce Order to Fulfillment",
+  "flow": [
+    {
+      "id": 1,
+      "module": "shopify:WatchOrders",
+      "version": 2,
+      "parameters": {
+        "hook": null,
+        "filter": "any"
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {"x": -46, "y": 47}
+      }
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {"x": 254, "y": 47}
+      },
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 3,
+              "module": "google-sheets:AddRow",
+              "version": 2,
+              "parameters": {
+                "spreadsheetId": "{{spreadsheetId}}",
+                "sheetId": "{{sheetId}}"
+              },
+              "mapper": {
+                "values": {
+                  "A": "{{1.id}}",
+                  "B": "{{1.customer.email}}",
+                  "C": "{{1.customer.first_name}} {{1.customer.last_name}}",
+                  "D": "{{1.total_price}}",
+                  "E": "{{1.financial_status}}",
+                  "F": "{{formatDate(now; \"YYYY-MM-DD HH:mm\")}}"
+                }
+              },
+              "metadata": {"designer": {"x": 544, "y": -47}}
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 4,
+              "module": "gmail:ActionSendEmail",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "to": "{{1.customer.email}}",
+                "subject": "Order Confirmed: #{{1.order_number}}",
+                "html": "<h2>Hi {{1.customer.first_name}}!</h2><p>Your order <strong>#{{1.order_number}}</strong> has been received and is being processed.</p><p><strong>Order Total:</strong> ${{1.total_price}}</p><p><strong>Items:</strong> {{1.line_items_count}} item(s)</p><p>You'll receive a shipping confirmation once your order ships. Track your order at any time by replying to this email.</p><br><p>Thank you for your purchase!</p><p>The Team</p>"
+              },
+              "metadata": {"designer": {"x": 544, "y": 137}}
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 5,
+              "module": "slack:CreateMessage",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "channel": "#new-orders",
+                "text": "New Order #{{1.order_number}}\nCustomer: {{1.customer.first_name}} {{1.customer.last_name}}\nEmail: {{1.customer.email}}\nTotal: ${{1.total_price}}\nItems: {{1.line_items_count}}\nStatus: {{1.financial_status}}"
+              },
+              "metadata": {"designer": {"x": 544, "y": 327}}
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "dataloss": false,
+      "dlq": false
+    },
+    "designer": {
+      "orphans": []
+    }
+  }
+}

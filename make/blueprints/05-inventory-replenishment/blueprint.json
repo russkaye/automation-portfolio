@@ -1,0 +1,116 @@
+{
+  "name": "Inventory Replenishment — E-commerce",
+  "flow": [
+    {
+      "id": 1,
+      "module": "shopify:ListProducts",
+      "version": 2,
+      "parameters": {
+        "limit": 250,
+        "fields": "id,title,variants,inventory_quantity"
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {"x": -46, "y": 47}
+      }
+    },
+    {
+      "id": 2,
+      "module": "builtin:Iterator",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "array": "{{1.variants}}"
+      },
+      "metadata": {
+        "designer": {"x": 254, "y": 47}
+      }
+    },
+    {
+      "id": 3,
+      "module": "builtin:BasicFilter",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {"x": 554, "y": 47}
+      },
+      "filter": {
+        "name": "Low stock check",
+        "conditions": [
+          {
+            "a": "{{2.inventory_quantity}}",
+            "b": "10",
+            "o": "number:less"
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "module": "google-sheets:AddRow",
+      "version": 2,
+      "parameters": {
+        "spreadsheetId": "YOUR_SPREADSHEET_ID",
+        "sheetId": "Low Stock Report"
+      },
+      "mapper": {
+        "values": {
+          "A": "{{1.title}}",
+          "B": "{{2.sku}}",
+          "C": "{{2.inventory_quantity}}",
+          "D": "10",
+          "E": "{{subtract(10; 2.inventory_quantity)}}",
+          "F": "{{formatDate(now; \"YYYY-MM-DD\")}}"
+        }
+      },
+      "metadata": {
+        "designer": {"x": 854, "y": 47}
+      }
+    },
+    {
+      "id": 5,
+      "module": "gmail:ActionSendEmail",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "to": "supplier@example.com",
+        "subject": "PO Request: {{1.title}} (SKU: {{2.sku}}) — Low Stock",
+        "html": "<h2>Purchase Order Request</h2><table border='1' cellpadding='8' style='border-collapse:collapse'><tr><th>Product</th><th>SKU</th><th>Current Stock</th><th>Reorder Threshold</th><th>Suggested Order Qty</th></tr><tr><td>{{1.title}}</td><td>{{2.sku}}</td><td>{{2.inventory_quantity}}</td><td>10</td><td>50</td></tr></table><p>Please confirm receipt of this purchase order request and provide an estimated delivery date.</p><p>Best regards,<br>Inventory Management System</p>"
+      },
+      "metadata": {
+        "designer": {"x": 1154, "y": 47}
+      }
+    },
+    {
+      "id": 6,
+      "module": "slack:CreateMessage",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "channel": "#inventory-alerts",
+        "text": "LOW STOCK ALERT\nProduct: {{1.title}}\nSKU: {{2.sku}}\nCurrent qty: {{2.inventory_quantity}}\nThreshold: 10 units\nPO email sent to supplier."
+      },
+      "metadata": {
+        "designer": {"x": 1454, "y": 47}
+      }
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": true,
+      "dataloss": false
+    },
+    "scheduling": {
+      "type": "cron",
+      "interval": 1440,
+      "cron": "0 6 * * *"
+    }
+  }
+}
