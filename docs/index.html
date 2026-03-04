@@ -3,874 +3,933 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Russell Kaye M. Abregande — AI Automation & Systems Specialist</title>
+  <title>Russell Abregande — AI Automation & Systems Specialist</title>
+  <meta name="description" content="Building production-ready automation workflows with n8n, Make & Zapier. Book a free consultation." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'] },
+          colors: {
+            purple: {
+              deep:    '#4C1D95',
+              mid:     '#5B21B6',
+              lavender:'#A78BFA',
+              light:   '#EDE9FE',
+              glow:    '#7C3AED',
+            }
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.6s ease-out forwards',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%':   { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    :root {
-      --bg-primary:    #0d0f1a;
-      --bg-secondary:  #111525;
-      --bg-card:       #161b2e;
-      --bg-card-hover: #1c2340;
-      --electric-blue: #4361ee;
-      --cyan-accent:   #06d6a0;
-      --text-primary:  #f0f0f5;
-      --text-secondary:#8b92b3;
-      --text-muted:    #555d7a;
-      --border-color:  #1f2645;
-      --n8n-orange:    #ff6d00;
-      --make-purple:   #a855f7;
-      --zapier-red:    #f97316;
-    }
-
     * { box-sizing: border-box; }
+    body { -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-    html, body {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: 'Outfit', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+    /* Gradient text */
+    .text-gradient {
+      background: linear-gradient(135deg, #C4B5FD 0%, #A78BFA 35%, #7C3AED 70%, #4C1D95 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    /* Typography */
-    .font-display { font-family: 'Sora', sans-serif; }
-    .font-mono    { font-family: 'JetBrains Mono', monospace; }
-    .font-body    { font-family: 'Outfit', sans-serif; }
-
-    /* Gradient mesh background */
+    /* Hero background gradient (like Instantly.ai) */
     .hero-bg {
-      background-color: var(--bg-primary);
-      background-image:
-        radial-gradient(ellipse 60% 50% at 15% 40%, rgba(67, 97, 238, 0.12) 0%, transparent 65%),
-        radial-gradient(ellipse 50% 60% at 85% 20%, rgba(6, 214, 160, 0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 50% 80%, rgba(67, 97, 238, 0.06) 0%, transparent 55%);
+      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 30%, #ede9fe 60%, #fff 100%);
     }
 
-    /* Grid overlay */
-    .grid-overlay {
-      background-image:
-        linear-gradient(rgba(67, 97, 238, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(67, 97, 238, 0.04) 1px, transparent 1px);
-      background-size: 48px 48px;
+    /* Hero glow blob */
+    .hero-glow {
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(ellipse, rgba(167,139,250,0.28) 0%, rgba(124,58,237,0.12) 40%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
     }
 
-    /* Gradient divider */
-    .gradient-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--electric-blue) 30%, var(--cyan-accent) 60%, transparent 100%);
-      opacity: 0.4;
+    /* Extra decorative blobs */
+    .blob-pink {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(216,180,254,0.22) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
     }
 
-    /* Glow CTA */
-    .btn-glow {
-      background: var(--electric-blue);
-      color: white;
-      box-shadow: 0 0 20px rgba(67, 97, 238, 0.45), 0 0 40px rgba(67, 97, 238, 0.15);
-      transition: box-shadow 0.3s ease, transform 0.2s ease, background 0.2s ease;
-    }
-    .btn-glow:hover {
-      box-shadow: 0 0 28px rgba(67, 97, 238, 0.7), 0 0 60px rgba(67, 97, 238, 0.25);
-      transform: translateY(-2px);
-      background: #5571f5;
-    }
+    /* Sticky nav shadow on scroll */
+    .nav-scrolled { box-shadow: 0 1px 20px rgba(76,29,149,0.08); }
 
-    .btn-outline {
-      border: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    /* Workflow card */
+    .workflow-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
-    .btn-outline:hover {
-      border-color: var(--cyan-accent);
-      color: var(--cyan-accent);
-      transform: translateY(-2px);
-    }
-
-    /* Cards */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card:hover {
-      border-color: rgba(67, 97, 238, 0.5);
+    .workflow-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 24px rgba(67, 97, 238, 0.08);
+      box-shadow: 0 16px 40px rgba(76,29,149,0.12);
+      border-color: #A78BFA;
     }
 
-    /* Platform card accents */
-    .card-n8n:hover    { border-color: rgba(255, 109, 0, 0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 24px rgba(255,109,0,0.1); }
-    .card-make:hover   { border-color: rgba(168, 85, 247, 0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 24px rgba(168,85,247,0.1); }
-    .card-zapier:hover { border-color: rgba(249, 115, 22, 0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 24px rgba(249,115,22,0.1); }
+    /* Platform badge colors */
+    .badge-n8n    { background:#FFF3E0; color:#E65100; }
+    .badge-make   { background:#F3E8FF; color:#7E22CE; }
+    .badge-zapier { background:#FFF0EE; color:#C0392B; }
 
-    /* Top border accent on platform cards */
-    .card-accent-top {
-      position: relative;
-      overflow: hidden;
-    }
-    .card-accent-top::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-    }
-    .card-n8n.card-accent-top::before    { background: linear-gradient(90deg, var(--n8n-orange), transparent); }
-    .card-make.card-accent-top::before   { background: linear-gradient(90deg, var(--make-purple), transparent); }
-    .card-zapier.card-accent-top::before { background: linear-gradient(90deg, var(--zapier-red), transparent); }
-
-    /* Workflow card accent */
-    .workflow-card-accent::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--electric-blue), var(--cyan-accent));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .workflow-card-accent:hover::before { opacity: 1; }
-
-    /* Badge styles */
-    .badge-n8n    { background: rgba(255,109,0,0.15); color: var(--n8n-orange); border: 1px solid rgba(255,109,0,0.3); }
-    .badge-make   { background: rgba(168,85,247,0.15); color: var(--make-purple); border: 1px solid rgba(168,85,247,0.3); }
-    .badge-zapier { background: rgba(249,115,22,0.15); color: var(--zapier-red); border: 1px solid rgba(249,115,22,0.3); }
-
-    /* Nav */
-    .nav-link {
-      color: var(--text-secondary);
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: color 0.2s ease;
-      letter-spacing: 0.02em;
-    }
-    .nav-link:hover { color: var(--text-primary); }
-
-    /* Stats bar */
-    .stats-bar {
-      background: var(--bg-secondary);
-      border-top: 1px solid var(--border-color);
-      border-bottom: 1px solid var(--border-color);
-    }
-    .stat-number {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--cyan-accent);
-      letter-spacing: -0.02em;
-    }
-    .stat-label {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    /* Automation flow visual */
-    .flow-node {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 10px 16px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--text-secondary);
-      white-space: nowrap;
-      transition: border-color 0.3s ease, color 0.3s ease;
-    }
-    .flow-node.active {
-      border-color: var(--electric-blue);
-      color: var(--text-primary);
-      box-shadow: 0 0 16px rgba(67,97,238,0.25);
-    }
-    .flow-node.accent {
-      border-color: var(--cyan-accent);
-      color: var(--cyan-accent);
-      box-shadow: 0 0 16px rgba(6,214,160,0.2);
-    }
-    .flow-connector {
-      width: 28px;
-      height: 1px;
-      background: linear-gradient(90deg, var(--electric-blue), var(--cyan-accent));
-      position: relative;
-      flex-shrink: 0;
-    }
-    .flow-connector::after {
-      content: '';
-      position: absolute;
-      right: -1px;
-      top: -3px;
-      width: 6px;
-      height: 6px;
-      border-top: 1px solid var(--cyan-accent);
-      border-right: 1px solid var(--cyan-accent);
-      transform: rotate(45deg);
-    }
-    .flow-connector-v {
-      width: 1px;
-      height: 20px;
-      background: linear-gradient(180deg, var(--electric-blue), var(--cyan-accent));
-      margin: 0 auto;
-      position: relative;
-    }
-    .flow-connector-v::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: -3px;
-      width: 6px;
-      height: 6px;
-      border-bottom: 1px solid var(--cyan-accent);
-      border-right: 1px solid var(--cyan-accent);
-      transform: rotate(45deg);
-    }
-
-    /* Terminal block */
-    .terminal-block {
-      background: #0a0c16;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      overflow: hidden;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      line-height: 1.7;
-    }
-    .terminal-header {
-      background: #141828;
-      padding: 10px 16px;
+    /* Feature section mockup */
+    .mockup-node {
+      background: white;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 10px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .terminal-body { padding: 16px 20px; }
-    .t-dim    { color: var(--text-muted); }
-    .t-blue   { color: #79b8ff; }
-    .t-green  { color: var(--cyan-accent); }
-    .t-orange { color: var(--n8n-orange); }
-    .t-purple { color: var(--make-purple); }
-    .t-white  { color: var(--text-primary); }
-
-    /* Staggered fade-in animations */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.7s ease forwards;
-    }
-    .fade-in-left {
-      opacity: 0;
-      transform: translateX(-24px);
-      animation: fadeInLeft 0.7s ease forwards;
-    }
-    .fade-in-right {
-      opacity: 0;
-      transform: translateX(24px);
-      animation: fadeInRight 0.7s ease forwards;
-    }
-
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeInLeft {
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes fadeInRight {
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    /* Scroll-triggered fade */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Cursor blink */
-    .cursor-blink {
-      display: inline-block;
-      width: 2px;
-      height: 1.1em;
-      background: var(--cyan-accent);
-      margin-left: 2px;
-      vertical-align: text-bottom;
-      animation: blink 1s step-end infinite;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-
-    /* Pulse dot */
-    .pulse-dot {
-      width: 8px; height: 8px;
-      background: var(--cyan-accent);
-      border-radius: 50%;
-      box-shadow: 0 0 0 0 rgba(6,214,160,0.4);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%  { box-shadow: 0 0 0 0 rgba(6,214,160,0.4); }
-      70% { box-shadow: 0 0 0 8px rgba(6,214,160,0); }
-      100%{ box-shadow: 0 0 0 0 rgba(6,214,160,0); }
-    }
-
-    /* Industry pill */
-    .industry-pill {
-      border-radius: 999px;
-      padding: 8px 20px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.875rem;
+      gap: 8px;
+      font-size: 13px;
       font-weight: 500;
-      border: 1px solid;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      color: #374151;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
-    .industry-pill:hover {
-      transform: translateY(-2px);
+    .mockup-connector {
+      width: 2px;
+      height: 28px;
+      background: linear-gradient(to bottom, #A78BFA, #4C1D95);
+      margin: 0 auto;
+      border-radius: 2px;
     }
 
-    /* Section label */
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--cyan-accent);
+    /* Filter tab active */
+    .tab-btn.active {
+      background: #4C1D95;
+      color: white;
     }
+
+    /* Hidden workflow cards for filter */
+    .workflow-item.hidden { display: none; }
 
     /* CTA section */
-    .cta-bg {
-      background: linear-gradient(135deg, rgba(67,97,238,0.08) 0%, rgba(6,214,160,0.05) 100%);
-      border: 1px solid rgba(67,97,238,0.2);
+    .cta-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(167,139,250,0.25) 0%, transparent 60%);
+      pointer-events: none;
     }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-primary); }
-    ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
-
-    /* Nav glass */
-    .nav-glass {
-      background: rgba(13,15,26,0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    /* Floating node animation */
-    @keyframes floatY {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-6px); }
-    }
-    .float-anim { animation: floatY 4s ease-in-out infinite; }
   </style>
 </head>
-<body>
+<body class="bg-white text-gray-800 font-sans">
 
-<!-- ═══════════════════════════════════════════
-     NAV
-═══════════════════════════════════════════ -->
-<nav class="nav-glass fixed top-0 left-0 right-0 z-50">
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-    <!-- Logo -->
-    <a href="index.html" class="flex items-center gap-3 group">
-      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(67,97,238,0.2); border:1px solid rgba(67,97,238,0.4);">
-        <span class="font-mono text-xs font-bold" style="color:var(--electric-blue);">RK</span>
-      </div>
-      <span class="font-display font-semibold text-sm" style="color:var(--text-primary);">Russell Abregande</span>
-    </a>
-    <!-- Links -->
-    <div class="hidden md:flex items-center gap-8">
-      <a href="workflows.html" class="nav-link">Workflows</a>
-      <a href="mailto:russabregande@gmail.com" class="nav-link">Contact</a>
-      <a href="https://russkaye.github.io/" target="_blank" class="font-mono text-xs px-4 py-2 rounded-lg transition-all duration-200" style="border:1px solid rgba(67,97,238,0.5); color:var(--electric-blue);" onmouseover="this.style.background='rgba(67,97,238,0.12)'" onmouseout="this.style.background='transparent'">View CV →</a>
-    </div>
-    <!-- Mobile menu button -->
-    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg" style="color:var(--text-secondary);">
-      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-    </button>
-  </div>
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t" style="border-color:var(--border-color); background:var(--bg-secondary);">
-    <div class="px-6 py-4 flex flex-col gap-4">
-      <a href="workflows.html" class="nav-link">Workflows</a>
-      <a href="mailto:russabregande@gmail.com" class="nav-link">Contact</a>
-      <a href="https://russkaye.github.io/" target="_blank" class="nav-link">View CV</a>
-    </div>
-  </div>
-</nav>
+  <!-- ===== NAVBAR ===== -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-300">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="text-purple-deep font-bold text-lg tracking-tight">Russell Abregande</a>
 
-<!-- ═══════════════════════════════════════════
-     HERO
-═══════════════════════════════════════════ -->
-<section class="hero-bg grid-overlay min-h-screen flex items-center pt-20 pb-16 relative overflow-hidden">
-  <!-- Background decoration -->
-  <div class="absolute top-1/4 left-1/2 w-96 h-96 rounded-full pointer-events-none" style="background:radial-gradient(circle, rgba(67,97,238,0.06) 0%, transparent 70%); transform:translate(-50%,-50%);"></div>
-
-  <div class="max-w-6xl mx-auto px-6 w-full">
-    <div class="grid lg:grid-cols-2 gap-16 items-center">
-
-      <!-- Left: Text content -->
-      <div>
-        <!-- Status badge -->
-        <div class="inline-flex items-center gap-2 mb-8 px-3 py-1.5 rounded-full fade-in" style="animation-delay:0.1s; background:rgba(6,214,160,0.08); border:1px solid rgba(6,214,160,0.25);">
-          <div class="pulse-dot"></div>
-          <span class="font-mono text-xs" style="color:var(--cyan-accent);">Available for remote work</span>
-        </div>
-
-        <!-- Name -->
-        <div class="mb-2 fade-in" style="animation-delay:0.2s;">
-          <span class="font-mono text-sm" style="color:var(--text-muted);">// hello, I'm</span>
-        </div>
-        <h1 class="font-display text-5xl lg:text-6xl font-bold leading-tight mb-4 fade-in" style="animation-delay:0.3s; color:var(--text-primary);">
-          Russell Kaye<br/>
-          <span style="color:var(--electric-blue);">Abregande</span>
-        </h1>
-
-        <!-- Title -->
-        <div class="flex items-center gap-3 mb-6 fade-in" style="animation-delay:0.4s;">
-          <div class="h-px w-8" style="background:var(--electric-blue);"></div>
-          <p class="font-mono text-sm font-medium" style="color:var(--cyan-accent);">AI Automation &amp; Systems Specialist</p>
-        </div>
-
-        <!-- Tagline -->
-        <p class="text-lg leading-relaxed mb-10 fade-in" style="animation-delay:0.5s; color:var(--text-secondary); max-width:480px;">
-          I architect automation systems that eliminate repetitive work — connecting AI models, APIs, and business logic across n8n, Make, and Zapier to build workflows that scale.
-        </p>
-
-        <!-- CTAs -->
-        <div class="flex flex-wrap gap-4 fade-in" style="animation-delay:0.6s;">
-          <a href="workflows.html" class="btn-glow inline-flex items-center gap-2 px-6 py-3 rounded-xl font-display font-semibold text-sm">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            View Workflows
-          </a>
-          <a href="mailto:russabregande@gmail.com" class="btn-outline inline-flex items-center gap-2 px-6 py-3 rounded-xl font-display font-semibold text-sm">
-            Let's Talk
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-        </div>
+      <!-- Center links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#workflows" class="text-sm font-medium text-gray-600 hover:text-purple-deep transition-colors">Workflows</a>
+        <a href="#skills"    class="text-sm font-medium text-gray-600 hover:text-purple-deep transition-colors">Skills</a>
+        <a href="#projects"  class="text-sm font-medium text-gray-600 hover:text-purple-deep transition-colors">Projects</a>
       </div>
 
-      <!-- Right: Automation Flow Visual -->
-      <div class="hidden lg:block fade-in-right" style="animation-delay:0.4s;">
-        <div class="terminal-block float-anim" style="max-width:420px; margin-left:auto;">
-          <div class="terminal-header">
-            <div class="terminal-dot" style="background:#ff5f57;"></div>
-            <div class="terminal-dot" style="background:#ffbd2e;"></div>
-            <div class="terminal-dot" style="background:#28ca41;"></div>
-            <span class="ml-2 text-xs" style="color:var(--text-muted); font-family:'JetBrains Mono',monospace;">workflow_executor.js</span>
-          </div>
-          <div class="terminal-body">
-            <p><span class="t-dim">// AI Lead Scoring Workflow</span></p>
-            <p><span class="t-blue">const</span> <span class="t-white">result</span> = <span class="t-blue">await</span> <span class="t-green">workflow</span>.<span class="t-orange">execute</span>({</p>
-            <p>&nbsp;&nbsp;<span class="t-blue">trigger</span>: <span class="t-green">'webhook.inbound_lead'</span>,</p>
-            <p>&nbsp;&nbsp;<span class="t-blue">model</span>: <span class="t-green">'gpt-4o-mini'</span>,</p>
-            <p>&nbsp;&nbsp;<span class="t-blue">steps</span>: [</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-orange">'enrich_contact'</span>,</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-orange">'score_lead'</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-dim">// 1–10</span></p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-orange">'route_by_score'</span>,</p>
-            <p>&nbsp;&nbsp;]</p>
-            <p>});</p>
-            <br/>
-            <p><span class="t-dim">// Output:</span></p>
-            <p><span class="t-green">✓</span> score: <span class="t-purple">8.4</span> <span class="t-dim">(hot lead)</span></p>
-            <p><span class="t-green">✓</span> routed → <span class="t-orange">Slack</span> + <span class="t-orange">HubSpot</span></p>
-            <p><span class="t-green">✓</span> elapsed: <span class="t-purple">2.8s</span><span class="cursor-blink"></span></p>
-          </div>
-        </div>
-
-        <!-- Flow nodes below terminal -->
-        <div class="mt-6 flex items-center justify-center gap-2 flex-wrap">
-          <div class="flow-node active">Webhook</div>
-          <div class="flow-connector"></div>
-          <div class="flow-node">GPT-4o-mini</div>
-          <div class="flow-connector"></div>
-          <div class="flow-node">Router</div>
-          <div class="flow-connector"></div>
-          <div class="flow-node accent">HubSpot</div>
-        </div>
-        <p class="mt-3 text-center font-mono text-xs" style="color:var(--text-muted);">n8n · Real Estate · 3,200+ leads processed</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     STATS BAR
-═══════════════════════════════════════════ -->
-<div class="stats-bar py-8">
-  <div class="max-w-6xl mx-auto px-6">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-      <div class="text-center reveal">
-        <div class="stat-number" data-target="15">15+</div>
-        <div class="stat-label mt-1">Workflows Built</div>
-      </div>
-      <div class="text-center reveal" style="transition-delay:0.1s">
-        <div class="stat-number" data-target="3">3</div>
-        <div class="stat-label mt-1">Platforms Mastered</div>
-      </div>
-      <div class="text-center reveal" style="transition-delay:0.2s">
-        <div class="stat-number" data-target="4">4</div>
-        <div class="stat-label mt-1">Industries Served</div>
-      </div>
-      <div class="text-center reveal" style="transition-delay:0.3s">
-        <div class="stat-number" data-target="2">2</div>
-        <div class="stat-label mt-1">Bridge Architectures</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     PLATFORM EXPERTISE
-═══════════════════════════════════════════ -->
-<section class="py-24" style="background:var(--bg-primary);">
-  <div class="max-w-6xl mx-auto px-6">
-    <!-- Header -->
-    <div class="mb-14 reveal">
-      <div class="section-label mb-3">Platform Expertise</div>
-      <h2 class="font-display text-3xl lg:text-4xl font-bold" style="color:var(--text-primary);">Three platforms.<br/><span style="color:var(--text-secondary);">One specialist.</span></h2>
-    </div>
-    <div class="gradient-divider mb-14"></div>
-
-    <!-- Platform cards -->
-    <div class="grid md:grid-cols-3 gap-6">
-
-      <!-- n8n -->
-      <div class="card card-n8n card-accent-top rounded-2xl p-8 reveal">
-        <div class="flex items-start justify-between mb-6">
-          <div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-4 badge-n8n font-mono text-xs font-bold">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
-              n8n
-            </div>
-            <h3 class="font-display text-xl font-bold" style="color:var(--text-primary);">Open-Source<br/>AI Workflows</h3>
-          </div>
-          <div class="text-3xl opacity-20">⚙</div>
-        </div>
-        <p class="text-sm leading-relaxed mb-6" style="color:var(--text-secondary);">Best for AI/LLM workflows requiring custom logic, code nodes, and self-hosted flexibility. My go-to for GPT-4o-mini integrations.</p>
-        <div class="border-t pt-6 flex items-center justify-between" style="border-color:var(--border-color);">
-          <span class="font-mono text-xs" style="color:var(--text-muted);">5 workflows built</span>
-          <span class="font-display text-sm font-semibold" style="color:var(--n8n-orange);">AI-native →</span>
-        </div>
-      </div>
-
-      <!-- Make -->
-      <div class="card card-make card-accent-top rounded-2xl p-8 reveal" style="transition-delay:0.1s">
-        <div class="flex items-start justify-between mb-6">
-          <div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-4 badge-make font-mono text-xs font-bold">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="4"/></svg>
-              Make
-            </div>
-            <h3 class="font-display text-xl font-bold" style="color:var(--text-primary);">Visual<br/>Automation</h3>
-          </div>
-          <div class="text-3xl opacity-20">◈</div>
-        </div>
-        <p class="text-sm leading-relaxed mb-6" style="color:var(--text-secondary);">Best for visual automation logic, complex data routing, and multi-branch scenarios. Ideal for client-facing blueprints.</p>
-        <div class="border-t pt-6 flex items-center justify-between" style="border-color:var(--border-color);">
-          <span class="font-mono text-xs" style="color:var(--text-muted);">5 blueprints built</span>
-          <span class="font-display text-sm font-semibold" style="color:var(--make-purple);">Visual-first →</span>
-        </div>
-      </div>
-
-      <!-- Zapier -->
-      <div class="card card-zapier card-accent-top rounded-2xl p-8 reveal" style="transition-delay:0.2s">
-        <div class="flex items-start justify-between mb-6">
-          <div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-4 badge-zapier font-mono text-xs font-bold">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg>
-              Zapier
-            </div>
-            <h3 class="font-display text-xl font-bold" style="color:var(--text-primary);">6,000+ App<br/>Integrations</h3>
-          </div>
-          <div class="text-3xl opacity-20">⚡</div>
-        </div>
-        <p class="text-sm leading-relaxed mb-6" style="color:var(--text-secondary);">Best for rapid deployment with SMBs. When the client uses SaaS tools and needs fast, reliable automations without code.</p>
-        <div class="border-t pt-6 flex items-center justify-between" style="border-color:var(--border-color);">
-          <span class="font-mono text-xs" style="color:var(--text-muted);">5 SOPs built</span>
-          <span class="font-display text-sm font-semibold" style="color:var(--zapier-red);">No-code fast →</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="gradient-divider"></div>
-
-<!-- ═══════════════════════════════════════════
-     FEATURED WORKFLOWS
-═══════════════════════════════════════════ -->
-<section class="py-24" style="background:var(--bg-primary);">
-  <div class="max-w-6xl mx-auto px-6">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
-      <div class="reveal">
-        <div class="section-label mb-3">Featured Workflows</div>
-        <h2 class="font-display text-3xl lg:text-4xl font-bold" style="color:var(--text-primary);">Automation that<br/><span style="color:var(--electric-blue);">ships results</span></h2>
-      </div>
-      <a href="workflows.html" class="btn-outline inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-display font-semibold text-sm reveal self-start md:self-auto">
-        All 17 workflows
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <!-- CTA -->
+      <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
+         class="bg-purple-lavender hover:bg-purple-glow text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors duration-200">
+        Book a Call
       </a>
     </div>
+  </nav>
 
-    <div class="grid md:grid-cols-3 gap-6">
+  <!-- ===== HERO ===== -->
+  <section class="hero-bg relative min-h-screen flex items-center pt-16 overflow-hidden">
+    <!-- Background glow blobs -->
+    <div class="hero-glow" style="top:-100px;left:-200px;"></div>
+    <div class="blob-pink" style="bottom:-50px;right:-100px;"></div>
+    <div class="blob-pink" style="top:50px;right:200px;opacity:0.6;width:300px;height:300px;background:radial-gradient(circle,rgba(196,181,253,0.30) 0%,transparent 70%);"></div>
 
-      <!-- Workflow 1: AI Lead Scoring -->
-      <div class="card card-accent-top workflow-card-accent rounded-2xl p-7 reveal relative overflow-hidden">
-        <div class="flex items-center justify-between mb-5">
-          <span class="badge-n8n px-2.5 py-1 rounded-full font-mono text-xs font-bold">n8n</span>
-          <span class="font-mono text-xs px-2 py-0.5 rounded" style="background:rgba(67,97,238,0.12); color:var(--electric-blue);">Real Estate</span>
-        </div>
-        <h3 class="font-display text-lg font-bold mb-3" style="color:var(--text-primary);">AI Lead Scoring</h3>
-        <p class="text-sm leading-relaxed mb-6" style="color:var(--text-secondary);">GPT-4o-mini scores inbound leads 1–10 in under 3 seconds, then routes hot leads directly to Slack and HubSpot.</p>
-        <div class="flex items-center gap-1.5 mb-6">
-          <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
-          <span style="color:var(--n8n-orange);">⚡⚡⚡</span>
-        </div>
-        <div class="border-t pt-5 flex items-center gap-4" style="border-color:var(--border-color);">
-          <a href="../n8n/workflows/01-ai-lead-scoring/README.md" class="font-mono text-xs hover:underline" style="color:var(--cyan-accent);">View README →</a>
-          <a href="../n8n/workflows/01-ai-lead-scoring/" class="font-mono text-xs hover:underline" style="color:var(--text-muted);">Download JSON</a>
-        </div>
-      </div>
-
-      <!-- Workflow 2: E-commerce Intelligence Bridge -->
-      <div class="card card-accent-top workflow-card-accent rounded-2xl p-7 reveal relative overflow-hidden" style="transition-delay:0.1s;">
-        <div class="flex items-center justify-between mb-5">
-          <span class="font-mono text-xs px-2.5 py-1 rounded-full font-bold" style="background:linear-gradient(135deg,rgba(6,214,160,0.15),rgba(67,97,238,0.15)); color:var(--cyan-accent); border:1px solid rgba(6,214,160,0.3);">Cross-Platform</span>
-          <span class="font-mono text-xs px-2 py-0.5 rounded" style="background:rgba(6,214,160,0.1); color:var(--cyan-accent);">E-commerce</span>
-        </div>
-        <h3 class="font-display text-lg font-bold mb-3" style="color:var(--text-primary);">E-commerce Intelligence Bridge</h3>
-        <p class="text-sm leading-relaxed mb-6" style="color:var(--text-secondary);">Zapier → n8n → Make multi-platform architecture for real-time fraud detection and BI reporting on high-value orders.</p>
-        <div class="flex items-center gap-1.5 mb-6">
-          <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
-          <span style="color:var(--cyan-accent);">⚡⚡⚡</span>
-        </div>
-        <div class="border-t pt-5 flex items-center gap-4" style="border-color:var(--border-color);">
-          <a href="../cross-platform/02-ecommerce-intelligence/architecture.md" class="font-mono text-xs hover:underline" style="color:var(--cyan-accent);">View Architecture →</a>
-        </div>
-      </div>
-
-      <!-- Workflow 3: Multi-channel Marketing -->
-      <div class="card card-accent-top workflow-card-accent rounded-2xl p-7 reveal relative overflow-hidden" style="transition-delay:0.2s;">
-        <div class="flex items-center justify-between mb-5">
-          <span class="badge-make px-2.5 py-1 rounded-full font-mono text-xs font-bold">Make</span>
-          <span class="font-mono text-xs px-2 py-0.5 rounded" style="background:rgba(168,85,247,0.12); color:var(--make-purple);">Agency</span>
-        </div>
-        <h3 class="font-display text-lg font-bold mb-3" style="color:var(--text-primary);">Multi-channel Marketing Publisher</h3>
-        <p class="text-sm leading-relaxed mb-6" style="color:var(--text-secondary);">One Google Sheet row triggers simultaneous publishing to Instagram, Facebook, and LinkedIn — no manual posting.</p>
-        <div class="flex items-center gap-1.5 mb-6">
-          <span class="font-mono text-xs" style="color:var(--text-muted);">Complexity</span>
-          <span style="color:var(--make-purple);">⚡⚡</span>
-        </div>
-        <div class="border-t pt-5 flex items-center gap-4" style="border-color:var(--border-color);">
-          <a href="../make/blueprints/08-multi-channel-marketing/README.md" class="font-mono text-xs hover:underline" style="color:var(--cyan-accent);">View README →</a>
-          <a href="../make/blueprints/08-multi-channel-marketing/" class="font-mono text-xs hover:underline" style="color:var(--text-muted);">Download JSON</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="gradient-divider"></div>
-
-<!-- ═══════════════════════════════════════════
-     FEATURED PROJECTS
-═══════════════════════════════════════════ -->
-<section class="py-24" style="background:var(--bg-primary);">
-  <div class="max-w-6xl mx-auto px-6">
-    <div class="mb-14 reveal">
-      <div class="section-label mb-3">Featured Projects</div>
-      <h2 class="font-display text-3xl lg:text-4xl font-bold" style="color:var(--text-primary);">Software I've built<br/><span style="color:var(--text-secondary);">in production</span></h2>
-    </div>
-    <div class="gradient-divider mb-14"></div>
-
-    <div class="grid md:grid-cols-2 gap-8">
-
-      <!-- Bloom Player -->
-      <div class="card rounded-2xl p-8 reveal" style="background:linear-gradient(135deg, var(--bg-card) 0%, rgba(67,97,238,0.05) 100%);">
-        <div class="flex items-start gap-4 mb-6">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(67,97,238,0.15); border:1px solid rgba(67,97,238,0.3);">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color:var(--electric-blue);"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          </div>
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <h3 class="font-display text-xl font-bold" style="color:var(--text-primary);">Bloom Player</h3>
-              <span class="font-mono text-xs px-2 py-0.5 rounded" style="background:rgba(6,214,160,0.1); color:var(--cyan-accent);">Production</span>
-            </div>
-            <p class="font-mono text-xs" style="color:var(--text-muted);">Bloomsocial Inc · 2025</p>
-          </div>
-        </div>
-        <p class="text-sm leading-relaxed mb-6" style="color:var(--text-secondary);">Custom digital signage CMS with a built-in scheduling engine — enabling businesses to manage, schedule, and push content to display screens without any third-party SaaS dependency. Built for Bloomsocial Inc's enterprise clients.</p>
-        <div class="flex flex-wrap gap-2 mb-6">
-          <span class="font-mono text-xs px-2 py-1 rounded" style="background:var(--bg-secondary); color:var(--text-muted); border:1px solid var(--border-color);">C#</span>
-          <span class="font-mono text-xs px-2 py-1 rounded" style="background:var(--bg-secondary); color:var(--text-muted); border:1px solid var(--border-color);">Python</span>
-          <span class="font-mono text-xs px-2 py-1 rounded" style="background:var(--bg-secondary); color:var(--text-muted); border:1px solid var(--border-color);">Scheduling Engine</span>
-          <span class="font-mono text-xs px-2 py-1 rounded" style="background:var(--bg-secondary); color:var(--text-muted); border:1px solid var(--border-color);">CMS</span>
-        </div>
-        <div class="border-t pt-5" style="border-color:var(--border-color);">
-          <p class="font-mono text-xs" style="color:var(--text-muted);">Custom signage CMS · Scheduling · Enterprise</p>
-        </div>
-      </div>
-
-      <!-- AI Chatbot -->
-      <div class="card rounded-2xl p-8 reveal" style="transition-delay:0.15s; background:linear-gradient(135deg, var(--bg-card) 0%, rgba(6,214,160,0.04) 100%);">
-        <div class="flex items-start gap-4 mb-6">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(6,214,160,0.12); border:1px solid rgba(6,214,160,0.3);">
-            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color:var(--cyan-accent);"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </div>
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <h3 class="font-display text-xl font-bold" style="color:var(--text-primary);">Interactive AI Chatbot</h3>
-              <span class="font-mono text-xs px-2 py-0.5 rounded" style="background:rgba(6,214,160,0.1); color:var(--cyan-accent);">Production</span>
-            </div>
-            <p class="font-mono text-xs" style="color:var(--text-muted);">Hollow Box Kiosk · 2025</p>
-          </div>
-        </div>
-        <p class="text-sm leading-relaxed mb-6" style="color:var(--text-secondary);">AI-powered kiosk assistant deployed in a Hollow Box display for retail and hospitality environments. Handles customer inquiries, product lookups, and wayfinding — replacing static information panels with an intelligent, conversational interface.</p>
-        <div class="flex flex-wrap gap-2 mb-6">
-          <span class="font-mono text-xs px-2 py-1 rounded" style="background:var(--bg-secondary); color:var(--text-muted); border:1px solid var(--border-color);">Python</span>
-          <span class="font-mono text-xs px-2 py-1 rounded" style="background:var(--bg-secondary); color:var(--text-muted); border:1px solid var(--border-color);">JavaScript</span>
-          <span class="font-mono text-xs px-2 py-1 rounded" style="background:var(--bg-secondary); color:var(--text-muted); border:1px solid var(--border-color);">LLM Integration</span>
-          <span class="font-mono text-xs px-2 py-1 rounded" style="background:var(--bg-secondary); color:var(--text-muted); border:1px solid var(--border-color);">Kiosk UI</span>
-        </div>
-        <div class="border-t pt-5" style="border-color:var(--border-color);">
-          <p class="font-mono text-xs" style="color:var(--text-muted);">Retail &amp; Hospitality · AI Assistant · Kiosk Hardware</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="gradient-divider"></div>
-
-<!-- ═══════════════════════════════════════════
-     INDUSTRIES
-═══════════════════════════════════════════ -->
-<section class="py-20" style="background:var(--bg-secondary);">
-  <div class="max-w-6xl mx-auto px-6">
-    <div class="text-center mb-12 reveal">
-      <div class="section-label mb-3">Industries</div>
-      <h2 class="font-display text-2xl lg:text-3xl font-bold" style="color:var(--text-primary);">Vertical expertise</h2>
-      <p class="mt-3 text-sm" style="color:var(--text-secondary);">Automation systems designed for specific industry workflows and compliance requirements</p>
-    </div>
-    <div class="flex flex-wrap justify-center gap-4 reveal">
-      <div class="industry-pill" style="background:rgba(67,97,238,0.1); color:#6b8aff; border-color:rgba(67,97,238,0.3);">
-        <span class="mr-2">🏢</span>Real Estate
-      </div>
-      <div class="industry-pill" style="background:rgba(6,214,160,0.1); color:var(--cyan-accent); border-color:rgba(6,214,160,0.3);">
-        <span class="mr-2">🛍</span>E-commerce
-      </div>
-      <div class="industry-pill" style="background:rgba(168,85,247,0.1); color:var(--make-purple); border-color:rgba(168,85,247,0.3);">
-        <span class="mr-2">📣</span>Agency / Marketing
-      </div>
-      <div class="industry-pill" style="background:rgba(20,184,166,0.1); color:#2dd4bf; border-color:rgba(20,184,166,0.3);">
-        <span class="mr-2">🏥</span>Healthcare
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     CTA
-═══════════════════════════════════════════ -->
-<section class="py-24" style="background:var(--bg-primary);">
-  <div class="max-w-3xl mx-auto px-6 text-center">
-    <div class="cta-bg rounded-3xl p-12 reveal">
-      <div class="section-label mb-4">Get in Touch</div>
-      <h2 class="font-display text-3xl lg:text-4xl font-bold mb-5" style="color:var(--text-primary);">Ready to automate<br/>your business?</h2>
-      <p class="text-base leading-relaxed mb-10" style="color:var(--text-secondary);">
-        Tell me what's manual, repetitive, or error-prone in your workflow. I'll design the automation that fixes it — fast.
-      </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="mailto:russabregande@gmail.com" class="btn-glow inline-flex items-center gap-2 px-8 py-4 rounded-xl font-display font-semibold text-base">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Let's Talk
-        </a>
-        <a href="workflows.html" class="btn-outline inline-flex items-center gap-2 px-8 py-4 rounded-xl font-display font-semibold text-base">
-          Browse Workflows
-        </a>
-      </div>
-      <p class="mt-8 font-mono text-xs" style="color:var(--text-muted);">russabregande@gmail.com · Manila, Philippines · UTC+8</p>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     FOOTER
-═══════════════════════════════════════════ -->
-<footer style="background:var(--bg-secondary); border-top:1px solid var(--border-color);">
-  <div class="max-w-6xl mx-auto px-6 py-10">
-    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-      <!-- Left -->
+    <div class="max-w-6xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-16 items-center w-full relative z-10">
+      <!-- Left: Text -->
       <div>
-        <p class="font-display font-semibold text-sm mb-1" style="color:var(--text-primary);">Russell Kaye M. Abregande</p>
-        <p class="font-mono text-xs" style="color:var(--text-muted);">AI Automation &amp; Systems Specialist · Manila, Philippines</p>
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 bg-purple-light text-purple-deep text-xs font-semibold px-4 py-2 rounded-full mb-6">
+          <span class="w-1.5 h-1.5 bg-purple-lavender rounded-full animate-pulse"></span>
+          AI Automation &amp; Systems Specialist
+        </div>
+
+        <h1 class="text-5xl md:text-6xl font-extrabold leading-tight text-gray-900 mb-6">
+          <span class="text-gradient">Automate</span> Your<br>
+          Business.<br>
+          <span class="text-gray-900">Scale Without Limits.</span>
+        </h1>
+
+        <p class="text-lg text-gray-500 leading-relaxed mb-8 max-w-lg">
+          Building production-ready n8n, Make &amp; Zapier workflows for real estate, e-commerce, agencies, and healthcare — so your team focuses on what matters.
+        </p>
+
+        <div class="flex flex-wrap gap-4">
+          <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 bg-purple-deep hover:bg-purple-mid text-white font-semibold px-7 py-3.5 rounded-full transition-colors duration-200 shadow-lg shadow-purple-deep/20 whitespace-nowrap">
+            Book a Free Consultation
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+          <a href="#workflows"
+             class="inline-flex items-center gap-2 border-2 border-purple-deep text-purple-deep hover:bg-purple-deep hover:text-white font-semibold px-7 py-3.5 rounded-full transition-all duration-200 whitespace-nowrap">
+            View My Workflows
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </a>
+        </div>
       </div>
-      <!-- Center links -->
-      <div class="flex items-center gap-6">
-        <a href="mailto:russabregande@gmail.com" class="font-mono text-xs transition-colors hover:opacity-80" style="color:var(--text-muted);">russabregande@gmail.com</a>
-        <a href="https://linkedin.com/in/russabregande" target="_blank" class="font-mono text-xs transition-colors hover:opacity-80" style="color:var(--text-muted);">LinkedIn</a>
-        <a href="https://github.com/russkaye" target="_blank" class="font-mono text-xs transition-colors hover:opacity-80" style="color:var(--text-muted);">GitHub</a>
+
+      <!-- Right: n8n workflow diagram -->
+      <div class="relative hidden md:block">
+        <div class="bg-white border border-gray-100 rounded-2xl shadow-2xl shadow-purple-deep/10 p-8 max-w-sm mx-auto">
+          <!-- Header -->
+          <div class="flex items-center gap-2 mb-6">
+            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+            <span class="ml-2 text-xs text-gray-400 font-mono">AI Lead Scoring Workflow</span>
+          </div>
+          <!-- Nodes -->
+          <div class="space-y-2">
+            <div class="mockup-node">
+              <span class="text-lg">⚡</span>
+              <div><div class="font-semibold text-xs text-gray-900">Webhook Trigger</div><div class="text-xs text-gray-400">New lead arrived</div></div>
+              <span class="ml-auto w-2 h-2 bg-green-400 rounded-full"></span>
+            </div>
+            <div class="mockup-connector"></div>
+            <div class="mockup-node">
+              <span class="text-lg">🤖</span>
+              <div><div class="font-semibold text-xs text-gray-900">GPT-4o-mini</div><div class="text-xs text-gray-400">Score 1–10 by intent</div></div>
+              <span class="ml-auto w-2 h-2 bg-purple-lavender rounded-full"></span>
+            </div>
+            <div class="mockup-connector"></div>
+            <div class="mockup-node">
+              <span class="text-lg">🔀</span>
+              <div><div class="font-semibold text-xs text-gray-900">IF Score ≥ 7</div><div class="text-xs text-gray-400">Route hot leads</div></div>
+              <span class="ml-auto text-xs text-green-500 font-semibold">PASS</span>
+            </div>
+            <div class="mockup-connector"></div>
+            <div class="mockup-node">
+              <span class="text-lg">💬</span>
+              <div><div class="font-semibold text-xs text-gray-900">Slack Alert</div><div class="text-xs text-gray-400">Notify agent instantly</div></div>
+              <span class="ml-auto w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            </div>
+          </div>
+          <!-- Footer stat -->
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+            <span>Last run: 2 min ago</span>
+            <span class="text-green-500 font-semibold">✓ 40% faster response</span>
+          </div>
+        </div>
+        <!-- Decorative glow -->
+        <div class="absolute -bottom-4 -right-4 w-40 h-40 bg-purple-lavender/20 rounded-full blur-2xl -z-10"></div>
       </div>
-      <!-- Right -->
-      <p class="font-mono text-xs" style="color:var(--text-muted);">&copy; 2026 Russell Abregande</p>
     </div>
-  </div>
-</footer>
+  </section>
 
-<!-- ═══════════════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════════════ -->
-<script>
-  // Mobile menu toggle
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  mobileBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-  });
+  <!-- ===== STATS BAR ===== -->
+  <section class="bg-gray-50 border-y border-gray-100 py-12">
+    <div class="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <div class="text-4xl font-extrabold text-purple-deep mb-1">15+</div>
+        <div class="text-sm text-gray-500 font-medium">Workflows Built</div>
+      </div>
+      <div>
+        <div class="text-4xl font-extrabold text-purple-deep mb-1">3</div>
+        <div class="text-sm text-gray-500 font-medium">Platforms</div>
+      </div>
+      <div>
+        <div class="text-4xl font-extrabold text-purple-deep mb-1">4</div>
+        <div class="text-sm text-gray-500 font-medium">Industries</div>
+      </div>
+      <div>
+        <div class="text-4xl font-extrabold text-purple-deep mb-1">2</div>
+        <div class="text-sm text-gray-500 font-medium">Live Projects</div>
+      </div>
+    </div>
+  </section>
 
-  // Intersection Observer — scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
+  <!-- ===== FEATURE: n8n ===== -->
+  <section id="skills" class="py-24">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+      <!-- Text -->
+      <div>
+        <div class="inline-flex items-center gap-2 bg-orange-50 text-orange-600 text-xs font-bold px-3 py-1.5 rounded-full mb-5">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+          n8n Workflows
+        </div>
+        <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-4">
+          Build Powerful<br><span class="text-gradient">AI Workflows</span>
+        </h2>
+        <p class="text-gray-500 mb-7 leading-relaxed">
+          From AI-powered lead scoring to intelligent customer support — n8n lets me wire together any app with custom logic, conditions, and AI models in one visual workflow.
+        </p>
+        <ul class="space-y-3">
+          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
+            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+            AI Lead Scoring with GPT-4o-mini
+          </li>
+          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
+            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+            Smart Customer Support Triage
+          </li>
+          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
+            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+            Automated Client Onboarding
+          </li>
+          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
+            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+            AI Content Pipeline (3 variants/brief)
+          </li>
+        </ul>
+      </div>
+
+      <!-- Mockup: n8n pipeline -->
+      <div class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-8 border border-orange-100">
+        <div class="space-y-2">
+          <div class="mockup-node border-orange-200">
+            <span>📝</span>
+            <div><div class="text-xs font-bold text-gray-900">Content Brief</div><div class="text-xs text-gray-400">Google Form input</div></div>
+          </div>
+          <div class="mockup-connector bg-orange-300"></div>
+          <div class="mockup-node border-orange-200">
+            <span>🤖</span>
+            <div><div class="text-xs font-bold text-gray-900">AI Generates 3 Variants</div><div class="text-xs text-gray-400">GPT-4o-mini • tone-matched</div></div>
+          </div>
+          <div class="mockup-connector bg-orange-300"></div>
+          <div class="grid grid-cols-3 gap-2">
+            <div class="mockup-node text-center justify-center text-xs border-orange-200"><span>📘</span><span>LinkedIn</span></div>
+            <div class="mockup-node text-center justify-center text-xs border-orange-200"><span>📸</span><span>Instagram</span></div>
+            <div class="mockup-node text-center justify-center text-xs border-orange-200"><span>🐦</span><span>Twitter</span></div>
+          </div>
+          <div class="mt-4 text-center text-xs text-orange-600 font-semibold">80% less content production time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURE: Make (reversed) ===== -->
+  <section class="py-24 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+      <!-- Mockup: Make blueprint -->
+      <div class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100 order-2 md:order-1">
+        <div class="text-xs font-bold text-purple-deep mb-4 uppercase tracking-wider">Make Blueprint — E-commerce</div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-sm">🛒</div>
+            <div class="h-0.5 flex-1 bg-purple-200"></div>
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-sm">📊</div>
+            <div class="h-0.5 flex-1 bg-purple-200"></div>
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-sm">📧</div>
+            <div class="h-0.5 flex-1 bg-purple-200"></div>
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-sm">💬</div>
+          </div>
+          <div class="flex justify-between text-xs text-gray-400 px-1">
+            <span>Shopify Order</span>
+            <span>Log Sheets</span>
+            <span>Confirm Email</span>
+            <span>Slack Alert</span>
+          </div>
+        </div>
+        <div class="mt-6 grid grid-cols-3 gap-3">
+          <div class="bg-white rounded-lg p-3 text-center border border-purple-100">
+            <div class="text-xl font-bold text-purple-deep">100%</div>
+            <div class="text-xs text-gray-400 mt-1">Orders logged</div>
+          </div>
+          <div class="bg-white rounded-lg p-3 text-center border border-purple-100">
+            <div class="text-xl font-bold text-purple-deep">0s</div>
+            <div class="text-xs text-gray-400 mt-1">Manual work</div>
+          </div>
+          <div class="bg-white rounded-lg p-3 text-center border border-purple-100">
+            <div class="text-xl font-bold text-purple-deep">3h+</div>
+            <div class="text-xs text-gray-400 mt-1">Saved/day</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="order-1 md:order-2">
+        <div class="inline-flex items-center gap-2 bg-purple-light text-purple-deep text-xs font-bold px-3 py-1.5 rounded-full mb-5">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Make Blueprints
+        </div>
+        <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-4">
+          Automate Complex<br><span class="text-gradient">Multi-Step Processes</span>
+        </h2>
+        <p class="text-gray-500 mb-7 leading-relaxed">
+          Make's visual blueprint editor lets me design sophisticated multi-path automations — routing leads, processing orders, syncing data across platforms without a single line of code.
+        </p>
+        <ul class="space-y-3">
+          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
+            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+            E-commerce Order Fulfillment (3 parallel routes)
+          </li>
+          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
+            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+            Smart Lead Distribution by Budget
+          </li>
+          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
+            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+            Insurance Verification in &lt;10 seconds
+          </li>
+          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
+            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+            Daily Inventory Replenishment Alerts
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURE: Cross-Platform ===== -->
+  <section class="py-24">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+      <!-- Text -->
+      <div>
+        <div class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full mb-5">
+          🔗 Cross-Platform Architecture
+        </div>
+        <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-4">
+          One Strategy,<br><span class="text-gradient">All Three Platforms</span>
+        </h2>
+        <p class="text-gray-500 mb-7 leading-relaxed">
+          Not every tool is right for every job. I match the automation platform to the use case — n8n for AI-heavy flows, Make for complex multi-path logic, Zapier for quick reliable triggers — and bridge them when needed.
+        </p>
+        <div class="grid grid-cols-3 gap-4">
+          <div class="text-center p-4 rounded-xl border border-gray-100 hover:border-orange-200 transition-colors">
+            <div class="text-2xl mb-2">🟠</div>
+            <div class="text-xs font-bold text-gray-700">n8n</div>
+            <div class="text-xs text-gray-400 mt-1">AI & custom logic</div>
+          </div>
+          <div class="text-center p-4 rounded-xl border border-gray-100 hover:border-purple-200 transition-colors">
+            <div class="text-2xl mb-2">🟣</div>
+            <div class="text-xs font-bold text-gray-700">Make</div>
+            <div class="text-xs text-gray-400 mt-1">Complex flows</div>
+          </div>
+          <div class="text-center p-4 rounded-xl border border-gray-100 hover:border-red-200 transition-colors">
+            <div class="text-2xl mb-2">🔴</div>
+            <div class="text-xs font-bold text-gray-700">Zapier</div>
+            <div class="text-xs text-gray-400 mt-1">Fast triggers</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mockup: Cross-platform bridge -->
+      <div class="bg-gradient-to-br from-gray-50 to-slate-100 rounded-2xl p-8 border border-gray-200">
+        <div class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-4">Bridge Workflow Example</div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="flex-1 mockup-node border-orange-200 bg-orange-50">
+              <span>🟠</span>
+              <div><div class="text-xs font-bold">n8n</div><div class="text-xs text-gray-400">AI scores lead</div></div>
+            </div>
+          </div>
+          <div class="mockup-connector"></div>
+          <div class="flex items-center gap-3">
+            <div class="flex-1 mockup-node border-purple-200 bg-purple-50">
+              <span>🟣</span>
+              <div><div class="text-xs font-bold">Make</div><div class="text-xs text-gray-400">Routes by budget</div></div>
+            </div>
+          </div>
+          <div class="mockup-connector"></div>
+          <div class="flex items-center gap-3">
+            <div class="flex-1 mockup-node border-red-100 bg-red-50">
+              <span>🔴</span>
+              <div><div class="text-xs font-bold">Zapier</div><div class="text-xs text-gray-400">Sends follow-up email</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-5 text-xs text-center text-gray-400">Best tool for each step = best results</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WORKFLOW GALLERY ===== -->
+  <section id="workflows" class="py-24 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-extrabold text-gray-900 mb-4">
+          Browse My <span class="text-gradient">Workflow Library</span>
+        </h2>
+        <p class="text-gray-500 max-w-lg mx-auto">
+          15 production-ready automations. Click any card to explore the workflow on GitHub — import-ready JSON and detailed documentation included.
+        </p>
+      </div>
+
+      <!-- Filter tabs -->
+      <div class="flex justify-center gap-2 mb-10">
+        <button onclick="filterWorkflows('all')"    class="tab-btn active text-sm font-semibold px-5 py-2 rounded-full border border-gray-200 bg-gray-100 text-gray-600 hover:border-purple-deep transition-all">All</button>
+        <button onclick="filterWorkflows('n8n')"    class="tab-btn text-sm font-semibold px-5 py-2 rounded-full border border-gray-200 bg-gray-100 text-gray-600 hover:border-orange-400 transition-all">n8n</button>
+        <button onclick="filterWorkflows('make')"   class="tab-btn text-sm font-semibold px-5 py-2 rounded-full border border-gray-200 bg-gray-100 text-gray-600 hover:border-purple-400 transition-all">Make</button>
+        <button onclick="filterWorkflows('zapier')" class="tab-btn text-sm font-semibold px-5 py-2 rounded-full border border-gray-200 bg-gray-100 text-gray-600 hover:border-red-400 transition-all">Zapier</button>
+      </div>
+
+      <!-- Cards grid -->
+      <div id="workflow-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- n8n: 1 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/01-ai-lead-scoring"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="n8n">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Real Estate</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">AI Lead Scoring</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Agents waste hours chasing cold leads. This scores inbound leads 1–10 using GPT-4o-mini — hot leads (7+) trigger instant Slack alerts so you call within minutes.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">40% faster response</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- n8n: 2 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/02-smart-customer-support"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="n8n">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">E-commerce</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Smart Customer Support</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Support emails pile up and customers wait hours. This AI triage reads, categorizes, drafts replies, and auto-sends — escalating only what needs a human.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">60–70% auto-resolved</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- n8n: 3 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/03-client-onboarding"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="n8n">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Agency</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Client Onboarding</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Manual onboarding takes 90 minutes and is never the same twice. Signed contract triggers Notion workspace, Slack channel, welcome email, Asana project — in 30 seconds.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">90 min → 30 seconds</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- n8n: 4 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/04-appointment-management"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="n8n">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Healthcare</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Appointment Management</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            No-shows cost clinics thousands. This handles booking, confirmation, and sends 24h + 1h reminders automatically — zero staff intervention needed.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">30–50% fewer no-shows</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- n8n: 5 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/05-ai-content-pipeline"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="n8n">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Agency</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">AI Content Pipeline</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Writing 3 post variants per brief takes hours. This pipeline takes a brief and produces 3 AI-generated variants, logs to Sheets, and schedules to Buffer — all automated.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">80% less production time</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Make: 1 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/01-ecommerce-order-fulfillment"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="make">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">E-commerce</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Order to Fulfillment</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Every Shopify order triggers 3 parallel actions instantly: log to Sheets, send customer confirmation, alert fulfillment team on Slack. Zero manual processing.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">2–3 hrs/day saved</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Make: 2 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/02-lead-distribution"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="make">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Real Estate</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Lead Distribution</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Not all leads deserve a senior agent's time. This routes high-budget leads to HubSpot + Calendar + Slack, while others enter an automated nurture sequence.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">100% lead capture</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Make: 3 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/03-multichannel-marketing"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="make">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Marketing</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Multi-channel Publisher</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Publishing to 3 platforms manually wastes an hour per post. This watches a Google Sheets content calendar and pushes to Instagram, Facebook, and LinkedIn simultaneously.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">60 min → 5 minutes</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Make: 4 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/04-insurance-verification"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="make">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Healthcare</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Insurance Verification</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Manual insurance checks take 20 minutes and delay patient intake. This verifies coverage via API on form submit in under 10 seconds, logs results, and routes accordingly.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">20 min → 10 seconds</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Make: 5 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/05-inventory-replenishment"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="make">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">E-commerce</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Inventory Replenishment</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Stockouts happen when no one's watching. Runs daily at 6 AM, flags low-stock variants, emails structured PO requests to suppliers, and alerts the team on Slack.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Zero missed stockouts</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Zapier: 1 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/01-facebook-lead-ads-crm"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="zapier">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Lead Gen</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Facebook Leads → CRM</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Facebook leads go cold in minutes. Captures every submission, creates a HubSpot contact, sends a personalized email, and Slack-alerts your team — all in under 30 seconds.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Zero manual entry</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Zapier: 2 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/02-abandoned-cart-recovery"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="zapier">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">E-commerce</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Abandoned Cart Recovery</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            70% of carts are abandoned. This 3-step sequence sends a 1h reminder, 24h discount offer, and 48h SMS nudge — running 24/7 without a single manual touchpoint.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">5–15% recovery rate</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Zapier: 3 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/03-client-review-request"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="zapier">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Agency</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Client Review Request</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Great work goes unreviewed because no one remembers to ask. Auto-sends a review request 3 days after project delivery — logs 5-star responses to a testimonials sheet.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">3× more testimonials</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Zapier: 4 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/04-appointment-reminder"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="zapier">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Scheduling</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Appointment Reminder</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            People forget meetings. Sends a 24h email and 1h SMS reminder for every Calendly booking — logged automatically to a Google Sheet for tracking.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">30–50% fewer no-shows</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Zapier: 5 -->
+        <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/05-monthly-analytics-report"
+           target="_blank" rel="noopener"
+           class="workflow-card workflow-item border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="zapier">
+          <div class="flex items-start justify-between mb-4">
+            <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
+            <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Analytics</span>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 group-hover:text-purple-deep transition-colors">Monthly Analytics Report</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-5">
+            Monthly reporting steals 2–4 hours per client. Runs on the 1st of every month, pulls 30 days of GA data, formats it, and emails the report — before you've had coffee.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">2–4 hrs saved per client</span>
+            <span class="text-purple-deep text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </div>
+        </a>
+
+      </div><!-- /workflow-grid -->
+
+      <!-- GitHub CTA -->
+      <div class="text-center mt-10">
+        <a href="https://github.com/russkaye/automation-portfolio" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-2 border-2 border-purple-deep text-purple-deep hover:bg-purple-deep hover:text-white font-semibold px-8 py-3.5 rounded-full transition-all duration-200">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          View All on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== KEY PROJECTS ===== -->
+  <section id="projects" class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-extrabold text-gray-900 mb-4">
+          Live <span class="text-gradient">Projects</span>
+        </h2>
+        <p class="text-gray-500">Real systems built and deployed at Bloomsocial Inc.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Bloom Player -->
+        <div class="border border-gray-200 rounded-2xl p-8 hover:border-purple-lavender hover:shadow-lg hover:shadow-purple-deep/5 transition-all duration-300">
+          <div class="w-12 h-12 bg-purple-light rounded-xl flex items-center justify-center text-2xl mb-5">📺</div>
+          <div class="text-xs font-bold text-purple-deep bg-purple-light px-3 py-1 rounded-full inline-block mb-4">Bloomsocial Inc</div>
+          <h3 class="text-2xl font-extrabold text-gray-900 mb-3">Bloom Player</h3>
+          <p class="text-gray-500 leading-relaxed mb-5">
+            Custom digital signage CMS powering real-time content delivery across screen networks. Built the full pipeline from content scheduling to display management — replacing manual updates with automated, centrally-managed broadcasts.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Digital Signage</span>
+            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">CMS</span>
+            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Automation</span>
+            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Real-time</span>
+          </div>
+        </div>
+
+        <!-- AI Chatbot -->
+        <div class="border border-gray-200 rounded-2xl p-8 hover:border-purple-lavender hover:shadow-lg hover:shadow-purple-deep/5 transition-all duration-300">
+          <div class="w-12 h-12 bg-purple-light rounded-xl flex items-center justify-center text-2xl mb-5">🤖</div>
+          <div class="text-xs font-bold text-purple-deep bg-purple-light px-3 py-1 rounded-full inline-block mb-4">Bloomsocial Inc</div>
+          <h3 class="text-2xl font-extrabold text-gray-900 mb-3">Interactive AI Chatbot</h3>
+          <p class="text-gray-500 leading-relaxed mb-5">
+            AI-powered conversational kiosk deployed on a Hollow Box display for in-store product demos. Customers interact with the AI to explore products, get recommendations, and receive real-time answers — no staff needed.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">AI / LLM</span>
+            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Kiosk</span>
+            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Python</span>
+            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Conversational UI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DARK CTA ===== -->
+  <section class="relative bg-purple-deep py-28 overflow-hidden">
+    <div class="cta-glow"></div>
+    <!-- Decorative circles -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-purple-lavender/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-lavender/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+    <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+      <div class="inline-flex items-center gap-2 bg-white/10 text-purple-lavender text-xs font-semibold px-4 py-2 rounded-full mb-6">
+        <span class="w-1.5 h-1.5 bg-purple-lavender rounded-full animate-pulse"></span>
+        Available for Freelance & Remote Work
+      </div>
+
+      <h2 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6">
+        Ready to Automate<br>Your Business?
+      </h2>
+
+      <p class="text-purple-lavender/80 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+        Book a free 30-minute consultation. We'll map out your automation strategy together — no commitment, just clarity.
+      </p>
+
+      <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
+         class="inline-flex items-center gap-3 bg-purple-lavender hover:bg-white text-purple-deep font-bold px-10 py-4 rounded-full text-lg transition-all duration-200 shadow-xl shadow-purple-lavender/20 hover:shadow-white/20">
+        Book on Calendly
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      </a>
+
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 text-purple-lavender/60 text-sm">
+        <a href="mailto:russabregande@gmail.com" class="hover:text-white transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          russabregande@gmail.com
+        </a>
+        <span class="hidden sm:block text-white/20">|</span>
+        <span class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Manila, Philippines
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="bg-white border-t border-gray-100 py-10">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <div class="font-bold text-gray-900">Russell Kaye M. Abregande</div>
+        <div class="text-sm text-gray-400 mt-1">AI Automation & Systems Specialist</div>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="https://github.com/russkaye/automation-portfolio" target="_blank" rel="noopener"
+           class="text-gray-400 hover:text-purple-deep transition-colors flex items-center gap-2 text-sm font-medium">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/russabregande" target="_blank" rel="noopener"
+           class="text-gray-400 hover:text-purple-deep transition-colors flex items-center gap-2 text-sm font-medium">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+    <div class="text-center text-xs text-gray-400 mt-6">
+      © 2026 Russell Kaye M. Abregande. Built with passion for automation.
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // Sticky nav shadow on scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      nav.classList.toggle('nav-scrolled', window.scrollY > 10);
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-  reveals.forEach(el => observer.observe(el));
+    // Workflow filter tabs
+    function filterWorkflows(platform) {
+      // Update tabs
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
 
-  // Staggered reveal for cards within sections
-  document.querySelectorAll('.grid').forEach(grid => {
-    const children = grid.querySelectorAll('.reveal');
-    children.forEach((child, i) => {
-      if (!child.style.transitionDelay) {
-        child.style.transitionDelay = `${i * 0.08}s`;
-      }
-    });
-  });
-
-  // Nav scroll effect
-  const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 60) {
-      nav.style.borderBottomColor = 'rgba(31, 38, 69, 0.8)';
-    } else {
-      nav.style.borderBottomColor = 'var(--border-color)';
+      // Show/hide cards
+      document.querySelectorAll('.workflow-item').forEach(card => {
+        if (platform === 'all' || card.dataset.platform === platform) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     }
-  }, { passive: true });
-</script>
+  </script>
 </body>
 </html>
