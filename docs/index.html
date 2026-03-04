@@ -137,10 +137,38 @@
   <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-300">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <!-- Logo -->
-      <a href="#" class="text-purple-deep font-bold text-lg tracking-tight">Russell Abregande</a>
+      <a href="#" class="flex items-center group">
+        <svg class="w-10 h-10" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="metalR" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#4C1D95"/>
+              <stop offset="40%" stop-color="#7C3AED"/>
+              <stop offset="70%" stop-color="#A78BFA"/>
+              <stop offset="100%" stop-color="#4C1D95"/>
+            </linearGradient>
+            <linearGradient id="metalK" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#A78BFA"/>
+              <stop offset="35%" stop-color="#7C3AED"/>
+              <stop offset="65%" stop-color="#4C1D95"/>
+              <stop offset="100%" stop-color="#7C3AED"/>
+            </linearGradient>
+            <linearGradient id="dotGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C4B5FD"/>
+              <stop offset="100%" stop-color="#A78BFA"/>
+            </linearGradient>
+          </defs>
+          <!-- R letter -->
+          <path d="M10 85 L10 15 L30 15 Q46 15 46 30 Q46 42 35 46 L48 85 L38 85 L27 48 L20 48 L20 85 Z M20 24 L20 42 L29 42 Q36 42 36 33 Q36 24 29 24 Z" fill="url(#metalR)"/>
+          <!-- Dot accent on R -->
+          <circle cx="15" cy="38" r="3.5" fill="url(#dotGrad)"/>
+          <!-- K letter -->
+          <path d="M56 85 L56 15 L66 15 L66 46 L84 15 L96 15 L76 48 L97 85 L85 85 L69 55 L66 59 L66 85 Z" fill="url(#metalK)"/>
+        </svg>
+      </a>
 
       <!-- Center links -->
       <div class="hidden md:flex items-center gap-8">
+        <a href="#about"     class="text-sm font-medium text-gray-600 hover:text-purple-deep transition-colors">About</a>
         <a href="#workflows" class="text-sm font-medium text-gray-600 hover:text-purple-deep transition-colors">Workflows</a>
         <a href="#skills"    class="text-sm font-medium text-gray-600 hover:text-purple-deep transition-colors">Skills</a>
         <a href="#projects"  class="text-sm font-medium text-gray-600 hover:text-purple-deep transition-colors">Projects</a>
@@ -261,6 +289,104 @@
         <div class="text-4xl font-extrabold text-purple-deep mb-1">2</div>
         <div class="text-sm text-gray-500 font-medium">Live Projects</div>
       </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ME ===== -->
+  <section id="about" class="py-24">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-5 gap-16 items-start">
+
+      <!-- Left: Story (3 cols) -->
+      <div class="md:col-span-3">
+        <div class="inline-flex items-center gap-2 bg-purple-light text-purple-deep text-xs font-bold px-3 py-1.5 rounded-full mb-5">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          About Me
+        </div>
+        <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-6">
+          AI Automation<br><span class="text-gradient">Specialist</span>
+        </h2>
+
+        <div class="space-y-4 text-gray-500 leading-relaxed">
+          <p>
+            I'm Russell — an AI Automation & Systems Specialist who genuinely loves figuring things out. I'm naturally curious about how technology works under the hood, and that curiosity is what drives me to build systems that actually solve real problems.
+          </p>
+          <p>
+            At Bloomsocial Inc, I built a proprietary digital signage CMS (Bloom Player) from scratch — replacing an unreliable third-party system — and developed an interactive AI chatbot deployed on physical Hollow Box kiosks for live product demos. These weren't hypothetical projects; they're running in production right now.
+          </p>
+          <p>
+            Whether it's wiring up a complex n8n workflow with AI-powered decision logic, designing a Make blueprint that processes hundreds of orders daily, or mapping out a cross-platform automation strategy — <strong class="text-gray-700">you can count on me to figure out a way to achieve the results you want, with AI as the backbone.</strong>
+          </p>
+        </div>
+
+
+        <!-- Work timeline -->
+        <div class="mt-8 border-l-2 border-purple-lavender/40 pl-6 space-y-5">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <div class="w-2.5 h-2.5 bg-purple-deep rounded-full -ml-[1.85rem] ring-4 ring-white"></div>
+              <span class="text-xs font-bold text-purple-deep">Jul 2025 – Present</span>
+            </div>
+            <div class="text-sm font-bold text-gray-900">AI Automation & Business Systems Specialist</div>
+            <div class="text-sm text-gray-400">Bloomsocial Inc</div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <div class="w-2.5 h-2.5 bg-purple-lavender rounded-full -ml-[1.85rem] ring-4 ring-white"></div>
+              <span class="text-xs font-bold text-gray-400">Feb 2020 – Apr 2024</span>
+            </div>
+            <div class="text-sm font-bold text-gray-700">Language Assessor</div>
+            <div class="text-sm text-gray-400">Transnational Education Solutions Team Inc.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Credentials (2 cols) -->
+      <div class="md:col-span-2 space-y-6">
+        <!-- Education -->
+        <div class="border border-gray-200 rounded-2xl p-6">
+          <div class="text-xs font-bold text-purple-deep uppercase tracking-wider mb-4">Education</div>
+          <div class="space-y-3">
+            <div>
+              <div class="text-sm font-bold text-gray-900">BSBA Financial Management</div>
+              <div class="text-xs text-gray-400">Naga College Foundation · 2025</div>
+            </div>
+            <div>
+              <div class="text-sm font-bold text-gray-900">Arellano University School of Law</div>
+              <div class="text-xs text-gray-400">2019</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Google IT Cert -->
+        <a href="assets/google-it-cert.pdf" target="_blank" rel="noopener"
+           class="block border border-gray-200 rounded-2xl p-6 hover:border-purple-lavender hover:shadow-lg transition-all group">
+          <div class="text-xs font-bold text-purple-deep uppercase tracking-wider mb-4">Certification</div>
+          <img src="assets/google-it-cert.png" alt="Google IT Support Professional Certificate" class="w-full rounded-lg border border-gray-100 mb-4 group-hover:shadow-md transition-shadow" />
+          <div class="text-sm font-bold text-gray-900">Google IT Support Professional</div>
+          <div class="text-xs text-gray-400">Coursera · 2025</div>
+          <div class="text-xs text-purple-deep font-semibold mt-2 flex items-center gap-1">
+            View Certificate PDF
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </div>
+        </a>
+
+        <!-- Lean Six Sigma -->
+        <a href="assets/lean-six-sigma-cert.pdf" target="_blank" rel="noopener"
+           class="block border border-gray-200 rounded-2xl p-6 hover:border-purple-lavender hover:shadow-lg transition-all group">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 text-lg">📋</div>
+            <div>
+              <div class="text-sm font-bold text-gray-900">Lean Six Sigma White Belt</div>
+              <div class="text-xs text-gray-400">Aveta Business Institute · 2025</div>
+            </div>
+          </div>
+          <div class="text-xs text-purple-deep font-semibold flex items-center gap-1">
+            View Certificate PDF
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </div>
+        </a>
+      </div>
+
     </div>
   </section>
 
