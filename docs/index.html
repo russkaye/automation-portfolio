@@ -38,7 +38,78 @@
   </script>
   <style>
     * { box-sizing: border-box; }
-    body { -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body { -webkit-font-smoothing: antialiased; overflow-x: hidden; background: #f5f0ff; }
+
+    /* ===== SCROLL PROGRESS BAR ===== */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 9999;
+      background: linear-gradient(90deg, #7C3AED, #A78BFA, #4C1D95);
+      width: 0%; transition: width 0.05s linear;
+    }
+
+    /* ===== GLASSMORPHISM (light mode) ===== */
+    /* Global background orbs */
+    .bg-orbs {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .bg-orb {
+      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5;
+      will-change: transform;
+    }
+    .bg-orb-1 { width: 600px; height: 600px; background: rgba(167,139,250,0.2); top: -10%; left: -5%; }
+    .bg-orb-2 { width: 500px; height: 500px; background: rgba(124,58,237,0.12); top: 30%; right: -8%; }
+    .bg-orb-3 { width: 450px; height: 450px; background: rgba(196,181,253,0.18); top: 60%; left: 10%; }
+    .bg-orb-4 { width: 350px; height: 350px; background: rgba(139,92,246,0.14); top: 85%; right: 15%; }
+    .dark .bg-orbs { display: none; }
+    .dark body { background: #0f0a1a; }
+
+    /* Ensure content renders above fixed bg-orbs */
+    section, nav, footer { position: relative; z-index: 1; }
+
+    /* Glass card effect (light mode only) */
+    .glass-card {
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 4px 24px rgba(76,29,149,0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+    .glass-card:hover {
+      background: rgba(255,255,255,0.7);
+      box-shadow: 0 8px 40px rgba(76,29,149,0.1), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+    .dark .glass-card {
+      background: #140e22; backdrop-filter: none; -webkit-backdrop-filter: none;
+      border-color: #2a1f40;
+      box-shadow: none;
+    }
+
+    /* Glass nav */
+    .glass-nav {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.5);
+    }
+    .glass-nav.nav-scrolled {
+      background: rgba(255,255,255,0.85);
+      box-shadow: 0 4px 30px rgba(76,29,149,0.08);
+    }
+    .dark .glass-nav {
+      background: rgba(15,10,26,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom-color: #1e1533;
+    }
+    .dark .glass-nav.nav-scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.4); }
+
+    /* Glass section tint (alternating light purple) */
+    .section-tinted {
+      background: rgba(237,233,254,0.35);
+    }
+    .dark .section-tinted { background: #140e22; }
+
+    /* Card 3D tilt */
+    .tilt-card { transition: transform 0.15s ease-out, box-shadow 0.3s ease; transform-style: preserve-3d; }
+
+    /* Magnetic button */
+    .magnetic-btn { transition: transform 0.2s ease-out; }
 
     /* Gradient text — richer, darker purple gradient */
     .text-gradient {
@@ -390,10 +461,21 @@
     }
   </style>
 </head>
-<body class="bg-white text-gray-800 font-sans transition-colors duration-300">
+<body class="text-gray-800 font-sans transition-colors duration-300">
+
+  <!-- Scroll progress bar -->
+  <div id="scroll-progress"></div>
+
+  <!-- Background gradient orbs (light mode only) -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="bg-orb bg-orb-4"></div>
+  </div>
 
   <!-- ===== NAVBAR ===== -->
-  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-300">
+  <nav id="navbar" class="glass-nav fixed top-0 left-0 right-0 z-50 transition-all duration-300">
     <div class="max-w-[1400px] mx-auto px-8 h-16 flex items-center justify-between">
       <!-- Logo -->
       <a href="#" class="flex items-center group logo-hover">
@@ -478,7 +560,7 @@
 
         <div class="hero-ctas flex flex-wrap gap-4">
           <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
-             class="btn-glow inline-flex items-center gap-2 bg-purple-deep hover:bg-purple-mid text-white font-semibold px-7 py-3.5 rounded-full transition-colors duration-200 shadow-lg shadow-purple-deep/20 whitespace-nowrap">
+             class="btn-glow magnetic-btn inline-flex items-center gap-2 bg-purple-deep hover:bg-purple-mid text-white font-semibold px-7 py-3.5 rounded-full transition-colors duration-200 shadow-lg shadow-purple-deep/20 whitespace-nowrap">
             Book a Free Consultation
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
@@ -539,7 +621,7 @@
   </section>
 
   <!-- ===== STATS BAR ===== -->
-  <section id="stats-section" class="bg-gray-50 border-y border-gray-100 py-12">
+  <section id="stats-section" class="section-tinted border-y border-gray-100/50 py-12">
     <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
       <div data-reveal style="transition-delay: 0s">
         <div class="stat-number text-4xl font-extrabold text-purple-deep mb-1" data-count="15" data-suffix="+">0</div>
@@ -611,7 +693,7 @@
       <!-- Right: Credentials (2 cols) -->
       <div class="md:col-span-2 space-y-6" data-reveal="right">
         <!-- Education -->
-        <div class="border border-gray-200 rounded-2xl p-6">
+        <div class="glass-card rounded-2xl p-6">
           <div class="text-xs font-bold text-purple-deep uppercase tracking-wider mb-4">Education</div>
           <div class="space-y-3">
             <div>
@@ -627,7 +709,7 @@
 
         <!-- Google IT Cert -->
         <a href="assets/google-it-cert.pdf" target="_blank" rel="noopener"
-           class="cert-card block border border-gray-200 rounded-2xl p-6 hover:border-purple-lavender transition-all group">
+           class="cert-card glass-card block rounded-2xl p-6 hover:border-purple-lavender transition-all group">
           <div class="text-xs font-bold text-purple-deep uppercase tracking-wider mb-4">Certification</div>
           <img src="assets/google-it-cert.png" alt="Google IT Support Professional Certificate" class="w-full rounded-lg border border-gray-100 mb-4 group-hover:shadow-md transition-shadow" />
           <div class="text-sm font-bold text-gray-900">Google IT Support Professional</div>
@@ -640,7 +722,7 @@
 
         <!-- Lean Six Sigma -->
         <a href="assets/lean-six-sigma-cert.pdf" target="_blank" rel="noopener"
-           class="cert-card block border border-gray-200 rounded-2xl p-6 hover:border-purple-lavender transition-all group">
+           class="cert-card glass-card block rounded-2xl p-6 hover:border-purple-lavender transition-all group">
           <div class="flex items-center gap-3 mb-3">
             <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 text-lg">📋</div>
             <div>
@@ -718,7 +800,7 @@
   </section>
 
   <!-- ===== FEATURE: Make (reversed) ===== -->
-  <section class="py-16 bg-gray-50">
+  <section class="py-16 section-tinted">
     <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
       <!-- Mockup: Make blueprint -->
       <div data-reveal="left" class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100 order-2 md:order-1">
@@ -854,7 +936,7 @@
   </section>
 
   <!-- ===== WORKFLOW GALLERY ===== -->
-  <section id="workflows" class="py-16 bg-gray-50">
+  <section id="workflows" class="py-16 section-tinted">
     <div class="max-w-[1400px] mx-auto px-8">
       <div data-reveal class="text-center mb-12">
         <h2 class="text-4xl font-extrabold text-gray-900 mb-4">
@@ -879,7 +961,7 @@
         <!-- n8n: 1 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/01-ai-lead-scoring"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="n8n">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="n8n">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Real Estate</span>
@@ -899,7 +981,7 @@
         <!-- n8n: 2 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/02-smart-customer-support"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="n8n">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="n8n">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">E-commerce</span>
@@ -919,7 +1001,7 @@
         <!-- n8n: 3 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/03-client-onboarding"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="n8n">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="n8n">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Agency</span>
@@ -939,7 +1021,7 @@
         <!-- n8n: 4 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/04-appointment-management"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="n8n">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="n8n">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Healthcare</span>
@@ -959,7 +1041,7 @@
         <!-- n8n: 5 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/05-ai-content-pipeline"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="n8n">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="n8n">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Agency</span>
@@ -979,7 +1061,7 @@
         <!-- Make: 1 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/01-ecommerce-order-fulfillment"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="make">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="make">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">E-commerce</span>
@@ -999,7 +1081,7 @@
         <!-- Make: 2 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/02-lead-distribution"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="make">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="make">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Real Estate</span>
@@ -1019,7 +1101,7 @@
         <!-- Make: 3 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/03-multichannel-marketing"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="make">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="make">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Marketing</span>
@@ -1039,7 +1121,7 @@
         <!-- Make: 4 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/04-insurance-verification"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="make">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="make">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Healthcare</span>
@@ -1059,7 +1141,7 @@
         <!-- Make: 5 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/05-inventory-replenishment"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="make">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="make">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">E-commerce</span>
@@ -1079,7 +1161,7 @@
         <!-- Zapier: 1 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/01-facebook-lead-ads-crm"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="zapier">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="zapier">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Lead Gen</span>
@@ -1099,7 +1181,7 @@
         <!-- Zapier: 2 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/02-abandoned-cart-recovery"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="zapier">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="zapier">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">E-commerce</span>
@@ -1119,7 +1201,7 @@
         <!-- Zapier: 3 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/03-client-review-request"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="zapier">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="zapier">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Agency</span>
@@ -1139,7 +1221,7 @@
         <!-- Zapier: 4 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/04-appointment-reminder"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="zapier">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="zapier">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Scheduling</span>
@@ -1159,7 +1241,7 @@
         <!-- Zapier: 5 -->
         <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/05-monthly-analytics-report"
            target="_blank" rel="noopener"
-           class="workflow-card workflow-item flex flex-col border border-gray-200 bg-white rounded-2xl p-6 block group" data-platform="zapier">
+           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="zapier">
           <div class="flex items-start justify-between mb-4">
             <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
             <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">Analytics</span>
@@ -1201,7 +1283,7 @@
 
       <div class="grid md:grid-cols-2 gap-8">
         <!-- Bloom Player -->
-        <div data-reveal="scale" style="transition-delay:0s" class="flex flex-col border border-gray-200 rounded-2xl p-8 hover:border-purple-lavender hover:shadow-lg hover:shadow-purple-deep/5 transition-all duration-300">
+        <div data-reveal="scale" style="transition-delay:0s" class="glass-card tilt-card flex flex-col rounded-2xl p-8 hover:border-purple-lavender transition-all duration-300">
           <div class="w-12 h-12 bg-purple-light rounded-xl flex items-center justify-center text-2xl mb-5">📺</div>
           <div class="text-xs font-bold text-purple-deep bg-purple-light px-3 py-1 rounded-full self-start mb-4">Bloomsocial Inc</div>
           <h3 class="text-2xl font-extrabold text-gray-900 mb-3">Bloom Player</h3>
@@ -1217,7 +1299,7 @@
         </div>
 
         <!-- AI Chatbot -->
-        <div data-reveal="scale" style="transition-delay:0.15s" class="flex flex-col border border-gray-200 rounded-2xl p-8 hover:border-purple-lavender hover:shadow-lg hover:shadow-purple-deep/5 transition-all duration-300">
+        <div data-reveal="scale" style="transition-delay:0.15s" class="glass-card tilt-card flex flex-col rounded-2xl p-8 hover:border-purple-lavender transition-all duration-300">
           <div class="w-12 h-12 bg-purple-light rounded-xl flex items-center justify-center text-2xl mb-5">🤖</div>
           <div class="text-xs font-bold text-purple-deep bg-purple-light px-3 py-1 rounded-full self-start mb-4">Bloomsocial Inc</div>
           <h3 class="text-2xl font-extrabold text-gray-900 mb-3">Interactive AI Chatbot</h3>
@@ -1309,49 +1391,65 @@
       const toggle = document.getElementById('theme-toggle');
       const sunIcon = document.getElementById('icon-sun');
       const moonIcon = document.getElementById('icon-moon');
-
       function setTheme(dark) {
-        if (dark) {
-          html.classList.add('dark');
-          sunIcon.classList.remove('hidden');
-          moonIcon.classList.add('hidden');
-        } else {
-          html.classList.remove('dark');
-          sunIcon.classList.add('hidden');
-          moonIcon.classList.remove('hidden');
-        }
+        html.classList.toggle('dark', dark);
+        sunIcon.classList.toggle('hidden', !dark);
+        moonIcon.classList.toggle('hidden', dark);
         localStorage.setItem('theme', dark ? 'dark' : 'light');
       }
-
-      // Init from saved preference or system
       const saved = localStorage.getItem('theme');
-      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        setTheme(true);
-      }
-
-      toggle.addEventListener('click', () => {
-        setTheme(!html.classList.contains('dark'));
-      });
+      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) setTheme(true);
+      toggle.addEventListener('click', () => setTheme(!html.classList.contains('dark')));
     })();
 
-    // ── Sticky nav shadow on scroll ──
+    // ── Scroll Progress Bar ──
+    const progressBar = document.getElementById('scroll-progress');
+
+    // ── Sticky Nav + Progress on Scroll ──
     window.addEventListener('scroll', () => {
       const nav = document.getElementById('navbar');
       nav.classList.toggle('nav-scrolled', window.scrollY > 10);
+      // Progress bar
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (scrollTop / docHeight * 100) + '%';
     });
 
-    // ── Scroll Reveal (IntersectionObserver) ──
+    // ── Parallax Background Orbs ──
+    (function() {
+      const orbs = document.querySelectorAll('.bg-orb');
+      const speeds = [0.02, -0.015, 0.025, -0.02];
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const y = window.scrollY;
+            orbs.forEach((orb, i) => {
+              orb.style.transform = 'translateY(' + (y * speeds[i]) + 'px)';
+            });
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    })();
+
+    // ── Bidirectional Scroll Reveal ──
     (function() {
       const revealEls = document.querySelectorAll('[data-reveal]');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('revealed');
-            observer.unobserve(entry.target);
+          } else {
+            // Only un-reveal if it scrolled far out of view
+            const rect = entry.boundingClientRect;
+            if (rect.top > window.innerHeight + 100 || rect.bottom < -100) {
+              entry.target.classList.remove('revealed');
+            }
           }
         });
-      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
+      }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
       revealEls.forEach(el => observer.observe(el));
     })();
 
@@ -1359,7 +1457,6 @@
     (function() {
       const counters = document.querySelectorAll('[data-count]');
       let animated = false;
-
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !animated) {
@@ -1369,14 +1466,11 @@
               const suffix = counter.dataset.suffix || '';
               const duration = 1200;
               const start = performance.now();
-
               function update(now) {
                 const elapsed = now - start;
                 const progress = Math.min(elapsed / duration, 1);
-                // Ease-out cubic
                 const eased = 1 - Math.pow(1 - progress, 3);
-                const current = Math.round(eased * target);
-                counter.textContent = current + suffix;
+                counter.textContent = Math.round(eased * target) + suffix;
                 if (progress < 1) requestAnimationFrame(update);
               }
               requestAnimationFrame(update);
@@ -1384,20 +1478,52 @@
           }
         });
       }, { threshold: 0.3 });
-
       const statsSection = document.getElementById('stats-section');
       if (statsSection) observer.observe(statsSection);
+    })();
+
+    // ── 3D Card Tilt on Hover ──
+    (function() {
+      document.querySelectorAll('.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = (y - centerY) / centerY * -4;
+          const rotateY = (x - centerX) / centerX * 4;
+          card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale(1.02)';
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) scale(1)';
+        });
+      });
+    })();
+
+    // ── Magnetic Buttons ──
+    (function() {
+      document.querySelectorAll('.magnetic-btn').forEach(btn => {
+        btn.addEventListener('mousemove', e => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          btn.style.transform = 'translate(' + (x * 0.15) + 'px, ' + (y * 0.15) + 'px) translateY(-2px)';
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = 'translate(0, 0)';
+        });
+      });
     })();
 
     // ── Workflow filter tabs ──
     function filterWorkflows(platform) {
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
-
       document.querySelectorAll('.workflow-item').forEach((card, i) => {
         const show = platform === 'all' || card.dataset.platform === platform;
         if (show) {
-          card.style.display = 'block';
+          card.style.display = 'flex';
           card.style.opacity = '0';
           card.style.transform = 'translateY(16px)';
           setTimeout(() => {
@@ -1419,8 +1545,7 @@
         const target = document.querySelector(targetId);
         if (target) {
           e.preventDefault();
-          const offset = 80;
-          const top = target.getBoundingClientRect().top + window.scrollY - offset;
+          const top = target.getBoundingClientRect().top + window.scrollY - 80;
           window.scrollTo({ top, behavior: 'smooth' });
         }
       });
