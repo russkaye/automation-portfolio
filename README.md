@@ -5,7 +5,6 @@ AI Automation Specialist portfolio showcasing production-ready workflows for n8n
 **15+ workflows | 4 industries | 3 platforms | 2 cross-platform bridge architectures**
 
 📌 **Portfolio Website:** https://russkaye.github.io/automation-portfolio/
-📄 **CV:** https://russkaye.github.io/russell-abregande-cv/
 
 ---
 
