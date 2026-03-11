@@ -389,28 +389,22 @@
     .dark ::-webkit-scrollbar-thumb { background: #222222; border-radius: 4px; }
     .dark ::-webkit-scrollbar-thumb:hover { background: #444444; }
 
-    /* Dark mode transition */
-    *, *::before, *::after {
-      transition-property: background-color, background, border-color, color, fill, stroke;
-      transition-duration: 0.3s;
-      transition-timing-function: ease;
+    /* Dark mode transition — only target key elements, not *, to avoid lag */
+    body, nav, .glass-card, .glass-nav, .workflow-card, .cert-card, .tab-btn,
+    .section-tinted, footer, .hero-bg,
+    a, button, h1, h2, h3, h4, p, span, li, td, th, label,
+    .badge-n8n, .badge-make, .badge-zapier,
+    #theme-toggle, .magnetic-btn, .btn-glow {
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, fill 0.3s ease, stroke 0.3s ease;
     }
-    /* Don't transition animation props */
-    [data-reveal], .hero-badge, .hero-heading, .hero-sub, .hero-ctas, .hero-diagram {
-      transition-property: opacity, transform, background-color, background, border-color, color, fill, stroke;
+    /* Don't let theme transitions interfere with animation elements */
+    [data-reveal] {
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     }
 
     /* ===== ANTIGRAVITY: SCROLL-DRIVEN ANIMATIONS ===== */
 
-    /* Hero children hidden initially — JS handles scroll-based reveal for all browsers */
-    [data-hero-seq] {
-      opacity: 0;
-      transform: translateY(30px) scale(0.95);
-    }
-    /* Disable the time-based hero entrance animations */
-    .hero-badge, .hero-heading, .hero-sub, .hero-ctas, .hero-diagram {
-      animation: none;
-    }
+    /* Hero entrance — use time-based CSS animations (no scroll dependency) */
 
     @supports (animation-timeline: scroll()) {
       /* Section scroll-driven reveal */
@@ -501,7 +495,6 @@
 
     /* ===== REDUCED MOTION ===== */
     @media (prefers-reduced-motion: reduce) {
-      [data-hero-seq],
       [data-scroll-section],
       .stagger-line,
       .bg-orb,
@@ -513,9 +506,6 @@
         opacity: 1 !important;
         transform: none !important;
         filter: none !important;
-      }
-      #hero-scroll-spacer {
-        height: auto !important;
       }
     }
   </style>
@@ -592,29 +582,28 @@
   </nav>
 
   <!-- ===== HERO ===== -->
-  <div id="hero-scroll-spacer" class="relative" style="height: 200vh;">
-  <section class="hero-bg relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden sticky top-0">
+  <section id="hero-section" class="hero-bg relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
 
     <div class="max-w-[1400px] mx-auto px-8 py-16 grid md:grid-cols-2 gap-16 items-center w-full relative z-10">
       <!-- Left: Text -->
       <div>
         <!-- Badge -->
-        <div class="hero-badge inline-flex items-center gap-2 bg-gray-50 dark:bg-[#111111] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-800 text-xs font-semibold px-4 py-2 rounded-full mb-8" data-hero-seq="1">
+        <div class="hero-badge inline-flex items-center gap-2 bg-gray-50 dark:bg-[#111111] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-800 text-xs font-semibold px-4 py-2 rounded-full mb-8">
           <span class="relative flex w-2 h-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full w-2 h-2 bg-green-500"></span></span>
           AI Automation &amp; Systems Specialist
         </div>
 
-        <h1 class="hero-heading text-5xl md:text-6xl font-extrabold leading-tight text-gray-900 mb-6" data-hero-seq="2">
+        <h1 class="hero-heading text-5xl md:text-6xl font-extrabold leading-tight text-gray-900 mb-6">
           <span class="text-gradient">Automate</span> Your<br>
           Business.<br>
           <span class="text-gray-900">Scale Without Limits.</span>
         </h1>
 
-        <p class="hero-sub text-lg text-gray-600 leading-relaxed mb-8 max-w-lg" data-hero-seq="3">
+        <p class="hero-sub text-lg text-gray-600 leading-relaxed mb-8 max-w-lg">
           Building production-ready n8n, Make &amp; Zapier workflows for real estate, e-commerce, agencies, and healthcare — so your team focuses on what matters.
         </p>
 
-        <div class="hero-ctas flex flex-wrap gap-4" data-hero-seq="4">
+        <div class="hero-ctas flex flex-wrap gap-4">
           <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
              class="btn-glow magnetic-btn inline-flex items-center gap-2 bg-[#111111] dark:bg-white text-white dark:text-black font-semibold px-8 py-4 rounded-full transition-colors duration-300 shadow-xl shadow-black/5 whitespace-nowrap">
             Book a Free Consultation
@@ -624,7 +613,7 @@
       </div>
 
       <!-- Right: n8n workflow diagram -->
-      <div class="hero-diagram relative hidden md:block" data-hero-seq="5">
+      <div class="hero-diagram relative hidden md:block">
         <div class="float-gentle bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-800 rounded-3xl shadow-2xl shadow-black/5 p-10 max-w-sm mx-auto">
           <!-- Header -->
           <div class="flex items-center gap-2 mb-6">
@@ -669,7 +658,6 @@
       </div>
     </div>
   </section>
-  </div><!-- /hero-scroll-spacer -->
 
   <!-- ===== STATS BAR ===== -->
   <section id="stats-section" data-scroll-section class="section-tinted border-y border-gray-100 dark:border-[#222222] py-20">
@@ -1463,42 +1451,7 @@
       progressBar.style.width = (scrollTop / docHeight * 100) + '%';
     });
 
-    // ── Hero Scroll Sequence (JS for all browsers — sticky hero needs scroll-range tracking) ──
-    (function() {
-      const spacer = document.getElementById('hero-scroll-spacer');
-      if (!spacer) return;
-      const seqEls = spacer.querySelectorAll('[data-hero-seq]');
-      const thresholds = [0.05, 0.15, 0.3, 0.45, 0.6];
-
-      seqEls.forEach(el => {
-        el.style.transition = 'opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)';
-      });
-
-      let ticking = false;
-      function onScroll() {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          const rect = spacer.getBoundingClientRect();
-          const spacerHeight = spacer.offsetHeight - window.innerHeight;
-          const scrolled = -rect.top;
-          const progress = Math.max(0, Math.min(1, scrolled / spacerHeight));
-
-          seqEls.forEach((el, i) => {
-            if (progress >= (thresholds[i] || 0.5)) {
-              el.style.opacity = '1';
-              el.style.transform = 'translateY(0)';
-            } else {
-              el.style.opacity = '0';
-              el.style.transform = 'translateY(30px)';
-            }
-          });
-          ticking = false;
-        });
-      }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-    })();
+    // Hero animations are now CSS-only (no scroll dependency)
 
     // ── Parallax Background Orbs ──
     (function() {
@@ -1520,19 +1473,14 @@
       });
     })();
 
-    // ── Bidirectional Scroll Reveal ──
+    // ── Scroll Reveal (one-way — once revealed, stays visible) ──
     (function() {
       const revealEls = document.querySelectorAll('[data-reveal]');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('revealed');
-          } else {
-            // Only un-reveal if it scrolled far out of view
-            const rect = entry.boundingClientRect;
-            if (rect.top > window.innerHeight + 100 || rect.bottom < -100) {
-              entry.target.classList.remove('revealed');
-            }
+            observer.unobserve(entry.target); // Stop observing once revealed
           }
         });
       }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
