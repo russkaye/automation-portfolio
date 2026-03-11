@@ -313,10 +313,10 @@
 
     /* Text overrides */
     .dark .text-gray-900 { color: #ffffff !important; }
-    .dark .text-gray-800 { color: #ededed !important; }
-    .dark .text-gray-700 { color: #a1a1aa !important; }
-    .dark .text-gray-600 { color: #888888 !important; }
-    .dark .text-gray-400 { color: #555555 !important; }
+    .dark .text-gray-800 { color: #f3f4f6 !important; }
+    .dark .text-gray-700 { color: #e5e7eb !important; }
+    .dark .text-gray-600 { color: #d1d5db !important; /* Lighter text for readability */ }
+    .dark .text-gray-400 { color: #9ca3af !important; }
 
     /* Backgrounds */
     .dark .bg-white { background-color: #000000 !important; }
@@ -328,11 +328,15 @@
     .dark .border-gray-100, .dark .border-gray-200 { border-color: #222222 !important; }
     .dark .border-y { border-color: #222222 !important; }
 
-    /* Cards */
+    /* Cards and Mockups */
     .dark .workflow-card { background: #0a0a0a; border-color: #222222; }
     .dark .workflow-card:hover { border-color: #444444; box-shadow: 0 16px 40px rgba(255,255,255,0.03); }
-    .dark .mockup-node { background: #111111; border-color: #333333; color: #ededed; }
-    .dark .mockup-connector { background: #333333; }
+    /* Force white backgrounds for mockups/diagrams in dark mode for visibility */
+    .dark .mockup-node { background: #ffffff !important; border-color: #e5e7eb !important; color: #111111 !important; }
+    .dark .mockup-connector { background: #e5e7eb !important; }
+    .dark .hero-diagram > div { background-color: #ffffff !important; color: #111111 !important; }
+    .dark .hero-diagram .text-gray-900 { color: #111111 !important; }
+    .dark .hero-diagram .text-gray-400 { color: #6b7280 !important; }
 
     /* Feature sections */
     .dark .bg-gradient-to-br { background-image: none !important; background-color: #0a0a0a !important; }
@@ -627,31 +631,31 @@
             <div class="w-3 h-3 rounded-full bg-red-400"></div>
             <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
             <div class="w-3 h-3 rounded-full bg-green-400"></div>
-            <span class="ml-2 text-xs text-gray-400 font-mono">AI Lead Scoring Workflow</span>
+            <span class="ml-2 text-xs text-gray-500 font-mono">AI Lead Scoring Workflow</span>
           </div>
           <!-- Nodes -->
           <div class="space-y-2">
-            <div class="mockup-node">
+            <div class="mockup-node bg-white border-gray-200">
               <span class="text-lg">⚡</span>
-              <div><div class="font-semibold text-xs text-gray-900">Webhook Trigger</div><div class="text-xs text-gray-400">New lead arrived</div></div>
+              <div><div class="font-semibold text-xs text-gray-900">Webhook Trigger</div><div class="text-xs text-gray-500">New lead arrived</div></div>
               <span class="ml-auto w-2 h-2 bg-green-400 rounded-full"></span>
             </div>
-            <div class="mockup-connector"></div>
-            <div class="mockup-node">
+            <div class="mockup-connector bg-gray-200"></div>
+            <div class="mockup-node bg-white border-gray-200">
               <span class="text-lg">🤖</span>
-              <div><div class="font-semibold text-xs text-gray-900">GPT-4o-mini</div><div class="text-xs text-gray-400">Score 1–10 by intent</div></div>
+              <div><div class="font-semibold text-xs text-gray-900">GPT-4o-mini</div><div class="text-xs text-gray-500">Score 1–10 by intent</div></div>
               <span class="ml-auto w-2 h-2 bg-purple-lavender rounded-full"></span>
             </div>
-            <div class="mockup-connector"></div>
-            <div class="mockup-node">
+            <div class="mockup-connector bg-gray-200"></div>
+            <div class="mockup-node bg-white border-gray-200">
               <span class="text-lg">🔀</span>
-              <div><div class="font-semibold text-xs text-gray-900">IF Score ≥ 7</div><div class="text-xs text-gray-400">Route hot leads</div></div>
-              <span class="ml-auto text-xs text-green-500 font-semibold">PASS</span>
+              <div><div class="font-semibold text-xs text-gray-900">IF Score ≥ 7</div><div class="text-xs text-gray-500">Route hot leads</div></div>
+              <span class="ml-auto text-xs text-green-600 font-semibold">PASS</span>
             </div>
-            <div class="mockup-connector"></div>
-            <div class="mockup-node">
+            <div class="mockup-connector bg-gray-200"></div>
+            <div class="mockup-node bg-white border-gray-200">
               <span class="text-lg">💬</span>
-              <div><div class="font-semibold text-xs text-gray-900">Slack Alert</div><div class="text-xs text-gray-400">Notify agent instantly</div></div>
+              <div><div class="font-semibold text-xs text-gray-900">Slack Alert</div><div class="text-xs text-gray-500">Notify agent instantly</div></div>
               <span class="ml-auto w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
             </div>
           </div>
@@ -825,20 +829,20 @@
       <!-- Mockup: n8n pipeline -->
       <div data-reveal="right" class="bg-gray-50 dark:bg-[#0a0a0a] rounded-3xl p-10 border border-gray-200 dark:border-[#222222] shadow-xl shadow-black/5">
         <div class="space-y-2">
-          <div class="mockup-node border-gray-200 dark:border-[#333333]">
+          <div class="mockup-node bg-white border-gray-200">
             <span>📝</span>
-            <div><div class="text-xs font-bold text-gray-900">Content Brief</div><div class="text-xs text-gray-400">Google Form input</div></div>
+            <div><div class="text-xs font-bold text-gray-900">Content Brief</div><div class="text-xs text-gray-500">Google Form input</div></div>
           </div>
-          <div class="mockup-connector bg-gray-300 dark:bg-[#444444]"></div>
-          <div class="mockup-node border-gray-200 dark:border-[#333333]">
+          <div class="mockup-connector bg-gray-200"></div>
+          <div class="mockup-node bg-white border-gray-200">
             <span>🤖</span>
-            <div><div class="text-xs font-bold text-gray-900">AI Generates 3 Variants</div><div class="text-xs text-gray-400">GPT-4o-mini • tone-matched</div></div>
+            <div><div class="text-xs font-bold text-gray-900">AI Generates 3 Variants</div><div class="text-xs text-gray-500">GPT-4o-mini • tone-matched</div></div>
           </div>
-          <div class="mockup-connector bg-gray-300 dark:bg-[#444444]"></div>
+          <div class="mockup-connector bg-gray-200"></div>
           <div class="grid grid-cols-3 gap-2">
-            <div class="mockup-node text-center justify-center text-xs border-gray-200 dark:border-[#333333]"><span>📘</span><span>LinkedIn</span></div>
-            <div class="mockup-node text-center justify-center text-xs border-gray-200 dark:border-[#333333]"><span>📸</span><span>Instagram</span></div>
-            <div class="mockup-node text-center justify-center text-xs border-gray-200 dark:border-[#333333]"><span>🐦</span><span>Twitter</span></div>
+            <div class="mockup-node bg-white text-gray-700 text-center justify-center text-xs border-gray-200"><span>📘</span><span>LinkedIn</span></div>
+            <div class="mockup-node bg-white text-gray-700 text-center justify-center text-xs border-gray-200"><span>📸</span><span>Instagram</span></div>
+            <div class="mockup-node bg-white text-gray-700 text-center justify-center text-xs border-gray-200"><span>🐦</span><span>Twitter</span></div>
           </div>
           <div class="mt-6 text-center text-xs text-gray-500 font-semibold tracking-wide uppercase">80% less content production time</div>
         </div>
