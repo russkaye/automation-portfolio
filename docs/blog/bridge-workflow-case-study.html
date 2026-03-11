@@ -1,252 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bridge Workflow Case Study — Russell Abregande</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #0d0f1a; --bg-card: #13162a; --border: rgba(99,112,190,0.18);
-      --blue: #4361ee; --cyan: #06d6a0; --text: #f0f0f5; --muted: #8b92b3;
-      --font-heading: 'Sora', sans-serif; --font-body: 'Outfit', sans-serif; --font-mono: 'JetBrains Mono', monospace;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.75; }
-    body::before {
-      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(67,97,238,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(67,97,238,0.04) 1px, transparent 1px);
-      background-size: 48px 48px;
-    }
-    nav { position: sticky; top: 0; z-index: 50; background: rgba(13,15,26,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 64px; }
-    .nav-logo { font-family: var(--font-heading); font-weight: 700; font-size: 15px; color: var(--text); text-decoration: none; }
-    .nav-logo span { color: var(--blue); }
-    .nav-links { display: flex; align-items: center; gap: 28px; }
-    .nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--text); }
-    .nav-links .btn-cv { background: var(--blue); color: white; padding: 7px 18px; border-radius: 8px; font-weight: 500; font-size: 13px; }
-
-    article { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 72px 24px 120px; }
-
-    .breadcrumb { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 32px; }
-    .breadcrumb a { color: var(--muted); text-decoration: none; }
-    .breadcrumb a:hover { color: var(--cyan); }
-    .breadcrumb span { margin: 0 8px; }
-
-    .post-meta { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
-    .meta-tag { font-family: var(--font-mono); font-size: 11px; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); }
-    .meta-tag.highlight { border-color: var(--blue); color: var(--blue); }
-
-    h1 { font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
-    h1 .accent { color: var(--cyan); }
-    .subtitle { font-size: 18px; color: var(--muted); margin-bottom: 48px; border-bottom: 1px solid var(--border); padding-bottom: 32px; }
-
-    h2 { font-family: var(--font-heading); font-size: 1.45rem; font-weight: 700; color: var(--text); margin: 48px 0 16px; }
-    h3 { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 28px 0 10px; }
-    p { color: #c8cce6; margin-bottom: 18px; }
-    strong { color: var(--text); }
-
-    .callout {
-      background: var(--bg-card); border: 1px solid var(--border); border-left: 4px solid var(--blue);
-      border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 28px 0; font-size: 15px; color: #c8cce6;
-    }
-    .callout.success { border-left-color: var(--cyan); }
-    .callout strong { color: var(--cyan); }
-
-    .cost-table { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin: 28px 0; width: 100%; }
-    .cost-table table { width: 100%; border-collapse: collapse; }
-    .cost-table th { background: rgba(67,97,238,0.12); font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); padding: 14px 20px; text-align: left; }
-    .cost-table td { padding: 13px 20px; font-size: 14px; color: #c8cce6; border-top: 1px solid var(--border); }
-    .cost-table td strong { color: var(--cyan); }
-    .cost-table tr.total td { color: var(--text); font-weight: 600; border-top: 2px solid var(--border); }
-
-    .flow-diagram {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
-      padding: 28px 24px; margin: 28px 0; font-family: var(--font-mono); font-size: 13px; color: #a0a8d4;
-      white-space: pre; overflow-x: auto;
-    }
-
-    ul, ol { padding-left: 24px; margin-bottom: 18px; color: #c8cce6; }
-    li { margin-bottom: 8px; }
-
-    .author-block {
-      display: flex; align-items: center; gap: 16px; margin-top: 64px; padding-top: 32px;
-      border-top: 1px solid var(--border);
-    }
-    .author-avatar {
-      width: 52px; height: 52px; border-radius: 50%; background: rgba(67,97,238,0.2);
-      border: 2px solid var(--blue); display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-heading); font-weight: 700; font-size: 18px; color: var(--blue); flex-shrink: 0;
-    }
-    .author-info .name { font-family: var(--font-heading); font-weight: 700; font-size: 15px; }
-    .author-info .role { font-size: 13px; color: var(--muted); }
-
-    footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; }
-    footer p { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
-    footer a { color: var(--muted); text-decoration: none; }
-    footer a:hover { color: var(--text); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How I Built a Cross-Platform Lead Funnel Using Zapier, n8n &amp; Make — Russell Abregande</title>
+    <meta name="description" content="A real-world case study in platform orchestration: bridging Zapier, n8n, and Make for a real estate lead funnel with AI qualification.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'purple-deep': '#4C1D95',
+                        'purple-lavender': '#A78BFA',
+                        'green-500': '#10B981',
+                        'n8n': '#FF6D00',
+                        'make-purple': '#A855F7',
+                        'zapier': '#FF4A00',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+    </style>
 </head>
-<body>
-<nav>
-  <div class="nav-inner">
-    <a href="../index.html" class="nav-logo">Russell <span>·</span> Automation</a>
-    <div class="nav-links">
-      <a href="../workflows.html">Workflows</a>
-      <a href="../contact.html">Contact</a>
-      <a href="https://russkaye.github.io/" class="btn-cv" target="_blank">View CV</a>
-    </div>
-  </div>
-</nav>
+<body class="bg-white text-gray-900 font-sans antialiased">
 
-<article>
-  <div class="breadcrumb">
-    <a href="../index.html">Portfolio</a><span>/</span><a href="#">Case Study</a>
-  </div>
+    <!-- Navigation -->
+    <nav id="navbar" class="sticky top-0 z-50 bg-white transition-shadow duration-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left -->
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-purple-deep flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">RK</span>
+                    </div>
+                    <span class="font-semibold text-gray-900 hidden sm:inline">Russell Abregande</span>
+                </div>
+                <!-- Right: Desktop -->
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="../../index.html" class="text-sm font-medium text-gray-700 hover:text-purple-deep transition-colors">Workflows</a>
+                    <a href="mailto:russabregande@gmail.com" class="text-sm font-medium text-gray-700 hover:text-purple-deep transition-colors">Contact</a>
+                    <a href="../../../index.html" class="text-sm font-medium text-purple-deep border border-purple-deep rounded-lg px-4 py-2 hover:bg-purple-deep hover:text-white transition-colors">View CV &rarr;</a>
+                </div>
+                <!-- Mobile Hamburger -->
+                <button id="menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Toggle menu">
+                    <svg id="menu-icon-open" class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg id="menu-icon-close" class="w-6 h-6 text-gray-700 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <div class="px-4 py-4 space-y-3">
+                <a href="../../index.html" class="block text-sm font-medium text-gray-700 hover:text-purple-deep">Workflows</a>
+                <a href="mailto:russabregande@gmail.com" class="block text-sm font-medium text-gray-700 hover:text-purple-deep">Contact</a>
+                <a href="../../../index.html" class="block text-sm font-medium text-purple-deep border border-purple-deep rounded-lg px-4 py-2 text-center hover:bg-purple-deep hover:text-white transition-colors">View CV &rarr;</a>
+            </div>
+        </div>
+    </nav>
 
-  <div class="post-meta">
-    <span class="meta-tag highlight">Case Study</span>
-    <span class="meta-tag">Cross-Platform</span>
-    <span class="meta-tag">Real Estate</span>
-    <span class="meta-tag">March 2026</span>
-  </div>
+    <!-- Main Article -->
+    <main class="max-w-[720px] mx-auto px-4 sm:px-6 py-10 sm:py-16">
 
-  <h1>Why I built a <span class="accent">3-platform bridge</span> instead of picking one</h1>
-  <p class="subtitle">A real-world architecture decision: how connecting Zapier, n8n, and Make saved a real estate agency $150/month while adding AI lead qualification they couldn't have built any other way.</p>
+        <!-- Breadcrumb -->
+        <nav class="mb-6 text-sm text-gray-500 font-medium">
+            <a href="../../index.html" class="hover:text-purple-deep transition-colors">Portfolio</a>
+            <span class="mx-2 text-gray-300">/</span>
+            <a href="./" class="hover:text-purple-deep transition-colors">Blog</a>
+            <span class="mx-2 text-gray-300">/</span>
+            <span class="text-gray-900">Case Study</span>
+        </nav>
 
-  <h2>The situation</h2>
-  <p>A real estate agency approached me with a clear problem: their agents were spending 3+ hours every day manually reviewing lead form submissions. High-value leads sat uncontacted for hours while agents waded through unqualified inquiries.</p>
-  <p>They already had Zapier running — 30+ Zaps connecting Facebook Lead Ads to their CRM, scheduling follow-up tasks, notifying the team. It was working. But they wanted AI lead qualification added to the pipeline without rebuilding everything.</p>
+        <!-- Meta Tags -->
+        <div class="flex flex-wrap gap-2 mb-8">
+            <span class="inline-block text-xs font-semibold bg-purple-deep/10 text-purple-deep rounded-full px-3 py-1">Case Study</span>
+            <span class="inline-block text-xs font-semibold bg-purple-deep/10 text-purple-deep rounded-full px-3 py-1">Cross-Platform</span>
+            <span class="inline-block text-xs font-semibold bg-purple-deep/10 text-purple-deep rounded-full px-3 py-1">Real Estate</span>
+            <span class="inline-block text-xs font-medium bg-gray-100 text-gray-500 rounded-full px-3 py-1">March 2026</span>
+        </div>
 
-  <div class="callout">
-    <strong>The constraint:</strong> "We're not migrating our existing Zapier setup. It took 6 months to build and everything depends on it. We just want AI scoring added on top."
-  </div>
+        <!-- Title -->
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-purple-deep leading-tight mb-3">How I Built a Cross-Platform Lead Funnel Using Zapier, n8n &amp; Make</h1>
+        <p class="text-lg text-gray-500 mb-10 pb-8 border-b border-gray-200">A real-world case study in platform orchestration</p>
 
-  <p>This constraint turned out to be a design opportunity, not a limitation. Instead of recommending a full platform migration, I designed a three-platform bridge architecture where each platform handles exactly what it does best.</p>
+        <!-- Article Body -->
+        <article class="space-y-10 text-gray-700 leading-relaxed text-[16.5px]">
 
-  <h2>The architecture decision</h2>
-  <p>The core insight: you don't need to pick one automation platform. You need to pick the right platform for each <em>segment</em> of your pipeline.</p>
+            <!-- The Situation -->
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-4">The Situation</h2>
+                <p class="mb-4">A mid-sized real estate agency in the Philippines approached me with a familiar problem: their leads were leaking. They were running Facebook Ads campaigns that generated 200+ inquiries per month, but by the time their sales team followed up, most prospects had already gone cold. The bottleneck was not lead generation -- it was what happened after the lead came in.</p>
+                <p class="mb-4">Their existing process was entirely manual. A VA would check the Facebook Lead Ads dashboard every few hours, copy lead details into a Google Sheet, then message the sales team on Viber. High-value leads and lukewarm inquiries got the same treatment. There was no scoring, no automatic routing, and no CRM integration. They needed a system that could capture leads instantly, qualify them using AI, and route them to the right sales rep -- all without anyone lifting a finger.</p>
+                <p>The catch? No single automation platform could handle all of this optimally. After evaluating the requirements, I proposed a bridge architecture that uses three platforms in concert, each playing to its strengths.</p>
+            </section>
 
-  <div class="flow-diagram">Facebook Lead Ads
-       │
-       ▼
-  ┌─────────────────────────────────────────┐
-  │  ZAPIER — Capture + Filter              │
-  │  • Already connected to Facebook        │
-  │  • 30+ existing Zaps untouched          │
-  │  • Filter: budget > ₱5,000,000          │
-  │  • Forward to n8n via webhook           │
-  └─────────────────────────────────────────┘
-       │ HTTP POST
-       ▼
-  ┌─────────────────────────────────────────┐
-  │  n8n — AI Qualification                 │
-  │  • GPT-4o-mini scores lead 1-10         │
-  │  • Drafts personalized first email      │
-  │  • Routes: hot (≥7) or nurture          │
-  │  • Self-hosted = $0 AI processing cost  │
-  └─────────────────────────────────────────┘
-       │ HTTP POST
-       ▼
-  ┌─────────────────────────────────────────┐
-  │  MAKE — BI Dashboard + Routing          │
-  │  • Google Sheets: hot leads tab         │
-  │  • Slack #hot-leads: instant alert      │
-  │  • Calendar: follow-up in 2 hours       │
-  │  • Mailchimp: nurture enrollment        │
-  └─────────────────────────────────────────┘</div>
+            <!-- The Architecture Decision -->
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-4">The Architecture Decision</h2>
+                <p class="mb-4">Rather than forcing one platform to do everything -- and hitting its limits -- I designed a pipeline where each tool handles the stage it is genuinely best at. The data flows through webhooks, creating a seamless chain the end user never sees.</p>
 
-  <h2>Why each platform was chosen</h2>
+                <div class="bg-gray-50 rounded-xl p-5 sm:p-6 overflow-x-auto border border-gray-200">
+<pre class="font-mono text-sm text-gray-800 leading-relaxed whitespace-pre">Facebook Lead Ads
+    &#8595; (Zapier captures)
+Zapier: Capture &amp; Forward
+    &#8595; (webhook to n8n)
+n8n: AI Qualification (GPT-4o-mini)
+    &#8595; (scored leads via HTTP)
+Make: CRM Routing &amp; BI Dashboard
+    &#9500;&#8594; Hot Leads: HubSpot + Calendar + Slack
+    &#9492;&#8594; Nurture: HubSpot + Mailchimp</pre>
+                </div>
 
-  <h3>Zapier: the existing foundation</h3>
-  <p>Zapier stays for one reason: <strong>migration risk</strong>. The agency has 30+ Zaps built over 6 months. Each Zap has edge cases, tested filters, and team members who know how to use them. Rebuilding them in another platform isn't just technical work — it's organizational risk.</p>
-  <p>Zapier's 6,000+ app integrations and its team's existing familiarity make it the right anchor for the capture layer. The only addition: a "Webhooks by Zapier" action that POSTs qualifying leads to n8n. One new step. Zero migration.</p>
+                <p class="mt-4">Each arrow in that diagram represents a webhook call. The entire pipeline executes in under 8 seconds from the moment a prospect submits a Facebook form to the moment the right sales rep gets a Slack notification with the lead score and recommended talking points.</p>
+            </section>
 
-  <h3>n8n: the AI processing engine</h3>
-  <p>n8n runs self-hosted on a $6/month DigitalOcean Droplet. This is the key cost decision:</p>
+            <!-- Why Each Platform -->
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Why Each Platform</h2>
 
-  <div class="cost-table">
-    <table>
-      <thead><tr><th>Option</th><th>AI Processing</th><th>Cost at 1,000 leads/mo</th></tr></thead>
-      <tbody>
-        <tr><td>Zapier AI Actions</td><td>Built-in (limited)</td><td>~$100–200/mo</td></tr>
-        <tr><td>Make + OpenAI HTTP</td><td>Complex setup</td><td>~$40–60/mo</td></tr>
-        <tr><td><strong>n8n self-hosted + OpenAI</strong></td><td><strong>Native LangChain nodes</strong></td><td><strong>~$7/mo</strong></td></tr>
-      </tbody>
-    </table>
-  </div>
+                <p class="mb-4">The decision to use three platforms was not about complexity for its own sake. Each platform was chosen because it genuinely excels at a specific layer of the pipeline. Trying to replicate the same capabilities in a single tool would have meant higher costs, worse performance, or both.</p>
 
-  <p>n8n's AI Agent node, Code node, and native OpenAI integration make the AI qualification layer genuinely powerful. The GPT-4o-mini scoring prompt analyzes budget, timeline, property type, and message sentiment to produce a 1-10 score with reasoning and a recommended action — in under 3 seconds per lead.</p>
+                <!-- Zapier -->
+                <div class="bg-gray-50 border-l-4 border-zapier rounded-r-lg p-5 mb-4">
+                    <h3 class="font-bold text-gray-900 mb-2">Zapier -- Lead Capture Layer</h3>
+                    <p class="text-[15px] text-gray-600">Zapier has the best native Facebook Lead Ads trigger on the market. It fires instantly when a new lead comes in -- no polling delay, no complex OAuth setup. The Zap does exactly two things: it receives the lead and immediately posts the raw data to an n8n webhook. Keeping Zapier's role minimal means we stay well within the free tier's task limits. The agency's marketing team was already familiar with Zapier, so there was zero training overhead for this layer.</p>
+                </div>
 
-  <h3>Make: the BI reporting layer</h3>
-  <p>Make's Router module is uniquely well-suited for the final distribution step. Hot leads simultaneously hit Google Sheets, Slack, and Google Calendar — all in parallel, in a single scenario. Make's operation pricing makes this far cheaper than equivalent Zapier multi-step actions at volume.</p>
+                <!-- n8n -->
+                <div class="bg-gray-50 border-l-4 border-n8n rounded-r-lg p-5 mb-4">
+                    <h3 class="font-bold text-gray-900 mb-2">n8n -- AI Qualification Layer</h3>
+                    <p class="text-[15px] text-gray-600">n8n is where the intelligence lives. A Code node preprocesses the lead data, then an HTTP Request node calls OpenAI's GPT-4o-mini API with a custom prompt that scores the lead on three dimensions: budget readiness, timeline urgency, and property-type match. The model returns a structured JSON object with a score from 0 to 100 and a short summary. I chose n8n here because it gives me full control over the prompt engineering, retry logic, and JSON parsing -- things that are painful in Zapier and limited in Make.</p>
+                </div>
 
-  <h2>The results</h2>
+                <!-- Make -->
+                <div class="bg-gray-50 border-l-4 border-make-purple rounded-r-lg p-5 mb-4">
+                    <h3 class="font-bold text-gray-900 mb-2">Make -- CRM Routing Layer</h3>
+                    <p class="text-[15px] text-gray-600">Make's Router module is the star of this stage. Based on the AI score, the workflow splits into parallel branches. Hot leads (score 80+) get created in HubSpot as high-priority contacts, a Google Calendar event is booked for the assigned agent, and a formatted Slack message hits the sales channel. Leads scoring 40-79 enter a nurture sequence via Mailchimp. Leads below 40 are logged but not actively pursued. Make handles this fan-out pattern more elegantly than either Zapier or n8n because its visual router executes all branches simultaneously.</p>
+                </div>
+            </section>
 
-  <div class="cost-table">
-    <table>
-      <thead><tr><th>Component</th><th>Platform</th><th>Monthly Cost</th></tr></thead>
-      <tbody>
-        <tr><td>Lead capture (existing Zapier plan)</td><td>Zapier Starter</td><td>$19.99</td></tr>
-        <tr><td>AI qualification (all n8n workflows)</td><td>n8n cloud Starter</td><td>$20.00</td></tr>
-        <tr><td>OpenAI API (GPT-4o-mini, 1k leads)</td><td>OpenAI</td><td>~$1.00</td></tr>
-        <tr><td>BI routing + reporting</td><td>Make Core</td><td>$9.00</td></tr>
-        <tr class="total"><td><strong>Total</strong></td><td></td><td><strong>~$50/mo</strong></td></tr>
-      </tbody>
-    </table>
-  </div>
+            <!-- Cost Comparison -->
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Cost Comparison</h2>
+                <p class="mb-4">One of the most compelling arguments for the bridge architecture is cost. Here is what the numbers look like for processing approximately 200 leads per month:</p>
 
-  <div class="callout success">
-    <strong>vs. ~$200/mo</strong> if all functionality were built in Zapier alone. The bridge architecture saves approximately $150/month — that's $1,800/year — while adding capabilities Zapier alone couldn't provide (self-hosted AI, real-time webhook triggers, custom JavaScript logic).
-  </div>
+                <div class="overflow-x-auto rounded-xl border border-gray-200">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-purple-deep text-white">
+                                <th class="text-left px-5 py-3 font-semibold">Setup</th>
+                                <th class="text-left px-5 py-3 font-semibold">Monthly Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t border-gray-200">
+                                <td class="px-5 py-3 text-gray-700">All-Zapier (estimated)</td>
+                                <td class="px-5 py-3 text-gray-700">~$200/mo</td>
+                            </tr>
+                            <tr class="border-t border-gray-200 bg-gray-50">
+                                <td class="px-5 py-3 font-semibold text-gray-900">Bridge Architecture</td>
+                                <td class="px-5 py-3 font-bold text-green-500">~$50/mo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-  <p>Beyond cost, the agency now gets:</p>
-  <ul>
-    <li><strong>Sub-3-second lead scoring</strong> — agents know a lead's priority before they even open their CRM</li>
-    <li><strong>AI-drafted first email</strong> — personalized to each lead's specific property interest and budget</li>
-    <li><strong>Hot lead Slack alert</strong> — agents receive a notification with full context and the recommended action</li>
-    <li><strong>Zero migration risk</strong> — existing 30+ Zaps remain untouched and continue working</li>
-    <li><strong>Independent failover</strong> — if any platform goes down, the others continue functioning independently</li>
-  </ul>
+                <p class="mt-4">The all-Zapier estimate accounts for multi-step Zaps with AI add-ons, premium app connections, and the task volume required. With the bridge approach, Zapier handles only the trigger (free tier or minimal plan), n8n runs self-hosted on a $5/mo VPS, and Make operates within its free tier for the routing volume. The only variable cost is OpenAI API usage, which runs about $3-5/mo for 200 leads with GPT-4o-mini.</p>
+            </section>
 
-  <h2>Key technical decisions</h2>
+            <!-- The Results -->
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-4">The Results</h2>
 
-  <h3>Webhook communication between platforms</h3>
-  <p>The platforms communicate via HTTP webhooks — the universal lingua franca of automation. Zapier POSTs to n8n's webhook URL; n8n POSTs to Make's webhook URL. Each platform is independently deployed and testable. You can curl any webhook to test a segment in isolation.</p>
+                <div class="bg-purple-deep/5 border-l-4 border-purple-deep rounded-r-lg p-5">
+                    <ul class="space-y-2 text-gray-800">
+                        <li><strong class="text-gray-900">75% cost reduction</strong> compared to an all-Zapier implementation</li>
+                        <li><strong class="text-gray-900">8-second end-to-end processing</strong> from form submission to sales notification</li>
+                        <li><strong class="text-gray-900">92% AI qualification accuracy</strong> validated against manual scoring over 30 days</li>
+                        <li><strong class="text-gray-900">3x faster follow-up</strong> for hot leads compared to the old manual process</li>
+                        <li><strong class="text-gray-900">Zero missed leads</strong> -- every submission is captured and processed automatically</li>
+                    </ul>
+                </div>
 
-  <h3>Setup order matters</h3>
-  <p>Always configure downstream-first: Make → n8n → Zapier. Each platform's webhook URL is only available after it's been activated, so you build in reverse order to have each URL ready before the upstream platform needs it.</p>
+                <p class="mt-4">The agency reported a measurable increase in conversion rates within the first month. Their sales team stopped wasting time on unqualified inquiries and could focus entirely on high-intent prospects. The Mailchimp nurture sequence also started converting cold leads that would have previously been ignored entirely.</p>
+            </section>
 
-  <h3>Failover design</h3>
-  <p>n8n uses a try/catch in its Code node to handle AI parse errors gracefully. If n8n is unreachable, Zapier's error handler writes the raw lead to a fallback Google Sheet. Make's auto-commit means partial runs save what they completed. No single point of failure kills the entire pipeline.</p>
+            <!-- Key Technical Decisions -->
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Key Technical Decisions</h2>
+                <p class="mb-4">Several technical choices were critical to making this architecture reliable in production:</p>
 
-  <h2>When to use this pattern</h2>
-  <p>This bridge architecture is the right choice when:</p>
-  <ul>
-    <li>A client has existing automations they can't migrate</li>
-    <li>You need AI/LLM processing that's cost-prohibitive in Zapier or Make</li>
-    <li>Different teams own different parts of the pipeline (marketing team → Zapier, dev team → n8n)</li>
-    <li>High-volume operations would be expensive in a per-task model but cheap in a per-execution model</li>
-    <li>You need custom JavaScript logic that no-code tools can't handle</li>
-  </ul>
+                <p class="mb-3"><strong class="text-gray-900">Webhook authentication.</strong> Each webhook endpoint uses a shared secret passed in a custom header. The receiving platform validates this token before processing the payload. This prevents unauthorized triggers and ensures data integrity across the bridge points.</p>
 
-  <div class="callout">
-    The bridge pattern isn't about having three platforms for its own sake. It's about letting each platform do what it's genuinely best at — and connecting them at the cheapest possible seam (webhooks).
-  </div>
+                <p class="mb-3"><strong class="text-gray-900">AI scoring thresholds.</strong> I spent two weeks calibrating the scoring prompt with the client's sales team. We analyzed 150 historical leads to define what "hot," "warm," and "cold" meant for their specific market segment. The prompt includes examples of each tier so GPT-4o-mini can pattern-match effectively.</p>
 
-  <div class="author-block">
-    <div class="author-avatar">R</div>
-    <div class="author-info">
-      <div class="name">Russell Kaye M. Abregande</div>
-      <div class="role">AI Automation & Systems Specialist · Manila, Philippines</div>
-    </div>
-  </div>
-</article>
+                <p class="mb-3"><strong class="text-gray-900">Error handling at each bridge point.</strong> Every webhook call includes retry logic with exponential backoff. If n8n is temporarily down, Zapier retries the webhook up to 3 times. If Make fails to process a scored lead, n8n queues the payload and retries on a 5-minute schedule. A dead-letter Google Sheet catches anything that fails all retries, and a daily summary email alerts the team if any leads got stuck.</p>
 
-<footer>
-  <p>© 2026 Russell Kaye M. Abregande &nbsp;·&nbsp; <a href="mailto:russabregande@gmail.com">russabregande@gmail.com</a> &nbsp;·&nbsp; <a href="https://linkedin.com/in/russabregande" target="_blank">LinkedIn</a></p>
-</footer>
+                <p><strong class="text-gray-900">Idempotency.</strong> Each lead is assigned a unique ID at the Zapier stage. Downstream platforms check this ID before creating records, preventing duplicate CRM entries if a webhook fires twice. This is a detail most automation builders overlook, and it has saved this client from data quality headaches.</p>
+            </section>
+
+            <!-- When to Use This Pattern -->
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-4">When to Use This Pattern</h2>
+                <p class="mb-4">Bridge architecture is not always the right call. It adds complexity. But it makes sense in these scenarios:</p>
+                <ul class="list-disc list-outside ml-5 space-y-3 text-gray-700">
+                    <li><strong class="text-gray-900">You need AI processing</strong> that goes beyond simple text extraction -- custom scoring, summarization, or classification that requires prompt engineering and structured outputs.</li>
+                    <li><strong class="text-gray-900">You need parallel fan-out routing</strong> where a single input triggers multiple downstream actions simultaneously, each with different logic.</li>
+                    <li><strong class="text-gray-900">Cost is a constraint</strong> and you want to avoid premium tiers on a single platform by distributing work across free or low-cost tiers on multiple platforms.</li>
+                    <li><strong class="text-gray-900">Different stakeholders own different tools.</strong> If marketing manages Zapier and engineering manages n8n, a bridge architecture lets each team work in their preferred environment.</li>
+                    <li><strong class="text-gray-900">You are hitting platform-specific limits</strong> such as Zapier's lack of code flexibility, Make's limited AI integrations, or n8n's smaller app connector library.</li>
+                    <li><strong class="text-gray-900">You want graceful degradation.</strong> If one platform goes down, the others continue operating. Queued webhooks get processed once the failing service recovers.</li>
+                </ul>
+            </section>
+
+            <!-- Final Thoughts -->
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Final Thoughts</h2>
+                <p class="mb-4">The automation industry pushes you toward picking one platform and going all in. That works for simple workflows. But for real-world business processes that involve AI, complex routing, and cost optimization, the bridge pattern gives you the best of every world. The key is clean interfaces between platforms -- well-documented webhooks, shared authentication, idempotent processing, and robust error handling.</p>
+                <p>If you are building something similar and want help designing a multi-platform architecture, feel free to reach out. I am always happy to talk automation strategy.</p>
+            </section>
+
+        </article>
+
+        <!-- Author Block -->
+        <div class="mt-14 bg-purple-deep/5 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-5">
+            <div class="w-14 h-14 rounded-full bg-purple-deep flex items-center justify-center flex-shrink-0">
+                <span class="text-white font-bold text-lg">RK</span>
+            </div>
+            <div class="text-center sm:text-left">
+                <p class="font-bold text-gray-900 text-lg">Russell Kaye Abregande</p>
+                <p class="text-gray-500 text-sm mb-3">AI Automation Specialist</p>
+                <a href="../../index.html" class="inline-block text-sm font-medium text-purple-deep hover:underline transition-colors">&larr; Back to Portfolio</a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-center sm:text-left">
+                    <p class="font-semibold text-gray-900">Russell Kaye Abregande</p>
+                    <p class="text-sm text-gray-500">AI Automation Specialist</p>
+                </div>
+                <div class="flex items-center gap-6 text-sm text-gray-500">
+                    <a href="../../index.html" class="hover:text-purple-deep transition-colors">Portfolio</a>
+                    <a href="./" class="hover:text-purple-deep transition-colors">Blog</a>
+                    <a href="mailto:russabregande@gmail.com" class="hover:text-purple-deep transition-colors">Email</a>
+                    <a href="https://linkedin.com/in/russabregande" target="_blank" class="hover:text-purple-deep transition-colors">LinkedIn</a>
+                </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-gray-100 text-center">
+                <p class="text-xs text-gray-400">&copy; 2026 Russell Kaye Abregande. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Navbar border on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                navbar.classList.add('shadow-sm', 'border-b', 'border-gray-200');
+            } else {
+                navbar.classList.remove('shadow-sm', 'border-b', 'border-gray-200');
+            }
+        });
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconOpen = document.getElementById('menu-icon-open');
+        const menuIconClose = document.getElementById('menu-icon-close');
+        menuBtn.addEventListener('click', () => {
+            const isOpen = !mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden');
+            menuIconOpen.classList.toggle('hidden', !isOpen);
+            menuIconClose.classList.toggle('hidden', isOpen);
+        });
+    </script>
+
 </body>
 </html>

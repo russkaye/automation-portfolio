@@ -38,129 +38,86 @@
   </script>
   <style>
     * { box-sizing: border-box; }
-    body { -webkit-font-smoothing: antialiased; overflow-x: hidden; background: #f5f0ff; }
+    body { -webkit-font-smoothing: antialiased; overflow-x: hidden; background: #ffffff; }
 
-    /* ===== SCROLL PROGRESS BAR ===== */
-    #scroll-progress {
-      position: fixed; top: 0; left: 0; height: 3px; z-index: 9999;
-      background: linear-gradient(90deg, #7C3AED, #A78BFA, #4C1D95);
-      width: 0%; transition: width 0.05s linear;
-    }
-
-    /* ===== GLASSMORPHISM (light mode) ===== */
-    /* Global background orbs */
-    .bg-orbs {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-    }
-    .bg-orb {
-      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5;
-      will-change: transform;
-    }
-    .bg-orb-1 { width: 600px; height: 600px; background: rgba(167,139,250,0.2); top: -10%; left: -5%; }
-    .bg-orb-2 { width: 500px; height: 500px; background: rgba(124,58,237,0.12); top: 30%; right: -8%; }
-    .bg-orb-3 { width: 450px; height: 450px; background: rgba(196,181,253,0.18); top: 60%; left: 10%; }
-    .bg-orb-4 { width: 350px; height: 350px; background: rgba(139,92,246,0.14); top: 85%; right: 15%; }
-    .dark .bg-orbs { display: none; }
-    .dark body { background: #0f0a1a; }
+    /* Global background orbs removed for cleaner aesthetic */
+    .dark body { background: #000000; }
 
     /* Ensure content renders above fixed bg-orbs */
     section, nav, footer { position: relative; z-index: 1; }
 
-    /* Glass card effect (light mode only) */
+    /* Glass card effect */
     .glass-card {
-      background: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.85);
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.6);
-      box-shadow: 0 4px 24px rgba(76,29,149,0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8);
     }
     .glass-card:hover {
-      background: rgba(255,255,255,0.7);
-      box-shadow: 0 8px 40px rgba(76,29,149,0.1), inset 0 1px 0 rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,1);
     }
     .dark .glass-card {
-      background: #140e22; backdrop-filter: none; -webkit-backdrop-filter: none;
-      border-color: #2a1f40;
+      background: #111111; backdrop-filter: none; -webkit-backdrop-filter: none;
+      border-color: #222222;
       box-shadow: none;
     }
 
     /* Glass nav */
     .glass-nav {
-      background: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.8);
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.5);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
     .glass-nav.nav-scrolled {
-      background: rgba(255,255,255,0.85);
-      box-shadow: 0 4px 30px rgba(76,29,149,0.08);
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.04);
     }
     .dark .glass-nav {
-      background: rgba(15,10,26,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom-color: #1e1533;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom-color: #1a1a1a;
     }
-    .dark .glass-nav.nav-scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.4); }
+    .dark .glass-nav.nav-scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.6); }
 
-    /* Glass section tint (alternating light purple) */
+    /* Glass section tint (neutral) */
     .section-tinted {
-      background: rgba(237,233,254,0.35);
+      background: #fdfdfd;
     }
-    .dark .section-tinted { background: #140e22; }
+    .dark .section-tinted { background: #0a0a0a; }
 
     /* Card 3D tilt */
-    .tilt-card { transition: transform 0.15s ease-out, box-shadow 0.3s ease; transform-style: preserve-3d; }
+    .tilt-card { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1); transform-style: preserve-3d; }
 
     /* Magnetic button */
-    .magnetic-btn { transition: transform 0.2s ease-out; }
+    .magnetic-btn { transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
 
-    /* Gradient text — richer, darker purple gradient */
+    /* Gradient text — sleek, neutral metallic */
     .text-gradient {
-      background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 30%, #5B21B6 60%, #4C1D95 100%);
+      background: linear-gradient(135deg, #111 0%, #333 30%, #555 60%, #111 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
     .dark .text-gradient {
-      background: linear-gradient(135deg, #C4B5FD 0%, #A78BFA 35%, #7C3AED 70%, #A78BFA 100%);
+      background: linear-gradient(135deg, #fff 0%, #ddd 35%, #aaa 70%, #fff 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    /* Hero background gradient (like Instantly.ai) */
+    /* Hero background wrapper */
     .hero-bg {
-      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 30%, #ede9fe 60%, #fff 100%);
+      background: #ffffff;
     }
-
-    /* Hero glow blob */
-    .hero-glow {
-      position: absolute;
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(ellipse, rgba(167,139,250,0.28) 0%, rgba(124,58,237,0.12) 40%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    /* Extra decorative blobs */
-    .blob-pink {
-      position: absolute;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(216,180,254,0.22) 0%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    /* Sticky nav shadow on scroll */
-    .nav-scrolled { box-shadow: 0 1px 20px rgba(76,29,149,0.08); }
 
     /* Workflow card */
     .workflow-card {
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease;
     }
     .workflow-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(76,29,149,0.12);
-      border-color: #A78BFA;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+      border-color: #e5e5e5;
     }
 
     /* Platform badge colors */
@@ -192,20 +149,12 @@
 
     /* Filter tab active */
     .tab-btn.active {
-      background: #4C1D95;
+      background: #111111;
       color: white;
     }
 
     /* Hidden workflow cards for filter */
     .workflow-item.hidden { display: none; }
-
-    /* CTA section */
-    .cta-glow {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(167,139,250,0.25) 0%, transparent 60%);
-      pointer-events: none;
-    }
 
     /* ===== ANIMATIONS ===== */
 
@@ -295,28 +244,14 @@
       left: 0;
     }
 
-    /* CTA button glow pulse on hover */
+    /* CTA button scale pulse on hover instead of glow */
     .btn-glow {
       position: relative;
       overflow: visible;
     }
-    .btn-glow::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      border-radius: inherit;
-      background: linear-gradient(135deg, #A78BFA, #4C1D95);
-      opacity: 0;
-      z-index: -1;
-      filter: blur(12px);
-      transition: opacity 0.4s ease;
-    }
-    .btn-glow:hover::before {
-      opacity: 0.5;
-    }
     .btn-glow:hover {
-      transform: translateY(-2px);
-      transition: transform 0.3s ease;
+      transform: scale(1.02);
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     /* Workflow card stagger entrance */
@@ -338,22 +273,22 @@
       background: linear-gradient(to bottom, transparent, rgba(237,233,254,0.3) 50%, transparent);
     }
 
-    /* Timeline dot pulse */
+    /* Timeline dot pulse - soften */
     .timeline-dot-active {
-      animation: dotPulse 2s ease-in-out infinite;
+      animation: dotPulse 3s ease-in-out infinite;
     }
     @keyframes dotPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(76,29,149,0.3); }
-      50%      { box-shadow: 0 0 0 6px rgba(76,29,149,0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0.1); }
+      50%      { box-shadow: 0 0 0 8px rgba(0,0,0,0); }
     }
 
     /* Cert card hover lift */
     .cert-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
     .cert-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(76,29,149,0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
     }
 
     /* Logo subtle hover */
@@ -366,88 +301,89 @@
     }
 
     /* ===== DARK MODE ===== */
-    .dark body, .dark { background-color: #0f0a1a; color: #e2ddf0; }
-    .dark nav, .dark #navbar { background-color: #0f0a1a; border-color: #1e1533; }
-    .dark .nav-scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.4); }
-    .dark .nav-link::after { background: #A78BFA; }
+    .dark body, .dark { background-color: #000000; color: #ededed; }
+    .dark nav, .dark #navbar { background-color: rgba(0,0,0,0.8); border-color: #1a1a1a; }
+    .dark .nav-scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.8); }
+    .dark .nav-link::after { background: #ffffff; }
 
     /* Hero */
     .dark .hero-bg {
-      background: linear-gradient(135deg, #0f0a1a 0%, #1a0f2e 30%, #150d25 60%, #0f0a1a 100%);
-    }
-    .dark .hero-glow {
-      background: radial-gradient(ellipse, rgba(124,58,237,0.2) 0%, rgba(76,29,149,0.08) 40%, transparent 70%);
-    }
-    .dark .blob-pink {
-      background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+      background: #000000;
     }
 
     /* Text overrides */
-    .dark .text-gray-900 { color: #f0ecf9 !important; }
-    .dark .text-gray-800 { color: #e2ddf0 !important; }
-    .dark .text-gray-700 { color: #cbc3de !important; }
-    .dark .text-gray-600 { color: #b0a6c7 !important; }
-    .dark .text-gray-400 { color: #8b7faa !important; }
+    .dark .text-gray-900 { color: #ffffff !important; }
+    .dark .text-gray-800 { color: #ededed !important; }
+    .dark .text-gray-700 { color: #a1a1aa !important; }
+    .dark .text-gray-600 { color: #888888 !important; }
+    .dark .text-gray-400 { color: #555555 !important; }
 
     /* Backgrounds */
-    .dark .bg-white { background-color: #0f0a1a !important; }
-    .dark .bg-gray-50 { background-color: #140e22 !important; }
-    .dark .bg-gray-100 { background-color: #1e1533 !important; }
-    .dark .bg-purple-light { background-color: #2d1a4e !important; }
+    .dark .bg-white { background-color: #000000 !important; }
+    .dark .bg-gray-50 { background-color: #0a0a0a !important; }
+    .dark .bg-gray-100 { background-color: #111111 !important; }
+    .dark .bg-purple-light { background-color: #1a1a1a !important; }
 
     /* Borders */
-    .dark .border-gray-100, .dark .border-gray-200 { border-color: #2a1f40 !important; }
-    .dark .border-y { border-color: #2a1f40 !important; }
+    .dark .border-gray-100, .dark .border-gray-200 { border-color: #222222 !important; }
+    .dark .border-y { border-color: #222222 !important; }
 
     /* Cards */
-    .dark .workflow-card { background: #140e22; border-color: #2a1f40; }
-    .dark .workflow-card:hover { border-color: #7C3AED; box-shadow: 0 16px 40px rgba(124,58,237,0.15); }
-    .dark .mockup-node { background: #1e1533; border-color: #2a1f40; color: #e2ddf0; }
-    .dark .mockup-connector { background: linear-gradient(to bottom, #7C3AED, #A78BFA); }
+    .dark .workflow-card { background: #0a0a0a; border-color: #222222; }
+    .dark .workflow-card:hover { border-color: #444444; box-shadow: 0 16px 40px rgba(255,255,255,0.03); }
+    .dark .mockup-node { background: #111111; border-color: #333333; color: #ededed; }
+    .dark .mockup-connector { background: #333333; }
 
     /* Feature sections */
-    .dark .bg-gradient-to-br { background-image: none !important; background-color: #1a1030 !important; }
-    .dark .from-orange-50, .dark .from-purple-50, .dark .from-gray-50 { background-color: #1a1030 !important; }
+    .dark .bg-gradient-to-br { background-image: none !important; background-color: #0a0a0a !important; }
+    .dark .from-orange-50, .dark .from-purple-50, .dark .from-gray-50 { background-color: #0a0a0a !important; }
     .dark .border-orange-100, .dark .border-purple-100, .dark .border-orange-200,
-    .dark .border-purple-200 { border-color: #2a1f40 !important; }
+    .dark .border-purple-200 { border-color: #222222 !important; }
 
     /* Badges */
-    .dark .bg-orange-50 { background-color: #2d1a0a !important; }
-    .dark .bg-green-50 { background-color: #0a2d1a !important; }
-    .dark .badge-n8n { background: #2d1a0a; }
-    .dark .badge-make { background: #2d1a4e; }
-    .dark .badge-zapier { background: #2d1010; }
+    .dark .bg-orange-50 { background-color: rgba(230, 81, 0, 0.15) !important; color: #FFA726 !important; border: 1px solid rgba(230, 81, 0, 0.3) !important; }
+    .dark .bg-purple-light { background-color: rgba(126, 34, 206, 0.15) !important; color: #C084FC !important; border: 1px solid rgba(126, 34, 206, 0.3) !important; }
+    .dark .bg-green-50 { background-color: #1a1a1a !important; }
+    .dark .badge-n8n { background: rgba(230, 81, 0, 0.15); color: #FFA726; border: 1px solid rgba(230, 81, 0, 0.3); }
+    .dark .badge-make { background: rgba(126, 34, 206, 0.15); color: #C084FC; border: 1px solid rgba(126, 34, 206, 0.3); }
+    .dark .badge-zapier { background: rgba(192, 57, 43, 0.15); color: #EF5350; border: 1px solid rgba(192, 57, 43, 0.3); }
 
     /* Tab buttons */
-    .dark .tab-btn { background: #1e1533; border-color: #2a1f40; color: #b0a6c7; }
-    .dark .tab-btn.active { background: #7C3AED; color: white; border-color: #7C3AED; }
-    .dark .tab-btn:hover { border-color: #7C3AED; }
+    .dark .tab-btn { background: #111111; border-color: #333333; color: #888888; }
+    .dark .tab-btn.active { background: #ffffff; color: #000000; border-color: #ffffff; }
+    .dark .tab-btn:hover { border-color: #555555; }
 
     /* Cert cards */
-    .dark .cert-card { border-color: #2a1f40; }
-    .dark .cert-card:hover { border-color: #7C3AED; box-shadow: 0 12px 32px rgba(124,58,237,0.2); }
+    .dark .cert-card { border-color: #222222; }
+    .dark .cert-card:hover { border-color: #444444; box-shadow: 0 12px 32px rgba(255,255,255,0.02); }
 
     /* Filter badges */
-    .dark .bg-green-100 { background-color: #0a2d1a !important; }
-    .dark .text-green-700, .dark .text-green-600 { color: #6ee7b7 !important; }
+    .dark .bg-green-100 { background-color: #111111 !important; }
+    .dark .text-green-700, .dark .text-green-600 { color: #a1a1aa !important; }
 
     /* Stat numbers */
-    .dark .stat-number { color: #A78BFA !important; }
+    .dark .stat-number { color: #ffffff !important; }
 
-    /* CTA Section — keep as is, dark already */
+    /* CTA Section CTA button dark */
+    .dark .bg-purple-deep { background-color:#ffffff; color:#000000; }
+    .dark .bg-purple-deep:hover { background-color:#e5e5e5; }
+    
+    /* CTA Section text overrides */
+    .dark .text-purple-lavender { color: #a1a1aa; }
+    .dark .text-purple-deep { color: #ffffff; }
 
     /* Footer */
-    .dark footer { background-color: #0a0614; }
+    .dark footer { background-color: #000000; border-color: #1a1a1a; }
 
     /* Theme toggle */
-    .dark #theme-toggle { background: #1e1533; border-color: #2a1f40; }
-    .dark #theme-toggle:hover { background: #2a1f40; }
+    .dark #theme-toggle { background: #111111; border-color: #333333; }
+    .dark #theme-toggle:hover { background: #222222; }
 
     /* Scrollbar */
     .dark ::-webkit-scrollbar { width: 8px; }
-    .dark ::-webkit-scrollbar-track { background: #0f0a1a; }
-    .dark ::-webkit-scrollbar-thumb { background: #2a1f40; border-radius: 4px; }
-    .dark ::-webkit-scrollbar-thumb:hover { background: #3d2d5e; }
+    .dark ::-webkit-scrollbar-track { background: #000000; }
+    .dark ::-webkit-scrollbar-thumb { background: #222222; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb:hover { background: #444444; }
 
     /* Dark mode transition */
     *, *::before, *::after {
@@ -540,18 +476,18 @@
     }
 
     /* Section background variables */
-    #stats-section { --section-bg: rgba(237,233,254,0.35); }
-    [id="about"] { --section-bg: #f5f0ff; }
-    [id="skills"] { --section-bg: #f5f0ff; }
-    [id="workflows"] { --section-bg: rgba(237,233,254,0.35); }
-    [id="projects"] { --section-bg: #f5f0ff; }
+    #stats-section { --section-bg: #fdfdfd; }
+    [id="about"] { --section-bg: #ffffff; }
+    [id="skills"] { --section-bg: #ffffff; }
+    [id="workflows"] { --section-bg: #fdfdfd; }
+    [id="projects"] { --section-bg: #ffffff; }
 
     /* Dark mode blending */
-    .dark #stats-section { --section-bg: #140e22; }
-    .dark [id="about"] { --section-bg: #0f0a1a; }
-    .dark [id="skills"] { --section-bg: #0f0a1a; }
-    .dark [id="workflows"] { --section-bg: #140e22; }
-    .dark [id="projects"] { --section-bg: #0f0a1a; }
+    .dark #stats-section { --section-bg: #0a0a0a; }
+    .dark [id="about"] { --section-bg: #000000; }
+    .dark [id="skills"] { --section-bg: #000000; }
+    .dark [id="workflows"] { --section-bg: #0a0a0a; }
+    .dark [id="projects"] { --section-bg: #000000; }
 
     /* Soften hard border on stats section */
     [data-scroll-section]#stats-section {
@@ -644,7 +580,7 @@
 
         <!-- CTA -->
         <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
-           class="bg-purple-lavender hover:bg-purple-glow text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors duration-200">
+           class="bg-[#111111] dark:bg-white hover:bg-[#333333] dark:hover:bg-[#e5e5e5] text-white dark:text-black text-sm font-semibold px-6 py-2.5 rounded-full transition-colors duration-300">
           Book a Call
         </a>
       </div>
@@ -653,17 +589,13 @@
 
   <!-- ===== HERO ===== -->
   <div id="hero-scroll-spacer" class="relative" style="height: 200vh;">
-  <section class="hero-bg relative min-h-screen flex items-center pt-16 overflow-hidden sticky top-0">
-    <!-- Background glow blobs -->
-    <div class="hero-glow" style="top:-100px;left:-200px;"></div>
-    <div class="blob-pink" style="bottom:-50px;right:-100px;"></div>
-    <div class="blob-pink" style="top:50px;right:200px;opacity:0.6;width:300px;height:300px;background:radial-gradient(circle,rgba(196,181,253,0.30) 0%,transparent 70%);"></div>
+  <section class="hero-bg relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden sticky top-0">
 
     <div class="max-w-[1400px] mx-auto px-8 py-16 grid md:grid-cols-2 gap-16 items-center w-full relative z-10">
       <!-- Left: Text -->
       <div>
         <!-- Badge -->
-        <div class="hero-badge inline-flex items-center gap-2 bg-purple-light text-purple-deep text-xs font-semibold px-4 py-2 rounded-full mb-6" data-hero-seq="1">
+        <div class="hero-badge inline-flex items-center gap-2 bg-gray-50 dark:bg-[#111111] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-800 text-xs font-semibold px-4 py-2 rounded-full mb-8" data-hero-seq="1">
           <span class="relative flex w-2 h-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full w-2 h-2 bg-green-500"></span></span>
           AI Automation &amp; Systems Specialist
         </div>
@@ -680,21 +612,16 @@
 
         <div class="hero-ctas flex flex-wrap gap-4" data-hero-seq="4">
           <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
-             class="btn-glow magnetic-btn inline-flex items-center gap-2 bg-purple-deep hover:bg-purple-mid text-white font-semibold px-7 py-3.5 rounded-full transition-colors duration-200 shadow-lg shadow-purple-deep/20 whitespace-nowrap">
+             class="btn-glow magnetic-btn inline-flex items-center gap-2 bg-[#111111] dark:bg-white text-white dark:text-black font-semibold px-8 py-4 rounded-full transition-colors duration-300 shadow-xl shadow-black/5 whitespace-nowrap">
             Book a Free Consultation
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-          </a>
-          <a href="#workflows"
-             class="inline-flex items-center gap-2 border-2 border-purple-deep text-purple-deep hover:bg-purple-deep hover:text-white font-semibold px-7 py-3.5 rounded-full transition-all duration-200 whitespace-nowrap">
-            View My Workflows
-            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </a>
         </div>
       </div>
 
       <!-- Right: n8n workflow diagram -->
       <div class="hero-diagram relative hidden md:block" data-hero-seq="5">
-        <div class="float-gentle bg-white border border-gray-100 rounded-2xl shadow-2xl shadow-purple-deep/10 p-8 max-w-sm mx-auto">
+        <div class="float-gentle bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-800 rounded-3xl shadow-2xl shadow-black/5 p-10 max-w-sm mx-auto">
           <!-- Header -->
           <div class="flex items-center gap-2 mb-6">
             <div class="w-3 h-3 rounded-full bg-red-400"></div>
@@ -734,42 +661,41 @@
             <span class="text-green-500 font-semibold">✓ 40% faster response</span>
           </div>
         </div>
-        <!-- Decorative glow -->
-        <div class="absolute -bottom-4 -right-4 w-40 h-40 bg-purple-lavender/20 rounded-full blur-2xl -z-10"></div>
+        </div>
       </div>
     </div>
   </section>
   </div><!-- /hero-scroll-spacer -->
 
   <!-- ===== STATS BAR ===== -->
-  <section id="stats-section" data-scroll-section class="section-tinted border-y border-gray-100/50 py-12">
-    <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+  <section id="stats-section" data-scroll-section class="section-tinted border-y border-gray-100 dark:border-[#222222] py-20">
+    <div class="max-w-[1400px] mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
       <div data-reveal style="transition-delay: 0s">
-        <div class="stat-number text-4xl font-extrabold text-purple-deep mb-1" data-count="15" data-suffix="+">0</div>
-        <div class="text-sm text-gray-600 font-medium">Workflows Built</div>
+        <div class="stat-number text-5xl font-extrabold text-[#111111] dark:text-white mb-2" data-count="15" data-suffix="+">0</div>
+        <div class="text-sm text-gray-500 font-medium tracking-wide uppercase">Workflows Built</div>
       </div>
       <div data-reveal style="transition-delay: 0.1s">
-        <div class="stat-number text-4xl font-extrabold text-purple-deep mb-1" data-count="3">0</div>
-        <div class="text-sm text-gray-600 font-medium">Platforms</div>
+        <div class="stat-number text-5xl font-extrabold text-[#111111] dark:text-white mb-2" data-count="3">0</div>
+        <div class="text-sm text-gray-500 font-medium tracking-wide uppercase">Platforms</div>
       </div>
       <div data-reveal style="transition-delay: 0.2s">
-        <div class="stat-number text-4xl font-extrabold text-purple-deep mb-1" data-count="4">0</div>
-        <div class="text-sm text-gray-600 font-medium">Industries</div>
+        <div class="stat-number text-5xl font-extrabold text-[#111111] dark:text-white mb-2" data-count="4">0</div>
+        <div class="text-sm text-gray-500 font-medium tracking-wide uppercase">Industries</div>
       </div>
       <div data-reveal style="transition-delay: 0.3s">
-        <div class="stat-number text-4xl font-extrabold text-purple-deep mb-1" data-count="2">0</div>
-        <div class="text-sm text-gray-600 font-medium">Live Projects</div>
+        <div class="stat-number text-5xl font-extrabold text-[#111111] dark:text-white mb-2" data-count="2">0</div>
+        <div class="text-sm text-gray-500 font-medium tracking-wide uppercase">Live Projects</div>
       </div>
     </div>
   </section>
 
   <!-- ===== ABOUT ME ===== -->
-  <section id="about" data-scroll-section class="py-16">
-    <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-5 gap-16 items-start">
+  <section id="about" data-scroll-section class="py-32">
+    <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-5 gap-20 items-start">
 
       <!-- Left: Story (3 cols) -->
       <div class="md:col-span-3" data-reveal="left">
-        <div class="inline-flex items-center gap-2 bg-purple-light text-purple-deep text-xs font-bold px-3 py-1.5 rounded-full mb-5">
+        <div class="inline-flex items-center gap-2 bg-gray-50 dark:bg-[#111111] text-gray-500 text-xs font-bold px-4 py-2 rounded-full mb-8 tracking-wider uppercase border border-gray-200 dark:border-[#333333]">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
           About Me
         </div>
@@ -866,55 +792,55 @@
     <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
       <!-- Text -->
       <div data-reveal="left">
-        <div class="inline-flex items-center gap-2 bg-orange-50 text-orange-600 text-xs font-bold px-3 py-1.5 rounded-full mb-5">
+        <div class="inline-flex items-center gap-2 bg-orange-50 text-orange-600 text-xs font-bold px-4 py-2 rounded-full mb-8 uppercase tracking-wider">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
           n8n Workflows
         </div>
-        <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-4">
-          <span class="stagger-line">Build Powerful</span><br><span class="stagger-line"><span class="text-gradient">AI Workflows</span></span>
+        <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-4 tracking-tight">
+          <span class="stagger-line">Build Powerful</span><br><span class="stagger-line">AI Workflows</span>
         </h2>
         <p class="text-gray-600 mb-7 leading-relaxed">
           From AI-powered lead scoring to intelligent customer support — n8n lets me wire together any app with custom logic, conditions, and AI models in one visual workflow.
         </p>
-        <ul class="space-y-3">
-          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+        <ul class="space-y-4">
+          <li class="flex items-center gap-4 text-gray-700 text-sm font-medium">
+            <span class="w-6 h-6 bg-[#111111] dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black text-xs font-bold">✓</span>
             AI Lead Scoring with GPT-4o-mini
           </li>
-          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+          <li class="flex items-center gap-4 text-gray-700 text-sm font-medium">
+            <span class="w-6 h-6 bg-[#111111] dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black text-xs font-bold">✓</span>
             Smart Customer Support Triage
           </li>
-          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+          <li class="flex items-center gap-4 text-gray-700 text-sm font-medium">
+            <span class="w-6 h-6 bg-[#111111] dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black text-xs font-bold">✓</span>
             Automated Client Onboarding
           </li>
-          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+          <li class="flex items-center gap-4 text-gray-700 text-sm font-medium">
+            <span class="w-6 h-6 bg-[#111111] dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black text-xs font-bold">✓</span>
             AI Content Pipeline (3 variants/brief)
           </li>
         </ul>
       </div>
 
       <!-- Mockup: n8n pipeline -->
-      <div data-reveal="right" class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-8 border border-orange-100">
+      <div data-reveal="right" class="bg-gray-50 dark:bg-[#0a0a0a] rounded-3xl p-10 border border-gray-200 dark:border-[#222222] shadow-xl shadow-black/5">
         <div class="space-y-2">
-          <div class="mockup-node border-orange-200">
+          <div class="mockup-node border-gray-200 dark:border-[#333333]">
             <span>📝</span>
             <div><div class="text-xs font-bold text-gray-900">Content Brief</div><div class="text-xs text-gray-400">Google Form input</div></div>
           </div>
-          <div class="mockup-connector bg-orange-300"></div>
-          <div class="mockup-node border-orange-200">
+          <div class="mockup-connector bg-gray-300 dark:bg-[#444444]"></div>
+          <div class="mockup-node border-gray-200 dark:border-[#333333]">
             <span>🤖</span>
             <div><div class="text-xs font-bold text-gray-900">AI Generates 3 Variants</div><div class="text-xs text-gray-400">GPT-4o-mini • tone-matched</div></div>
           </div>
-          <div class="mockup-connector bg-orange-300"></div>
+          <div class="mockup-connector bg-gray-300 dark:bg-[#444444]"></div>
           <div class="grid grid-cols-3 gap-2">
-            <div class="mockup-node text-center justify-center text-xs border-orange-200"><span>📘</span><span>LinkedIn</span></div>
-            <div class="mockup-node text-center justify-center text-xs border-orange-200"><span>📸</span><span>Instagram</span></div>
-            <div class="mockup-node text-center justify-center text-xs border-orange-200"><span>🐦</span><span>Twitter</span></div>
+            <div class="mockup-node text-center justify-center text-xs border-gray-200 dark:border-[#333333]"><span>📘</span><span>LinkedIn</span></div>
+            <div class="mockup-node text-center justify-center text-xs border-gray-200 dark:border-[#333333]"><span>📸</span><span>Instagram</span></div>
+            <div class="mockup-node text-center justify-center text-xs border-gray-200 dark:border-[#333333]"><span>🐦</span><span>Twitter</span></div>
           </div>
-          <div class="mt-4 text-center text-xs text-orange-600 font-semibold">80% less content production time</div>
+          <div class="mt-6 text-center text-xs text-gray-500 font-semibold tracking-wide uppercase">80% less content production time</div>
         </div>
       </div>
     </div>
@@ -924,68 +850,68 @@
   <section data-scroll-section class="py-16 section-tinted">
     <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
       <!-- Mockup: Make blueprint -->
-      <div data-reveal="left" class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100 order-2 md:order-1">
-        <div class="text-xs font-bold text-purple-deep mb-4 uppercase tracking-wider">Make Blueprint — E-commerce</div>
-        <div class="space-y-3">
+      <div data-reveal="left" class="bg-gray-50 dark:bg-[#0a0a0a] rounded-3xl p-10 border border-gray-200 dark:border-[#222222] shadow-xl shadow-black/5 order-2 md:order-1">
+        <div class="text-xs font-bold text-gray-900 tracking-widest mb-6 uppercase">Make Blueprint — E-commerce</div>
+        <div class="space-y-4">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-sm">🛒</div>
-            <div class="h-0.5 flex-1 bg-purple-200"></div>
-            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-sm">📊</div>
-            <div class="h-0.5 flex-1 bg-purple-200"></div>
-            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-sm">📧</div>
-            <div class="h-0.5 flex-1 bg-purple-200"></div>
-            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-sm">💬</div>
+            <div class="w-10 h-10 rounded-full bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] flex items-center justify-center text-lg shadow-sm">🛒</div>
+            <div class="h-0.5 flex-1 bg-gray-200 dark:bg-[#333333]"></div>
+            <div class="w-10 h-10 rounded-full bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] flex items-center justify-center text-lg shadow-sm">📊</div>
+            <div class="h-0.5 flex-1 bg-gray-200 dark:bg-[#333333]"></div>
+            <div class="w-10 h-10 rounded-full bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] flex items-center justify-center text-lg shadow-sm">📧</div>
+            <div class="h-0.5 flex-1 bg-gray-200 dark:bg-[#333333]"></div>
+            <div class="w-10 h-10 rounded-full bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] flex items-center justify-center text-lg shadow-sm">💬</div>
           </div>
-          <div class="flex justify-between text-xs text-gray-400 px-1">
-            <span>Shopify Order</span>
-            <span>Log Sheets</span>
-            <span>Confirm Email</span>
-            <span>Slack Alert</span>
+          <div class="flex justify-between text-xs text-gray-500 px-1 font-medium">
+            <span>Shopify</span>
+            <span>Sheets</span>
+            <span>Email</span>
+            <span>Slack</span>
           </div>
         </div>
-        <div class="mt-6 grid grid-cols-3 gap-3">
-          <div class="bg-white rounded-lg p-3 text-center border border-purple-100">
-            <div class="text-xl font-bold text-purple-deep">100%</div>
-            <div class="text-xs text-gray-400 mt-1">Orders logged</div>
+        <div class="mt-10 grid grid-cols-3 gap-4">
+          <div class="bg-white dark:bg-[#111111] rounded-xl p-4 text-center border border-gray-200 dark:border-[#222222] shadow-sm">
+            <div class="text-2xl font-black text-[#111111] dark:text-white">100%</div>
+            <div class="text-xs text-gray-500 mt-2 font-medium">Orders logged</div>
           </div>
-          <div class="bg-white rounded-lg p-3 text-center border border-purple-100">
-            <div class="text-xl font-bold text-purple-deep">0s</div>
-            <div class="text-xs text-gray-400 mt-1">Manual work</div>
+          <div class="bg-white dark:bg-[#111111] rounded-xl p-4 text-center border border-gray-200 dark:border-[#222222] shadow-sm">
+            <div class="text-2xl font-black text-[#111111] dark:text-white">0s</div>
+            <div class="text-xs text-gray-500 mt-2 font-medium">Manual work</div>
           </div>
-          <div class="bg-white rounded-lg p-3 text-center border border-purple-100">
-            <div class="text-xl font-bold text-purple-deep">3h+</div>
-            <div class="text-xs text-gray-400 mt-1">Saved/day</div>
+          <div class="bg-white dark:bg-[#111111] rounded-xl p-4 text-center border border-gray-200 dark:border-[#222222] shadow-sm">
+            <div class="text-2xl font-black text-[#111111] dark:text-white">3h+</div>
+            <div class="text-xs text-gray-500 mt-2 font-medium">Saved / day</div>
           </div>
         </div>
       </div>
 
       <!-- Text -->
       <div data-reveal="right" class="order-1 md:order-2">
-        <div class="inline-flex items-center gap-2 bg-purple-light text-purple-deep text-xs font-bold px-3 py-1.5 rounded-full mb-5">
+        <div class="inline-flex items-center gap-2 bg-purple-light text-purple-deep text-xs font-bold px-4 py-2 rounded-full mb-8 uppercase tracking-wider">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
           Make Blueprints
         </div>
-        <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-4">
-          <span class="stagger-line">Automate Complex</span><br><span class="stagger-line"><span class="text-gradient">Multi-Step Processes</span></span>
+        <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-4 tracking-tight">
+          <span class="stagger-line">Automate Complex</span><br><span class="stagger-line">Multi-Step Processes</span>
         </h2>
         <p class="text-gray-600 mb-7 leading-relaxed">
           Make's visual blueprint editor lets me design sophisticated multi-path automations — routing leads, processing orders, syncing data across platforms without a single line of code.
         </p>
-        <ul class="space-y-3">
-          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+        <ul class="space-y-4">
+          <li class="flex items-center gap-4 text-gray-700 text-sm font-medium">
+            <span class="w-6 h-6 bg-[#111111] dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black text-xs font-bold">✓</span>
             E-commerce Order Fulfillment (3 parallel routes)
           </li>
-          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+          <li class="flex items-center gap-4 text-gray-700 text-sm font-medium">
+            <span class="w-6 h-6 bg-[#111111] dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black text-xs font-bold">✓</span>
             Smart Lead Distribution by Budget
           </li>
-          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+          <li class="flex items-center gap-4 text-gray-700 text-sm font-medium">
+            <span class="w-6 h-6 bg-[#111111] dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black text-xs font-bold">✓</span>
             Insurance Verification in &lt;10 seconds
           </li>
-          <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-            <span class="w-5 h-5 bg-purple-light rounded-full flex items-center justify-center text-purple-deep text-xs">✓</span>
+          <li class="flex items-center gap-4 text-gray-700 text-sm font-medium">
+            <span class="w-6 h-6 bg-[#111111] dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black text-xs font-bold">✓</span>
             Daily Inventory Replenishment Alerts
           </li>
         </ul>
@@ -998,60 +924,60 @@
     <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
       <!-- Text -->
       <div data-reveal="left">
-        <div class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-full mb-5">
+        <div class="inline-flex items-center gap-2 bg-gray-100 dark:bg-[#111111] text-gray-700 dark:text-gray-400 border border-gray-200 dark:border-[#333333] text-xs font-bold px-4 py-2 rounded-full mb-8 uppercase tracking-wider">
           🔗 Cross-Platform Architecture
         </div>
-        <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-4">
-          <span class="stagger-line">One Strategy,</span><br><span class="stagger-line"><span class="text-gradient">All Three Platforms</span></span>
+        <h2 class="text-4xl font-extrabold text-gray-900 leading-tight mb-4 tracking-tight">
+          <span class="stagger-line">One Strategy,</span><br><span class="stagger-line">All Three Platforms</span>
         </h2>
         <p class="text-gray-600 mb-7 leading-relaxed">
           Not every tool is right for every job. I match the automation platform to the use case — n8n for AI-heavy flows, Make for complex multi-path logic, Zapier for quick reliable triggers — and bridge them when needed.
         </p>
         <div class="grid grid-cols-3 gap-4">
-          <div class="text-center p-4 rounded-xl border border-gray-100 hover:border-orange-200 transition-colors">
+          <div class="text-center p-4 rounded-xl border border-gray-100 dark:border-[#333333] hover:border-orange-300 dark:hover:border-orange-500/50 transition-colors">
             <div class="text-2xl mb-2">🟠</div>
-            <div class="text-xs font-bold text-gray-700">n8n</div>
+            <div class="text-xs font-bold text-orange-600 dark:text-[#FFA726]">n8n</div>
             <div class="text-xs text-gray-400 mt-1">AI & custom logic</div>
           </div>
-          <div class="text-center p-4 rounded-xl border border-gray-100 hover:border-purple-200 transition-colors">
+          <div class="text-center p-4 rounded-xl border border-gray-100 dark:border-[#333333] hover:border-purple-300 dark:hover:border-purple-500/50 transition-colors">
             <div class="text-2xl mb-2">🟣</div>
-            <div class="text-xs font-bold text-gray-700">Make</div>
+            <div class="text-xs font-bold text-purple-600 dark:text-[#C084FC]">Make</div>
             <div class="text-xs text-gray-400 mt-1">Complex flows</div>
           </div>
-          <div class="text-center p-4 rounded-xl border border-gray-100 hover:border-red-200 transition-colors">
+          <div class="text-center p-4 rounded-xl border border-gray-100 dark:border-[#333333] hover:border-red-300 dark:hover:border-red-500/50 transition-colors">
             <div class="text-2xl mb-2">🔴</div>
-            <div class="text-xs font-bold text-gray-700">Zapier</div>
+            <div class="text-xs font-bold text-red-600 dark:text-[#EF5350]">Zapier</div>
             <div class="text-xs text-gray-400 mt-1">Fast triggers</div>
           </div>
         </div>
       </div>
 
       <!-- Mockup: Cross-platform bridge -->
-      <div data-reveal="right" class="bg-gradient-to-br from-gray-50 to-slate-100 rounded-2xl p-8 border border-gray-200">
-        <div class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-4">Bridge Workflow Example</div>
-        <div class="space-y-3">
+      <div data-reveal="right" class="bg-gray-50 dark:bg-[#0a0a0a] rounded-3xl p-10 border border-gray-200 dark:border-[#222222] shadow-xl shadow-black/5">
+        <div class="text-xs text-gray-500 font-bold uppercase tracking-widest mb-6">Bridge Workflow Example</div>
+        <div class="space-y-4">
           <div class="flex items-center gap-3">
-            <div class="flex-1 mockup-node border-orange-200 bg-orange-50">
+            <div class="flex-1 mockup-node bg-white dark:bg-[#111111] border-orange-200 dark:border-orange-500/30 shadow-sm">
               <span>🟠</span>
-              <div><div class="text-xs font-bold">n8n</div><div class="text-xs text-gray-400">AI scores lead</div></div>
+              <div><div class="text-xs font-bold text-orange-600 dark:text-[#FFA726]">n8n</div><div class="text-xs text-gray-500 font-medium mt-0.5">AI scores lead</div></div>
             </div>
           </div>
-          <div class="mockup-connector"></div>
+          <div class="mockup-connector bg-gray-300 dark:bg-[#444444]"></div>
           <div class="flex items-center gap-3">
-            <div class="flex-1 mockup-node border-purple-200 bg-purple-50">
+            <div class="flex-1 mockup-node bg-white dark:bg-[#111111] border-purple-200 dark:border-purple-500/30 shadow-sm">
               <span>🟣</span>
-              <div><div class="text-xs font-bold">Make</div><div class="text-xs text-gray-400">Routes by budget</div></div>
+              <div><div class="text-xs font-bold text-purple-600 dark:text-[#C084FC]">Make</div><div class="text-xs text-gray-500 font-medium mt-0.5">Routes by budget</div></div>
             </div>
           </div>
-          <div class="mockup-connector"></div>
+          <div class="mockup-connector bg-gray-300 dark:bg-[#444444]"></div>
           <div class="flex items-center gap-3">
-            <div class="flex-1 mockup-node border-red-100 bg-red-50">
+            <div class="flex-1 mockup-node bg-white dark:bg-[#111111] border-red-200 dark:border-red-500/30 shadow-sm">
               <span>🔴</span>
-              <div><div class="text-xs font-bold">Zapier</div><div class="text-xs text-gray-400">Sends follow-up email</div></div>
+              <div><div class="text-xs font-bold text-red-600 dark:text-[#EF5350]">Zapier</div><div class="text-xs text-gray-500 font-medium mt-0.5">Sends follow-up email</div></div>
             </div>
           </div>
         </div>
-        <div class="mt-5 text-xs text-center text-gray-400">Best tool for each step = best results</div>
+        <div class="mt-8 text-xs text-center text-gray-400 font-medium tracking-wide uppercase">Best tool for each step = best results</div>
       </div>
     </div>
   </section>
@@ -1060,8 +986,8 @@
   <section id="workflows" data-scroll-section class="py-16 section-tinted">
     <div class="max-w-[1400px] mx-auto px-8">
       <div data-reveal class="text-center mb-12">
-        <h2 class="text-4xl font-extrabold text-gray-900 mb-4">
-          <span class="stagger-line">Browse My <span class="text-gradient">Workflow Library</span></span>
+        <h2 class="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
+          <span class="stagger-line">Browse My Workflow Library</span>
         </h2>
         <p class="text-gray-600 max-w-lg mx-auto">
           15 production-ready automations across n8n, Make & Zapier. Click any card to see the full breakdown on GitHub.
@@ -1396,42 +1322,42 @@
   <section id="projects" data-scroll-section class="py-16">
     <div class="max-w-[1400px] mx-auto px-8">
       <div data-reveal class="text-center mb-12">
-        <h2 class="text-4xl font-extrabold text-gray-900 mb-4">
-          <span class="stagger-line">Live <span class="text-gradient">Projects</span></span>
+        <h2 class="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
+          <span class="stagger-line">Live Projects</span>
         </h2>
         <p class="text-gray-600">Real systems built and deployed at Bloomsocial Inc.</p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-8">
         <!-- Bloom Player -->
-        <div data-reveal="scale" style="transition-delay:0s" class="glass-card tilt-card flex flex-col rounded-2xl p-8 hover:border-purple-lavender transition-all duration-300">
-          <div class="w-12 h-12 bg-purple-light rounded-xl flex items-center justify-center text-2xl mb-5">📺</div>
-          <div class="text-xs font-bold text-purple-deep bg-purple-light px-3 py-1 rounded-full self-start mb-4">Bloomsocial Inc</div>
-          <h3 class="text-2xl font-extrabold text-gray-900 mb-3">Bloom Player</h3>
+        <div data-reveal="scale" style="transition-delay:0s" class="glass-card tilt-card flex flex-col rounded-3xl p-10 hover:border-gray-300 dark:hover:border-[#444444] shadow-xl shadow-black/5 transition-all duration-300">
+          <div class="w-14 h-14 bg-gray-100 dark:bg-[#111111] rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm border border-gray-200 dark:border-[#333333]">📺</div>
+          <div class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider bg-gray-50 dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#222222] px-3 py-1.5 rounded-full self-start mb-5">Bloomsocial Inc</div>
+          <h3 class="text-2xl font-extrabold text-[#111111] dark:text-white mb-3 tracking-tight">Bloom Player</h3>
           <p class="text-gray-600 leading-relaxed mb-5 flex-1">
             Custom digital signage CMS powering real-time content delivery across screen networks. Built the full pipeline from content scheduling to display management — replacing manual updates with automated, centrally-managed broadcasts.
           </p>
           <div class="flex flex-wrap gap-2 mt-auto">
-            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Digital Signage</span>
-            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">CMS</span>
-            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Automation</span>
-            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Real-time</span>
+            <span class="text-xs bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] text-gray-600 dark:text-gray-400 px-3 py-1.5 rounded-full font-medium shadow-sm">Digital Signage</span>
+            <span class="text-xs bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] text-gray-600 dark:text-gray-400 px-3 py-1.5 rounded-full font-medium shadow-sm">CMS</span>
+            <span class="text-xs bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] text-gray-600 dark:text-gray-400 px-3 py-1.5 rounded-full font-medium shadow-sm">Automation</span>
+            <span class="text-xs bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] text-gray-600 dark:text-gray-400 px-3 py-1.5 rounded-full font-medium shadow-sm">Real-time</span>
           </div>
         </div>
 
         <!-- AI Chatbot -->
-        <div data-reveal="scale" style="transition-delay:0.15s" class="glass-card tilt-card flex flex-col rounded-2xl p-8 hover:border-purple-lavender transition-all duration-300">
-          <div class="w-12 h-12 bg-purple-light rounded-xl flex items-center justify-center text-2xl mb-5">🤖</div>
-          <div class="text-xs font-bold text-purple-deep bg-purple-light px-3 py-1 rounded-full self-start mb-4">Bloomsocial Inc</div>
-          <h3 class="text-2xl font-extrabold text-gray-900 mb-3">Interactive AI Chatbot</h3>
+        <div data-reveal="scale" style="transition-delay:0.15s" class="glass-card tilt-card flex flex-col rounded-3xl p-10 hover:border-gray-300 dark:hover:border-[#444444] shadow-xl shadow-black/5 transition-all duration-300">
+          <div class="w-14 h-14 bg-gray-100 dark:bg-[#111111] rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm border border-gray-200 dark:border-[#333333]">🤖</div>
+          <div class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider bg-gray-50 dark:bg-[#0a0a0a] border border-gray-200 dark:border-[#222222] px-3 py-1.5 rounded-full self-start mb-5">Bloomsocial Inc</div>
+          <h3 class="text-2xl font-extrabold text-[#111111] dark:text-white mb-3 tracking-tight">Interactive AI Chatbot</h3>
           <p class="text-gray-600 leading-relaxed mb-5 flex-1">
             AI-powered conversational kiosk deployed on a Hollow Box display for in-store product demos. Customers interact with the AI to explore products, get recommendations, and receive real-time answers — no staff needed.
           </p>
           <div class="flex flex-wrap gap-2 mt-auto">
-            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">AI / LLM</span>
-            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Kiosk</span>
-            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Python</span>
-            <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">Conversational UI</span>
+            <span class="text-xs bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] text-gray-600 dark:text-gray-400 px-3 py-1.5 rounded-full font-medium shadow-sm">AI / LLM</span>
+            <span class="text-xs bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] text-gray-600 dark:text-gray-400 px-3 py-1.5 rounded-full font-medium shadow-sm">Kiosk</span>
+            <span class="text-xs bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] text-gray-600 dark:text-gray-400 px-3 py-1.5 rounded-full font-medium shadow-sm">Python</span>
+            <span class="text-xs bg-white dark:bg-[#111111] border border-gray-200 dark:border-[#333333] text-gray-600 dark:text-gray-400 px-3 py-1.5 rounded-full font-medium shadow-sm">Conversational UI</span>
           </div>
         </div>
       </div>
@@ -1439,38 +1365,35 @@
   </section>
 
   <!-- ===== DARK CTA ===== -->
-  <section data-scroll-section class="relative bg-purple-deep py-28 overflow-hidden">
-    <div class="cta-glow"></div>
-    <!-- Decorative circles -->
-    <div class="absolute top-0 right-0 w-96 h-96 bg-purple-lavender/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-    <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-lavender/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-
+  <section data-scroll-section class="relative bg-[#000000] py-32 overflow-hidden border-t border-[#111111]">
+    
     <div data-reveal class="relative z-10 max-w-4xl mx-auto px-6 text-center">
-      <div class="inline-flex items-center gap-2 bg-white/10 text-purple-lavender text-xs font-semibold px-4 py-2 rounded-full mb-6">
+      <div class="inline-flex items-center gap-2 bg-[#111111] border border-[#333333] text-[#888888] text-xs font-bold px-5 py-2.5 rounded-full mb-8 uppercase tracking-widest">
         <span class="relative flex w-2 h-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full w-2 h-2 bg-green-500"></span></span>
         Available for Freelance & Remote Work
       </div>
 
-      <h2 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6">
+      <h2 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-8 tracking-tight">
         <span class="stagger-line">Ready to Automate</span><br><span class="stagger-line">Your Business?</span>
       </h2>
 
-      <p class="text-purple-lavender/80 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+      <p class="text-[#888888] text-xl mb-12 max-w-xl mx-auto leading-relaxed font-medium">
         Book a free 30-minute consultation. We'll map out your automation strategy together — no commitment, just clarity.
       </p>
 
       <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
-         class="inline-flex items-center gap-3 bg-purple-lavender hover:bg-white text-purple-deep font-bold px-10 py-4 rounded-full text-lg transition-all duration-200 shadow-xl shadow-purple-lavender/20 hover:shadow-white/20">
+         class="cta-calendly-btn inline-flex items-center gap-3 font-bold px-12 py-5 rounded-full text-lg transition-transform duration-300 hover:scale-105 shadow-2xl shadow-white/10"
+         style="background-color: #ffffff !important; color: #000000 !important;">
         Book on Calendly
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
       </a>
 
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 text-purple-lavender/60 text-sm">
+      <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-8 text-[#888888] font-medium text-sm">
         <a href="mailto:russabregande@gmail.com" class="hover:text-white transition-colors flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
           russabregande@gmail.com
         </a>
-        <span class="hidden sm:block text-white/20">|</span>
+        <span class="hidden sm:block text-[#333333]">|</span>
         <span class="flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           Manila, Philippines
