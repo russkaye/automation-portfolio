@@ -262,7 +262,7 @@
     /* Stats counter pulse */
     .stat-number {
       display: inline-block;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, color 0.3s ease;
     }
     .stat-number:hover {
       transform: scale(1.08);
@@ -391,13 +391,13 @@
 
     /* Dark mode transition */
     *, *::before, *::after {
-      transition-property: background-color, border-color, color;
+      transition-property: background-color, background, border-color, color, fill, stroke;
       transition-duration: 0.3s;
       transition-timing-function: ease;
     }
     /* Don't transition animation props */
     [data-reveal], .hero-badge, .hero-heading, .hero-sub, .hero-ctas, .hero-diagram {
-      transition-property: opacity, transform, background-color, border-color, color;
+      transition-property: opacity, transform, background-color, background, border-color, color, fill, stroke;
     }
 
     /* ===== ANTIGRAVITY: SCROLL-DRIVEN ANIMATIONS ===== */
