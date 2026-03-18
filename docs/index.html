@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Russell Abregande — AI Automation & Systems Specialist</title>
   <meta name="description" content="Building production-ready automation workflows with n8n, Make & Zapier. Book a free consultation." />
+  <meta property="og:title" content="Russell Abregande — AI Automation & Systems Specialist" />
+  <meta property="og:description" content="Building production-ready automation workflows with n8n, Make & Zapier. Book a free consultation." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://russkaye.github.io/automation-portfolio/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Russell Abregande — AI Automation Specialist" />
+  <meta name="twitter:description" content="Production-ready n8n, Make & Zapier workflows for real estate, e-commerce, agencies & healthcare." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
@@ -40,12 +48,48 @@
   <style>
     * { box-sizing: border-box; }
     body { -webkit-font-smoothing: antialiased; overflow-x: hidden; background: #ffffff; }
+    h1, h2, h3 { text-wrap: balance; }
 
     /* Global background orbs removed for cleaner aesthetic */
     .dark body { background: #000000; }
 
+    /* Subtle grain texture */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+    .dark body::after { opacity: 0.04; }
+
     /* Ensure content renders above fixed bg-orbs */
     section, nav, footer { position: relative; z-index: 1; }
+
+    /* Focus-visible for keyboard nav */
+    :focus-visible {
+      outline: 2px solid #7C3AED;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      z-index: 100;
+      background: #111;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 0 0 8px 8px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 0; }
 
     /* Glass card effect */
     .glass-card {
@@ -263,6 +307,7 @@
     /* Stats counter pulse */
     .stat-number {
       display: inline-block;
+      font-variant-numeric: tabular-nums;
       transition: transform 0.3s ease, color 0.3s ease;
     }
     .stat-number:hover {
@@ -549,6 +594,7 @@
   </style>
 </head>
 <body class="text-gray-800 font-sans transition-colors duration-300">
+  <a href="#hero-section" class="skip-link">Skip to content</a>
 
   <!-- Scroll progress bar -->
   <div id="scroll-progress"></div>
@@ -1472,7 +1518,7 @@
       </div>
     </div>
     <div class="text-center text-xs text-gray-400 mt-6">
-      © 2026 Russell Kaye M. Abregande. Built with passion for automation.
+      © 2026 Russell Kaye M. Abregande. Manila, Philippines.
     </div>
   </footer>
 
