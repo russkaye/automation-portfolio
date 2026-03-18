@@ -199,6 +199,76 @@
       z-index: 2;
     }
 
+    /* CTA video background */
+    .cta-video-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .cta-video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cta-video-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(9,9,11,0.75);
+      z-index: 1;
+    }
+    .cta-video-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, #09090b, transparent);
+      z-index: 2;
+    }
+    .cta-video-bg .video-fade-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, #09090b);
+      z-index: 2;
+    }
+
+    /* Project card hover animations */
+    .project-card {
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: #52525b;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(167,139,250,0.1);
+    }
+    .project-card .project-icon {
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+    }
+    .project-card:hover .project-icon {
+      transform: scale(1.15) rotate(-4deg);
+      box-shadow: 0 8px 20px rgba(167,139,250,0.15);
+      border-color: #52525b;
+    }
+    .project-card .project-title {
+      transition: color 0.3s ease;
+    }
+    .project-card:hover .project-title {
+      color: #A78BFA;
+    }
+    .project-card .project-tags span {
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+    .project-card:hover .project-tags span {
+      border-color: #3f3f46;
+      color: #a1a1aa;
+    }
+
     /* Conveyor belt */
     .conveyor-track {
       overflow: hidden;
@@ -1117,14 +1187,14 @@
       <!-- Three equal project cards -->
       <div class="grid md:grid-cols-3 gap-8">
         <!-- Bloom Player -->
-        <div data-reveal="scale" class="glass-card tilt-card flex flex-col rounded-3xl p-8 hover:border-zinc-600 transition-all duration-300">
-          <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">📺</div>
+        <div data-reveal="scale" class="project-card glass-card flex flex-col rounded-3xl p-8">
+          <div class="project-icon w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">📺</div>
           <div class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Bloomsocial Inc</div>
-          <h3 class="text-xl font-extrabold text-white mb-3 tracking-tight">Bloom Player</h3>
+          <h3 class="project-title text-xl font-extrabold text-white mb-3 tracking-tight">Bloom Player</h3>
           <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
             Custom digital signage CMS powering real-time content delivery across screen networks. From content scheduling to display management — automated, centrally-managed broadcasts.
           </p>
-          <div class="flex flex-wrap gap-2 mt-auto">
+          <div class="project-tags flex flex-wrap gap-2 mt-auto">
             <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Digital Signage</span>
             <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">CMS</span>
             <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Real-time</span>
@@ -1132,14 +1202,14 @@
         </div>
 
         <!-- AI Chatbot -->
-        <div data-reveal="scale" style="transition-delay:0.1s" class="glass-card tilt-card flex flex-col rounded-3xl p-8 hover:border-zinc-600 transition-all duration-300">
-          <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">🤖</div>
+        <div data-reveal="scale" style="transition-delay:0.1s" class="project-card glass-card flex flex-col rounded-3xl p-8">
+          <div class="project-icon w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">🤖</div>
           <div class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Bloomsocial Inc</div>
-          <h3 class="text-xl font-extrabold text-white mb-3 tracking-tight">Interactive AI Chatbot</h3>
+          <h3 class="project-title text-xl font-extrabold text-white mb-3 tracking-tight">Interactive AI Chatbot</h3>
           <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
             AI-powered conversational kiosk on Hollow Box displays for in-store product demos. Customers explore products and get real-time answers — no staff needed.
           </p>
-          <div class="flex flex-wrap gap-2 mt-auto">
+          <div class="project-tags flex flex-wrap gap-2 mt-auto">
             <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">AI / LLM</span>
             <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Kiosk</span>
             <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Python</span>
@@ -1148,14 +1218,14 @@
 
         <!-- SmartRemind -->
         <a href="https://github.com/russkaye/dental-clinic-automation" target="_blank" rel="noopener"
-           data-reveal="scale" style="transition-delay:0.2s" class="glass-card tilt-card flex flex-col rounded-3xl p-8 hover:border-zinc-600 transition-all duration-300 group">
-          <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">🦷</div>
+           data-reveal="scale" style="transition-delay:0.2s" class="project-card glass-card flex flex-col rounded-3xl p-8">
+          <div class="project-icon w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">🦷</div>
           <div class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Production Deployment</div>
-          <h3 class="text-xl font-extrabold text-white mb-3 tracking-tight group-hover:text-purple-lavender transition-colors">SmartRemind</h3>
+          <h3 class="project-title text-xl font-extrabold text-white mb-3 tracking-tight">SmartRemind</h3>
           <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
             Automated SMS reminders for dental clinics. 48hr + 3hr alerts via PhilSMS. Cuts no-shows by 30–50%. Live and running in production.
           </p>
-          <div class="flex flex-wrap gap-2 mt-auto">
+          <div class="project-tags flex flex-wrap gap-2 mt-auto">
             <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">n8n</span>
             <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">SMS API</span>
             <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Healthcare</span>
@@ -1166,7 +1236,15 @@
   </section>
 
   <!-- ===== CTA ===== -->
-  <section data-scroll-section class="relative bg-zinc-950 py-32 overflow-hidden border-t border-zinc-800">
+  <section data-scroll-section class="relative py-32 overflow-hidden">
+
+    <!-- Video background -->
+    <div class="cta-video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/cta-video.mp4" type="video/mp4">
+      </video>
+      <div class="video-fade-bottom"></div>
+    </div>
 
     <div data-reveal class="relative z-10 max-w-4xl mx-auto px-6 text-center">
       <h2 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-8 tracking-tight">
