@@ -408,6 +408,39 @@
     /* Hero entrance — use time-based CSS animations (no scroll dependency) */
 
     @supports (animation-timeline: scroll()) {
+      /* Cancel any time-based hero animations first (scroll takes over) */
+      .hero-badge, .hero-heading, .hero-sub, .hero-ctas, .hero-diagram {
+        animation: none;
+        opacity: 0;
+      }
+
+      /* ── Hero scroll-driven sequencing ── */
+      #hero-scroll-spacer {
+        view-timeline-name: --hero-spacer;
+        view-timeline-axis: block;
+      }
+      [data-hero-seq] {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+        animation: heroScrollReveal 1s ease both;
+        animation-timeline: --hero-spacer;
+      }
+      /* Stagger: spacer cover 33%=pageload, ~67%=end of sticky phase */
+      [data-hero-seq="1"] { animation-range: cover 33% cover 42%; }
+      [data-hero-seq="2"] { animation-range: cover 37% cover 48%; }
+      [data-hero-seq="3"] { animation-range: cover 42% cover 53%; }
+      [data-hero-seq="4"] { animation-range: cover 47% cover 58%; }
+      [data-hero-seq="5"] { animation-range: cover 52% cover 65%; animation-name: heroScrollSlideIn; }
+
+      @keyframes heroScrollReveal {
+        from { opacity: 0; transform: translateY(30px) scale(0.95); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      @keyframes heroScrollSlideIn {
+        from { opacity: 0; transform: translateX(40px) scale(0.96); }
+        to   { opacity: 1; transform: translateX(0) scale(1); }
+      }
+
       /* Section scroll-driven reveal */
       [data-scroll-section] {
         animation: sectionReveal linear both;
@@ -496,6 +529,7 @@
 
     /* ===== REDUCED MOTION ===== */
     @media (prefers-reduced-motion: reduce) {
+      [data-hero-seq],
       [data-scroll-section],
       .stagger-line,
       .bg-orb,
@@ -507,6 +541,9 @@
         opacity: 1 !important;
         transform: none !important;
         filter: none !important;
+      }
+      #hero-scroll-spacer {
+        height: auto !important;
       }
     }
   </style>
@@ -583,28 +620,29 @@
   </nav>
 
   <!-- ===== HERO ===== -->
-  <section id="hero-section" class="hero-bg relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
+  <div id="hero-scroll-spacer" class="relative" style="height: 200vh;">
+  <section id="hero-section" class="hero-bg relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden sticky top-0">
 
     <div class="max-w-[1400px] mx-auto px-8 py-16 grid md:grid-cols-2 gap-16 items-center w-full relative z-10">
       <!-- Left: Text -->
       <div>
         <!-- Badge -->
-        <div class="hero-badge inline-flex items-center gap-2 bg-gray-50 dark:bg-[#111111] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-800 text-xs font-semibold px-4 py-2 rounded-full mb-8">
+        <div data-hero-seq="1" class="hero-badge inline-flex items-center gap-2 bg-gray-50 dark:bg-[#111111] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-800 text-xs font-semibold px-4 py-2 rounded-full mb-8">
           <span class="relative flex w-2 h-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full w-2 h-2 bg-green-500"></span></span>
           AI Automation &amp; Systems Specialist
         </div>
 
-        <h1 class="hero-heading text-5xl md:text-6xl font-extrabold leading-tight text-gray-900 dark:text-white mb-6">
+        <h1 data-hero-seq="2" class="hero-heading text-5xl md:text-6xl font-extrabold leading-tight text-gray-900 dark:text-white mb-6">
           <span class="text-gradient">Automate</span> Your<br>
           Business.<br>
           <span class="text-gray-900">Scale Without Limits.</span>
         </h1>
 
-        <p class="hero-sub text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-lg">
+        <p data-hero-seq="3" class="hero-sub text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-lg">
           Building production-ready n8n, Make &amp; Zapier workflows for real estate, e-commerce, agencies, and healthcare — so your team focuses on what matters.
         </p>
 
-        <div class="hero-ctas flex flex-wrap gap-4">
+        <div data-hero-seq="4" class="hero-ctas flex flex-wrap gap-4">
           <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
              class="btn-glow magnetic-btn inline-flex items-center gap-2 bg-[#111111] dark:bg-white text-white dark:text-black font-semibold px-8 py-4 rounded-full transition-colors duration-300 shadow-xl shadow-black/5 whitespace-nowrap">
             Book a Free Consultation
@@ -614,7 +652,7 @@
       </div>
 
       <!-- Right: n8n workflow diagram -->
-      <div class="hero-diagram relative hidden md:block">
+      <div data-hero-seq="5" class="hero-diagram relative hidden md:block">
         <div class="float-gentle bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-800 rounded-3xl shadow-2xl shadow-black/5 p-10 max-w-sm mx-auto">
           <!-- Header -->
           <div class="flex items-center gap-2 mb-6">
@@ -659,6 +697,7 @@
       </div>
     </div>
   </section>
+  </div><!-- /hero-scroll-spacer -->
 
   <!-- ===== STATS BAR ===== -->
   <section id="stats-section" data-scroll-section class="section-tinted border-y border-gray-100 dark:border-[#222222] py-20">
@@ -1470,6 +1509,48 @@
     });
 
     // Hero animations are now CSS-only (no scroll dependency)
+
+    // ── Hero Scroll Sequence Fallback ──
+    (function() {
+      if (CSS.supports && CSS.supports('animation-timeline', 'scroll()')) return;
+      const spacer = document.getElementById('hero-scroll-spacer');
+      if (!spacer) return;
+      const seqEls = spacer.querySelectorAll('[data-hero-seq]');
+      const thresholds = [0.05, 0.15, 0.3, 0.45, 0.6];
+
+      seqEls.forEach(el => {
+        el.style.animation = 'none';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)';
+      });
+
+      let ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const rect = spacer.getBoundingClientRect();
+          const spacerHeight = spacer.offsetHeight - window.innerHeight;
+          const scrolled = -rect.top;
+          const progress = Math.max(0, Math.min(1, scrolled / spacerHeight));
+
+          seqEls.forEach((el, i) => {
+            const threshold = thresholds[i] || 0.5;
+            if (progress >= threshold) {
+              el.style.opacity = '1';
+              el.style.transform = 'translateY(0)';
+            } else {
+              el.style.opacity = '0';
+              el.style.transform = 'translateY(30px)';
+            }
+          });
+          ticking = false;
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
 
     // ── Parallax Background Orbs ──
     (function() {
