@@ -238,6 +238,45 @@
       z-index: 2;
     }
 
+    /* How It Works video background */
+    .hiw-video-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hiw-video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hiw-video-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(9,9,11,0.78);
+      z-index: 1;
+    }
+    .hiw-video-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, #09090b, transparent);
+      z-index: 2;
+    }
+    .hiw-video-bg .video-fade-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, #09090b);
+      z-index: 2;
+    }
+
     /* Project card hover animations */
     .project-card {
       transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease;
@@ -695,8 +734,14 @@
   </section>
 
   <!-- ===== HOW IT WORKS ===== -->
-  <section id="how-it-works" data-scroll-section class="py-24">
-    <div class="max-w-[1400px] mx-auto px-8">
+  <section id="how-it-works" data-scroll-section class="py-24 relative overflow-hidden">
+    <div class="hiw-video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/how-it-works-video.mp4" type="video/mp4">
+      </video>
+      <div class="video-fade-bottom"></div>
+    </div>
+    <div class="max-w-[1400px] mx-auto px-8 relative z-10">
       <div data-reveal class="text-center mb-16">
         <div class="inline-flex items-center gap-2 bg-zinc-900 text-zinc-400 text-xs font-bold px-4 py-2 rounded-full mb-8 tracking-wider uppercase border border-zinc-800">
           Process
