@@ -277,6 +277,45 @@
       z-index: 2;
     }
 
+    /* Generic section video background (reusable) */
+    .section-video-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .section-video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .section-video-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(9,9,11,0.80);
+      z-index: 1;
+    }
+    .section-video-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, #09090b, transparent);
+      z-index: 2;
+    }
+    .section-video-bg .video-fade-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, #09090b);
+      z-index: 2;
+    }
+
     /* Project card hover animations */
     .project-card {
       transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease;
@@ -772,8 +811,14 @@
   </section>
 
   <!-- ===== ABOUT ME ===== -->
-  <section id="about" data-scroll-section class="py-32">
-    <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-5 gap-20 items-start">
+  <section id="about" data-scroll-section class="py-32 relative overflow-hidden">
+    <div class="section-video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/how-it-works-video.mp4" type="video/mp4">
+      </video>
+      <div class="video-fade-bottom"></div>
+    </div>
+    <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-5 gap-20 items-start relative z-10">
 
       <!-- Left: Story (3 cols) -->
       <div class="md:col-span-3" data-reveal="left">
@@ -868,8 +913,14 @@
   </section>
 
   <!-- ===== FEATURE: n8n ===== -->
-  <section id="skills" data-scroll-section class="py-16">
-    <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
+  <section id="skills" data-scroll-section class="py-16 relative overflow-hidden">
+    <div class="section-video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/hero-video.mp4" type="video/mp4">
+      </video>
+      <div class="video-fade-bottom"></div>
+    </div>
+    <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center relative z-10">
       <!-- Text -->
       <div data-reveal="left">
         <div class="inline-flex items-center gap-2 bg-orange-50 text-orange-600 text-xs font-bold px-4 py-2 rounded-full mb-8 uppercase tracking-wider">
@@ -927,8 +978,14 @@
   </section>
 
   <!-- ===== FEATURE: Make (reversed) ===== -->
-  <section data-scroll-section class="py-16 section-tinted">
-    <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
+  <section data-scroll-section class="py-16 relative overflow-hidden">
+    <div class="section-video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/workflow-video.mp4" type="video/mp4">
+      </video>
+      <div class="video-fade-bottom"></div>
+    </div>
+    <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center relative z-10">
       <!-- Mockup: Make blueprint -->
       <div data-reveal="left" class="bg-zinc-900 rounded-3xl p-10 border border-zinc-800 shadow-xl shadow-black/5 order-2 md:order-1">
         <div class="text-xs font-bold text-gray-900 tracking-widest mb-6 uppercase">Make Blueprint — E-commerce</div>
@@ -1000,8 +1057,14 @@
   </section>
 
   <!-- ===== FEATURE: Cross-Platform ===== -->
-  <section data-scroll-section class="py-16">
-    <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
+  <section data-scroll-section class="py-16 relative overflow-hidden">
+    <div class="section-video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/cta-video.mp4" type="video/mp4">
+      </video>
+      <div class="video-fade-bottom"></div>
+    </div>
+    <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center relative z-10">
       <!-- Text -->
       <div data-reveal="left">
         <div class="inline-flex items-center gap-2 bg-zinc-900 text-zinc-400 border border-zinc-800 text-xs font-bold px-4 py-2 rounded-full mb-8 uppercase tracking-wider">
