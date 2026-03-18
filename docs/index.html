@@ -125,45 +125,119 @@
     }
 
     /* Hero background */
-    .hero-bg { background: #09090b; }
+    .hero-bg { background: #09090b; position: relative; overflow: hidden; }
 
-    /* Hero video */
-    .hero-video-wrap {
-      border-radius: 1.5rem;
+    /* Hero video — full-bleed background */
+    .hero-video-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
       overflow: hidden;
-      border: 1px solid #27272a;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
     }
-    .hero-video-wrap video {
-      display: block;
+    .hero-video-bg video {
       width: 100%;
-      height: auto;
+      height: 100%;
       object-fit: cover;
     }
-
-    /* Workflow card */
-    .workflow-card {
-      background: #0c0c0e;
-      border: 1px solid #27272a;
-      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease;
+    .hero-video-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(9,9,11,0.88) 0%, rgba(9,9,11,0.55) 50%, rgba(9,9,11,0.3) 100%);
+      z-index: 1;
     }
-    .workflow-card:hover {
-      transform: translateY(-4px);
-      border-color: #3f3f46;
-      box-shadow: 0 16px 40px rgba(255,255,255,0.03);
+    /* Bottom fade for transition to next section */
+    .hero-video-bg::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 160px;
+      background: linear-gradient(to bottom, transparent, #09090b);
+      z-index: 2;
     }
 
-    /* Featured workflow card */
-    .workflow-featured {
-      background: linear-gradient(135deg, #18181b 0%, #0c0c0e 100%);
+    /* Workflow video background */
+    .workflow-video-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .workflow-video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .workflow-video-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(9,9,11,0.78);
+      z-index: 1;
+    }
+    /* Top fade for seamless blend from previous section */
+    .workflow-video-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, #09090b, transparent);
+      z-index: 2;
+    }
+    /* Bottom fade out */
+    .workflow-video-bg .video-fade-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, #09090b);
+      z-index: 2;
+    }
+
+    /* Conveyor belt */
+    .conveyor-track {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, black 80px, black calc(100% - 80px), transparent);
+      mask-image: linear-gradient(to right, transparent, black 80px, black calc(100% - 80px), transparent);
+    }
+    .conveyor-strip {
+      display: flex;
+      gap: 16px;
+      width: max-content;
+      animation: marquee 45s linear infinite;
+    }
+    .conveyor-track:hover .conveyor-strip {
+      animation-play-state: paused;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .conveyor-card {
+      flex-shrink: 0;
+      width: 220px;
+      background: rgba(24,24,27,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid #3f3f46;
+      border-radius: 16px;
+      padding: 20px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
-    .workflow-featured:hover {
+    .conveyor-card:hover {
       border-color: #52525b;
-      box-shadow: 0 20px 50px rgba(255,255,255,0.05);
+      box-shadow: 0 12px 32px rgba(255,255,255,0.05);
     }
-    .workflow-featured .featured-metric {
-      font-size: 2rem;
+    .conveyor-card .metric {
+      font-size: 1.1rem;
       font-weight: 800;
       color: #fff;
       font-variant-numeric: tabular-nums;
@@ -196,12 +270,6 @@
       border-radius: 2px;
     }
 
-    /* Filter tabs */
-    .tab-btn { background: #18181b; border-color: #3f3f46; color: #71717a; }
-    .tab-btn.active { background: #ffffff; color: #09090b; border-color: #ffffff; }
-    .tab-btn:hover { border-color: #52525b; }
-
-    .workflow-item.hidden { display: none; }
 
     /* Since dark mode is permanent, Tailwind dark: utilities always apply.
        Only override gray utility classes that appear WITHOUT dark: variants. */
@@ -261,15 +329,10 @@
     .hero-heading { opacity: 0; animation: heroIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.25s forwards; }
     .hero-sub     { opacity: 0; animation: heroIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.45s forwards; }
     .hero-ctas    { opacity: 0; animation: heroIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.6s forwards; }
-    .hero-video   { opacity: 0; animation: heroSlideIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.5s forwards; }
 
     @keyframes heroIn {
       from { opacity: 0; transform: translateY(28px); }
       to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes heroSlideIn {
-      from { opacity: 0; transform: translateX(40px) scale(0.96); }
-      to   { opacity: 1; transform: translateX(0) scale(1); }
     }
 
     /* Nav link underline */
@@ -338,7 +401,7 @@
     /* ===== ANTIGRAVITY: SCROLL-DRIVEN ANIMATIONS ===== */
 
     @supports (animation-timeline: scroll()) {
-      .hero-badge, .hero-heading, .hero-sub, .hero-ctas, .hero-video {
+      .hero-badge, .hero-heading, .hero-sub, .hero-ctas {
         animation: none;
         opacity: 0;
       }
@@ -357,15 +420,10 @@
       [data-hero-seq="2"] { animation-range: cover 37% cover 48%; }
       [data-hero-seq="3"] { animation-range: cover 42% cover 53%; }
       [data-hero-seq="4"] { animation-range: cover 47% cover 58%; }
-      [data-hero-seq="5"] { animation-range: cover 52% cover 65%; animation-name: heroScrollSlideIn; }
 
       @keyframes heroScrollReveal {
         from { opacity: 0; transform: translateY(30px) scale(0.95); }
         to   { opacity: 1; transform: translateY(0) scale(1); }
-      }
-      @keyframes heroScrollSlideIn {
-        from { opacity: 0; transform: translateX(40px) scale(0.96); }
-        to   { opacity: 1; transform: translateX(0) scale(1); }
       }
 
       [data-scroll-section] {
@@ -415,7 +473,7 @@
     #stats-section { --section-bg: #0c0c0e; }
     [id="about"] { --section-bg: #09090b; }
     [id="skills"] { --section-bg: #09090b; }
-    [id="workflows"] { --section-bg: #0c0c0e; }
+    [id="workflows"] { --section-bg: #09090b; }
     [id="projects"] { --section-bg: #09090b; }
 
     [data-scroll-section]#stats-section {
@@ -429,7 +487,7 @@
       [data-scroll-section],
       .stagger-line,
       [data-reveal],
-      .hero-badge, .hero-heading, .hero-sub, .hero-ctas, .hero-video {
+      .hero-badge, .hero-heading, .hero-sub, .hero-ctas {
         animation: none !important;
         transition-duration: 0.01ms !important;
         opacity: 1 !important;
@@ -437,6 +495,7 @@
         filter: none !important;
       }
       #hero-scroll-spacer { height: auto !important; }
+      .conveyor-strip { animation: none !important; }
     }
   </style>
 </head>
@@ -499,47 +558,42 @@
 
   <!-- ===== HERO ===== -->
   <div id="hero-scroll-spacer" class="relative" style="height: 200vh;">
-  <section id="hero-section" class="hero-bg relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden sticky top-0">
+  <section id="hero-section" class="hero-bg relative min-h-screen flex items-center pt-24 pb-16 sticky top-0">
 
-    <div class="max-w-[1400px] mx-auto px-8 py-16 grid md:grid-cols-2 gap-16 items-center w-full relative z-10">
-      <!-- Left: Text -->
-      <div>
-        <!-- Badge -->
-        <div data-hero-seq="1" class="hero-badge inline-flex items-center gap-2 bg-zinc-900 text-zinc-400 border border-zinc-800 text-xs font-semibold px-4 py-2 rounded-full mb-8">
-          <span class="relative flex w-2 h-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full w-2 h-2 bg-green-500"></span></span>
-          Available for Freelance &amp; Remote Work
-        </div>
+    <!-- Full-bleed video background -->
+    <div class="hero-video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/hero-video.mp4" type="video/mp4">
+      </video>
+    </div>
 
-        <h1 data-hero-seq="2" class="hero-heading text-5xl md:text-7xl font-extrabold leading-[1.05] text-white mb-6">
-          <span class="text-gradient">Production-Ready</span><br>
-          AI Automation.
-        </h1>
-
-        <p data-hero-seq="3" class="hero-sub text-lg text-zinc-400 leading-relaxed mb-8 max-w-lg">
-          Custom n8n, Make &amp; Zapier workflows built for real estate, e-commerce, agencies &amp; healthcare. 15+ workflows deployed. Systems that run while you sleep.
-        </p>
-
-        <div data-hero-seq="4" class="hero-ctas flex flex-wrap gap-4">
-          <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
-             class="btn-glow magnetic-btn inline-flex items-center gap-2 bg-white text-black font-semibold px-8 py-4 rounded-full transition-colors duration-300 shadow-xl shadow-white/5 whitespace-nowrap hover:bg-zinc-200">
-            Book a Free Consultation
-            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-          </a>
-          <a href="#workflows"
-             class="inline-flex items-center gap-2 text-zinc-400 hover:text-white font-medium px-6 py-4 rounded-full border border-zinc-700 hover:border-zinc-500 transition-all duration-300 whitespace-nowrap">
-            View Workflows
-            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-          </a>
-        </div>
+    <div class="max-w-[1400px] mx-auto px-8 py-16 w-full relative z-10">
+      <!-- Badge -->
+      <div data-hero-seq="1" class="hero-badge inline-flex items-center gap-2 bg-zinc-900/60 backdrop-blur-sm text-zinc-300 border border-zinc-700 text-xs font-semibold px-4 py-2 rounded-full mb-8">
+        <span class="relative flex w-2 h-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full w-2 h-2 bg-green-500"></span></span>
+        Available for Freelance &amp; Remote Work
       </div>
 
-      <!-- Right: AI Promo Video -->
-      <div data-hero-seq="5" class="hero-video relative hidden md:block">
-        <div class="hero-video-wrap">
-          <video autoplay muted loop playsinline>
-            <source src="assets/hero-video.mp4" type="video/mp4">
-          </video>
-        </div>
+      <h1 data-hero-seq="2" class="hero-heading text-5xl md:text-7xl font-extrabold leading-[1.05] text-white mb-6 max-w-2xl">
+        <span class="text-gradient">Production-Ready</span><br>
+        AI Automation.
+      </h1>
+
+      <p data-hero-seq="3" class="hero-sub text-lg text-zinc-300 leading-relaxed mb-8 max-w-lg">
+        Custom n8n, Make &amp; Zapier workflows built for real estate, e-commerce, agencies &amp; healthcare. 15+ workflows deployed. Systems that run while you sleep.
+      </p>
+
+      <div data-hero-seq="4" class="hero-ctas flex flex-wrap gap-4">
+        <a href="https://calendly.com/russabregande/30min" target="_blank" rel="noopener"
+           class="btn-glow magnetic-btn inline-flex items-center gap-2 bg-white text-black font-semibold px-8 py-4 rounded-full transition-colors duration-300 shadow-xl shadow-white/5 whitespace-nowrap hover:bg-zinc-200">
+          Book a Free Consultation
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+        <a href="#workflows"
+           class="inline-flex items-center gap-2 text-zinc-300 hover:text-white font-medium px-6 py-4 rounded-full border border-zinc-500/50 hover:border-zinc-400 backdrop-blur-sm transition-all duration-300 whitespace-nowrap">
+          View Workflows
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        </a>
       </div>
     </div>
   </section>
@@ -861,362 +915,188 @@
   </section>
 
   <!-- ===== WORKFLOW GALLERY ===== -->
-  <section id="workflows" data-scroll-section class="py-16 section-tinted">
-    <div class="max-w-[1400px] mx-auto px-8">
+  <section id="workflows" data-scroll-section class="relative py-24 overflow-hidden">
+
+    <!-- Video background -->
+    <div class="workflow-video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/workflow-video.mp4" type="video/mp4">
+      </video>
+      <div class="video-fade-bottom"></div>
+    </div>
+
+    <div class="relative z-10 max-w-[1400px] mx-auto px-8">
       <div data-reveal class="text-center mb-16">
         <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
           <span class="stagger-line">Workflow Library</span>
         </h2>
         <p class="text-zinc-400 max-w-lg mx-auto">
-          15 production-ready automations across n8n, Make &amp; Zapier.
+          15 production-ready automations across n8n, Make &amp; Zapier. Hover to pause.
         </p>
       </div>
 
-      <!-- Featured workflows -->
-      <div class="grid md:grid-cols-3 gap-6 mb-16">
-        <a href="https://github.com/russkaye/dental-clinic-automation" target="_blank" rel="noopener"
-           class="workflow-card workflow-featured tilt-card flex flex-col rounded-2xl p-8 group" data-reveal="scale" style="transition-delay:0s">
-          <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full self-start mb-4">n8n</span>
-          <div class="featured-metric mb-2">Live</div>
-          <h3 class="text-lg font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">SmartRemind</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-4 flex-1">Production SMS reminders for dental clinics. 48hr + 3hr automated alerts via PhilSMS.</p>
-          <span class="text-xs font-semibold text-green-400">Deployed &amp; running in production</span>
-        </a>
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/01-ai-lead-scoring" target="_blank" rel="noopener"
-           class="workflow-card workflow-featured tilt-card flex flex-col rounded-2xl p-8 group" data-reveal="scale" style="transition-delay:0.1s">
-          <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full self-start mb-4">n8n</span>
-          <div class="featured-metric mb-2">40%</div>
-          <h3 class="text-lg font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">AI Lead Scoring</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-4 flex-1">GPT-4o-mini scores leads 1-10. Hot leads trigger instant Slack alerts.</p>
-          <span class="text-xs font-semibold text-green-400">Faster response time</span>
-        </a>
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/02-smart-customer-support" target="_blank" rel="noopener"
-           class="workflow-card workflow-featured tilt-card flex flex-col rounded-2xl p-8 group" data-reveal="scale" style="transition-delay:0.2s">
-          <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full self-start mb-4">n8n</span>
-          <div class="featured-metric mb-2">70%</div>
-          <h3 class="text-lg font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Smart Customer Support</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-4 flex-1">AI triage reads, categorizes, drafts replies. Escalates only what needs a human.</p>
-          <span class="text-xs font-semibold text-green-400">Auto-resolved without staff</span>
-        </a>
+      <!-- Conveyor belt -->
+      <div class="conveyor-track py-4">
+        <div class="conveyor-strip">
+          <!-- ── 15 cards (original set) ── -->
+          <a href="https://github.com/russkaye/dental-clinic-automation" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-n8n text-xs font-bold px-2 py-0.5 rounded-full self-start">n8n</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">SmartRemind</h3>
+            <span class="metric text-green-400">Live</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/01-ai-lead-scoring" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-n8n text-xs font-bold px-2 py-0.5 rounded-full self-start">n8n</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">AI Lead Scoring</h3>
+            <span class="metric">40% faster</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/02-smart-customer-support" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-n8n text-xs font-bold px-2 py-0.5 rounded-full self-start">n8n</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Smart Customer Support</h3>
+            <span class="metric">70% auto-resolved</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/03-client-onboarding" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-n8n text-xs font-bold px-2 py-0.5 rounded-full self-start">n8n</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Client Onboarding</h3>
+            <span class="metric">90min → 30s</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/05-ai-content-pipeline" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-n8n text-xs font-bold px-2 py-0.5 rounded-full self-start">n8n</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">AI Content Pipeline</h3>
+            <span class="metric">80% less time</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/01-ecommerce-order-fulfillment" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-make text-xs font-bold px-2 py-0.5 rounded-full self-start">Make</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Order to Fulfillment</h3>
+            <span class="metric">3 hrs/day saved</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/02-lead-distribution" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-make text-xs font-bold px-2 py-0.5 rounded-full self-start">Make</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Lead Distribution</h3>
+            <span class="metric">100% captured</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/03-multichannel-marketing" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-make text-xs font-bold px-2 py-0.5 rounded-full self-start">Make</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Multi-channel Publisher</h3>
+            <span class="metric">60min → 5min</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/04-insurance-verification" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-make text-xs font-bold px-2 py-0.5 rounded-full self-start">Make</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Insurance Verification</h3>
+            <span class="metric">20min → 10s</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/05-inventory-replenishment" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-make text-xs font-bold px-2 py-0.5 rounded-full self-start">Make</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Inventory Replenishment</h3>
+            <span class="metric">0 stockouts</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/01-facebook-lead-ads-crm" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-zapier text-xs font-bold px-2 py-0.5 rounded-full self-start">Zapier</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Facebook Leads → CRM</h3>
+            <span class="metric">0 manual entry</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/02-abandoned-cart-recovery" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-zapier text-xs font-bold px-2 py-0.5 rounded-full self-start">Zapier</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Abandoned Cart Recovery</h3>
+            <span class="metric">5–15% recovered</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/03-client-review-request" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-zapier text-xs font-bold px-2 py-0.5 rounded-full self-start">Zapier</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Client Review Request</h3>
+            <span class="metric">3× testimonials</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/04-appointment-reminder" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-zapier text-xs font-bold px-2 py-0.5 rounded-full self-start">Zapier</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Appointment Reminder</h3>
+            <span class="metric">50% fewer no-shows</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/05-monthly-analytics-report" target="_blank" rel="noopener" class="conveyor-card group">
+            <span class="badge-zapier text-xs font-bold px-2 py-0.5 rounded-full self-start">Zapier</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Monthly Analytics Report</h3>
+            <span class="metric">4 hrs saved/client</span>
+          </a>
+          <!-- ── Duplicate set for seamless loop ── -->
+          <a href="https://github.com/russkaye/dental-clinic-automation" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-n8n text-xs font-bold px-2 py-0.5 rounded-full self-start">n8n</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">SmartRemind</h3>
+            <span class="metric text-green-400">Live</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/01-ai-lead-scoring" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-n8n text-xs font-bold px-2 py-0.5 rounded-full self-start">n8n</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">AI Lead Scoring</h3>
+            <span class="metric">40% faster</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/02-smart-customer-support" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-n8n text-xs font-bold px-2 py-0.5 rounded-full self-start">n8n</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Smart Customer Support</h3>
+            <span class="metric">70% auto-resolved</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/03-client-onboarding" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-n8n text-xs font-bold px-2 py-0.5 rounded-full self-start">n8n</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Client Onboarding</h3>
+            <span class="metric">90min → 30s</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/05-ai-content-pipeline" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-n8n text-xs font-bold px-2 py-0.5 rounded-full self-start">n8n</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">AI Content Pipeline</h3>
+            <span class="metric">80% less time</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/01-ecommerce-order-fulfillment" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-make text-xs font-bold px-2 py-0.5 rounded-full self-start">Make</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Order to Fulfillment</h3>
+            <span class="metric">3 hrs/day saved</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/02-lead-distribution" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-make text-xs font-bold px-2 py-0.5 rounded-full self-start">Make</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Lead Distribution</h3>
+            <span class="metric">100% captured</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/03-multichannel-marketing" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-make text-xs font-bold px-2 py-0.5 rounded-full self-start">Make</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Multi-channel Publisher</h3>
+            <span class="metric">60min → 5min</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/04-insurance-verification" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-make text-xs font-bold px-2 py-0.5 rounded-full self-start">Make</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Insurance Verification</h3>
+            <span class="metric">20min → 10s</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/05-inventory-replenishment" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-make text-xs font-bold px-2 py-0.5 rounded-full self-start">Make</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Inventory Replenishment</h3>
+            <span class="metric">0 stockouts</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/01-facebook-lead-ads-crm" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-zapier text-xs font-bold px-2 py-0.5 rounded-full self-start">Zapier</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Facebook Leads → CRM</h3>
+            <span class="metric">0 manual entry</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/02-abandoned-cart-recovery" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-zapier text-xs font-bold px-2 py-0.5 rounded-full self-start">Zapier</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Abandoned Cart Recovery</h3>
+            <span class="metric">5–15% recovered</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/03-client-review-request" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-zapier text-xs font-bold px-2 py-0.5 rounded-full self-start">Zapier</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Client Review Request</h3>
+            <span class="metric">3× testimonials</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/04-appointment-reminder" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-zapier text-xs font-bold px-2 py-0.5 rounded-full self-start">Zapier</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Appointment Reminder</h3>
+            <span class="metric">50% fewer no-shows</span>
+          </a>
+          <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/05-monthly-analytics-report" target="_blank" rel="noopener" class="conveyor-card group" aria-hidden="true">
+            <span class="badge-zapier text-xs font-bold px-2 py-0.5 rounded-full self-start">Zapier</span>
+            <h3 class="text-sm font-bold text-white group-hover:text-purple-lavender transition-colors">Monthly Analytics Report</h3>
+            <span class="metric">4 hrs saved/client</span>
+          </a>
+        </div>
       </div>
-
-      <!-- Filter tabs -->
-      <div class="flex justify-center gap-2 mb-10">
-        <button onclick="filterWorkflows('all')"    class="tab-btn active text-sm font-semibold px-5 py-2 rounded-full border border-zinc-700 bg-zinc-900 text-zinc-400 hover:border-white transition-all">All</button>
-        <button onclick="filterWorkflows('n8n')"    class="tab-btn text-sm font-semibold px-5 py-2 rounded-full border border-zinc-700 bg-zinc-900 text-zinc-400 hover:border-orange-400 transition-all">n8n</button>
-        <button onclick="filterWorkflows('make')"   class="tab-btn text-sm font-semibold px-5 py-2 rounded-full border border-zinc-700 bg-zinc-900 text-zinc-400 hover:border-purple-400 transition-all">Make</button>
-        <button onclick="filterWorkflows('zapier')" class="tab-btn text-sm font-semibold px-5 py-2 rounded-full border border-zinc-700 bg-zinc-900 text-zinc-400 hover:border-red-400 transition-all">Zapier</button>
-      </div>
-
-      <!-- Cards grid -->
-      <div id="workflow-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <!-- n8n: 1 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/01-ai-lead-scoring"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="n8n">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Real Estate</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">AI Lead Scoring</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Agents waste hours chasing cold leads. This scores inbound leads 1–10 using GPT-4o-mini — hot leads (7+) trigger instant Slack alerts so you call within minutes.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">40% faster response</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- n8n: 2 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/02-smart-customer-support"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="n8n">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">E-commerce</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Smart Customer Support</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Support emails pile up and customers wait hours. This AI triage reads, categorizes, drafts replies, and auto-sends — escalating only what needs a human.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">60–70% auto-resolved</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- n8n: 3 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/03-client-onboarding"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="n8n">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Agency</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Client Onboarding</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Manual onboarding takes 90 minutes and is never the same twice. Signed contract triggers Notion workspace, Slack channel, welcome email, Asana project — in 30 seconds.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">90 min → 30 seconds</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- n8n: 4 -->
-        <a href="https://github.com/russkaye/dental-clinic-automation"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="n8n">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Healthcare</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">SmartRemind — Appointment Reminders</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Production SMS reminder system for dental clinics. Reads Google Sheets, sends 48hr + 3hr reminders via PhilSMS, alerts staff on no-shows — fully automated, zero staff intervention.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">Live &amp; Deployed</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- n8n: 5 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/n8n/workflows/05-ai-content-pipeline"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="n8n">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-n8n text-xs font-bold px-2.5 py-1 rounded-full">n8n</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Agency</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">AI Content Pipeline</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Writing 3 post variants per brief takes hours. This pipeline takes a brief and produces 3 AI-generated variants, logs to Sheets, and schedules to Buffer — all automated.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">80% less production time</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Make: 1 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/01-ecommerce-order-fulfillment"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="make">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">E-commerce</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Order to Fulfillment</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Every Shopify order triggers 3 parallel actions instantly: log to Sheets, send customer confirmation, alert fulfillment team on Slack. Zero manual processing.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">2–3 hrs/day saved</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Make: 2 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/02-lead-distribution"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="make">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Real Estate</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Lead Distribution</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Not all leads deserve a senior agent's time. This routes high-budget leads to HubSpot + Calendar + Slack, while others enter an automated nurture sequence.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">100% lead capture</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Make: 3 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/03-multichannel-marketing"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="make">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Marketing</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Multi-channel Publisher</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Publishing to 3 platforms manually wastes an hour per post. This watches a Google Sheets content calendar and pushes to Instagram, Facebook, and LinkedIn simultaneously.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">60 min → 5 minutes</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Make: 4 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/04-insurance-verification"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="make">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Healthcare</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Insurance Verification</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Manual insurance checks take 20 minutes and delay patient intake. This verifies coverage via API on form submit in under 10 seconds, logs results, and routes accordingly.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">20 min → 10 seconds</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Make: 5 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/make/blueprints/05-inventory-replenishment"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="make">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-make text-xs font-bold px-2.5 py-1 rounded-full">Make</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">E-commerce</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Inventory Replenishment</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Stockouts happen when no one's watching. Runs daily at 6 AM, flags low-stock variants, emails structured PO requests to suppliers, and alerts the team on Slack.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">Zero missed stockouts</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Zapier: 1 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/01-facebook-lead-ads-crm"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="zapier">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Lead Gen</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Facebook Leads → CRM</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Facebook leads go cold in minutes. Captures every submission, creates a HubSpot contact, sends a personalized email, and Slack-alerts your team — all in under 30 seconds.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">Zero manual entry</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Zapier: 2 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/02-abandoned-cart-recovery"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="zapier">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">E-commerce</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Abandoned Cart Recovery</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            70% of carts are abandoned. This 3-step sequence sends a 1h reminder, 24h discount offer, and 48h SMS nudge — running 24/7 without a single manual touchpoint.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">5–15% recovery rate</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Zapier: 3 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/03-client-review-request"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="zapier">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Agency</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Client Review Request</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Great work goes unreviewed because no one remembers to ask. Auto-sends a review request 3 days after project delivery — logs 5-star responses to a testimonials sheet.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">3× more testimonials</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Zapier: 4 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/04-appointment-reminder"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="zapier">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Scheduling</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Appointment Reminder</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            People forget meetings. Sends a 24h email and 1h SMS reminder for every Calendly booking — logged automatically to a Google Sheet for tracking.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">30–50% fewer no-shows</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Zapier: 5 -->
-        <a href="https://github.com/russkaye/automation-portfolio/tree/main/zapier/sops/05-monthly-analytics-report"
-           target="_blank" rel="noopener"
-           class="workflow-card workflow-item glass-card tilt-card flex flex-col rounded-2xl p-6 block group" data-platform="zapier">
-          <div class="flex items-start justify-between mb-4">
-            <span class="badge-zapier text-xs font-bold px-2.5 py-1 rounded-full">Zapier</span>
-            <span class="text-xs text-zinc-500 bg-zinc-800 px-2 py-1 rounded-full">Analytics</span>
-          </div>
-          <h3 class="font-bold text-white mb-2 group-hover:text-purple-lavender transition-colors">Monthly Analytics Report</h3>
-          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
-            Monthly reporting steals 2–4 hours per client. Runs on the 1st of every month, pulls 30 days of GA data, formats it, and emails the report — before you've had coffee.
-          </p>
-          <div class="flex items-center justify-between mt-auto">
-            <span class="text-xs font-semibold text-green-400 bg-green-950/50 px-2.5 py-1 rounded-full">2–4 hrs saved per client</span>
-            <span class="text-zinc-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 group-hover:text-white transition-all">
-              GitHub <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </span>
-          </div>
-        </a>
-
-      </div><!-- /workflow-grid -->
 
       <!-- GitHub CTA -->
-      <div class="text-center mt-10">
+      <div class="text-center mt-12">
         <a href="https://github.com/russkaye/automation-portfolio" target="_blank" rel="noopener"
-           class="inline-flex items-center gap-2 border-2 border-zinc-600 text-zinc-300 hover:bg-white hover:text-black hover:border-white font-semibold px-8 py-3.5 rounded-full transition-all duration-200">
+           class="inline-flex items-center gap-2 border-2 border-zinc-500/50 text-zinc-300 hover:bg-white hover:text-black hover:border-white font-semibold px-8 py-3.5 rounded-full transition-all duration-200 backdrop-blur-sm">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
           View All on GitHub
         </a>
@@ -1234,59 +1114,53 @@
         <p class="text-zinc-400">Real systems built and deployed at Bloomsocial Inc.</p>
       </div>
 
-      <!-- Asymmetric: 1 large + 2 stacked -->
-      <div class="grid md:grid-cols-5 gap-8">
-        <!-- Bloom Player — large featured -->
-        <div data-reveal="left" class="md:col-span-3 glass-card tilt-card flex flex-col rounded-3xl p-10 hover:border-zinc-600 transition-all duration-300">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center text-3xl border border-zinc-800">📺</div>
-            <div>
-              <div class="text-xs font-bold text-white uppercase tracking-wider bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full inline-block">Bloomsocial Inc</div>
-            </div>
-          </div>
-          <h3 class="text-3xl font-extrabold text-white mb-4 tracking-tight">Bloom Player</h3>
-          <p class="text-zinc-400 leading-relaxed mb-6 max-w-xl">
-            Custom digital signage CMS powering real-time content delivery across screen networks. Built the full pipeline from content scheduling to display management — replacing manual updates with automated, centrally-managed broadcasts.
+      <!-- Three equal project cards -->
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Bloom Player -->
+        <div data-reveal="scale" class="glass-card tilt-card flex flex-col rounded-3xl p-8 hover:border-zinc-600 transition-all duration-300">
+          <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">📺</div>
+          <div class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Bloomsocial Inc</div>
+          <h3 class="text-xl font-extrabold text-white mb-3 tracking-tight">Bloom Player</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
+            Custom digital signage CMS powering real-time content delivery across screen networks. From content scheduling to display management — automated, centrally-managed broadcasts.
           </p>
           <div class="flex flex-wrap gap-2 mt-auto">
-            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1.5 rounded-full font-medium">Digital Signage</span>
-            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1.5 rounded-full font-medium">CMS</span>
-            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1.5 rounded-full font-medium">Automation</span>
-            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1.5 rounded-full font-medium">Real-time</span>
+            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Digital Signage</span>
+            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">CMS</span>
+            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Real-time</span>
           </div>
         </div>
 
-        <!-- Right stack: 2 smaller cards -->
-        <div class="md:col-span-2 flex flex-col gap-8">
-          <!-- AI Chatbot -->
-          <div data-reveal="right" style="transition-delay:0.1s" class="glass-card tilt-card flex flex-col rounded-3xl p-8 hover:border-zinc-600 transition-all duration-300 flex-1">
-            <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">🤖</div>
-            <h3 class="text-xl font-extrabold text-white mb-2 tracking-tight">Interactive AI Chatbot</h3>
-            <p class="text-sm text-zinc-400 leading-relaxed mb-4 flex-1">
-              AI-powered conversational kiosk on Hollow Box displays for in-store product demos. Customers explore products and get real-time answers — no staff needed.
-            </p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-              <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">AI / LLM</span>
-              <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Kiosk</span>
-              <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Python</span>
-            </div>
+        <!-- AI Chatbot -->
+        <div data-reveal="scale" style="transition-delay:0.1s" class="glass-card tilt-card flex flex-col rounded-3xl p-8 hover:border-zinc-600 transition-all duration-300">
+          <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">🤖</div>
+          <div class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Bloomsocial Inc</div>
+          <h3 class="text-xl font-extrabold text-white mb-3 tracking-tight">Interactive AI Chatbot</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
+            AI-powered conversational kiosk on Hollow Box displays for in-store product demos. Customers explore products and get real-time answers — no staff needed.
+          </p>
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">AI / LLM</span>
+            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Kiosk</span>
+            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Python</span>
           </div>
-
-          <!-- SmartRemind -->
-          <a href="https://github.com/russkaye/dental-clinic-automation" target="_blank" rel="noopener"
-             data-reveal="right" style="transition-delay:0.2s" class="glass-card tilt-card flex flex-col rounded-3xl p-8 hover:border-zinc-600 transition-all duration-300 group flex-1">
-            <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">🦷</div>
-            <h3 class="text-xl font-extrabold text-white mb-2 tracking-tight group-hover:text-purple-lavender transition-colors">SmartRemind</h3>
-            <p class="text-sm text-zinc-400 leading-relaxed mb-4 flex-1">
-              Automated SMS reminders for dental clinics. 48hr + 3hr alerts via PhilSMS. Cuts no-shows by 30-50%.
-            </p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-              <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">n8n</span>
-              <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">SMS API</span>
-              <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Healthcare</span>
-            </div>
-          </a>
         </div>
+
+        <!-- SmartRemind -->
+        <a href="https://github.com/russkaye/dental-clinic-automation" target="_blank" rel="noopener"
+           data-reveal="scale" style="transition-delay:0.2s" class="glass-card tilt-card flex flex-col rounded-3xl p-8 hover:border-zinc-600 transition-all duration-300 group">
+          <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center text-2xl mb-4 border border-zinc-800">🦷</div>
+          <div class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Production Deployment</div>
+          <h3 class="text-xl font-extrabold text-white mb-3 tracking-tight group-hover:text-purple-lavender transition-colors">SmartRemind</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-5 flex-1">
+            Automated SMS reminders for dental clinics. 48hr + 3hr alerts via PhilSMS. Cuts no-shows by 30–50%. Live and running in production.
+          </p>
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">n8n</span>
+            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">SMS API</span>
+            <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-2.5 py-1 rounded-full font-medium">Healthcare</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -1371,7 +1245,7 @@
       const spacer = document.getElementById('hero-scroll-spacer');
       if (!spacer) return;
       const seqEls = spacer.querySelectorAll('[data-hero-seq]');
-      const thresholds = [0.05, 0.15, 0.3, 0.45, 0.6];
+      const thresholds = [0.05, 0.15, 0.3, 0.45];
 
       seqEls.forEach(el => {
         el.style.animation = 'none';
@@ -1483,27 +1357,6 @@
         });
       });
     })();
-
-    // ── Workflow filter tabs ──
-    function filterWorkflows(platform) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      document.querySelectorAll('.workflow-item').forEach((card, i) => {
-        const show = platform === 'all' || card.dataset.platform === platform;
-        if (show) {
-          card.style.display = 'flex';
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(16px)';
-          setTimeout(() => {
-            card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          }, i * 60);
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
 
     // ── Smooth anchor scroll with offset ──
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
