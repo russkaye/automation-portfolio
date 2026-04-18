@@ -10,6 +10,6 @@ export const connectionAlpha = (d, threshold, maxAlpha) => {
 };
 
 export const bounce = (node, width, height) => {
-  if (node.x < 0 || node.x > width) node.vx = -node.vx;
-  if (node.y < 0 || node.y > height) node.vy = -node.vy;
+  if ((node.x < 0 && node.vx < 0) || (node.x > width && node.vx > 0)) node.vx = -node.vx;
+  if ((node.y < 0 && node.vy < 0) || (node.y > height && node.vy > 0)) node.vy = -node.vy;
 };

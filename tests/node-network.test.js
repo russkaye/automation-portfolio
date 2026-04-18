@@ -42,3 +42,14 @@ test('bounce: does not invert when inside bounds', () => {
   assert.equal(node.vx, 2);
   assert.equal(node.vy, 1);
 });
+
+test('bounce: does not invert when past edge but velocity already heading back inside', () => {
+  const nodeA = { x: -5, y: 50, vx: 2, vy: 1 };
+  bounce(nodeA, 100, 100);
+  assert.equal(nodeA.vx, 2);
+  assert.equal(nodeA.vy, 1);
+
+  const nodeB = { x: 110, y: 50, vx: -2, vy: 1 };
+  bounce(nodeB, 100, 100);
+  assert.equal(nodeB.vx, -2);
+});
