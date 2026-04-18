@@ -132,15 +132,37 @@
     to { transform: translate(40px, -40px) rotate(360deg); }
   }
 
-  .section { padding-block: 80px; position: relative; }
-  @media (min-width: 768px) { .section { padding-block: 120px; } }
+  .section { padding-block: 64px; position: relative; }
+  @media (min-width: 768px) { .section { padding-block: 96px; } }
 
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
+  .section-tight { padding-block: 56px; position: relative; }
+  @media (min-width: 768px) { .section-tight { padding-block: 80px; } }
+
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
   .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  .tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 400ms var(--ease-out), border-color 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+    will-change: transform;
+  }
+
+  .cta-arrow .arrow-icon { transition: transform 250ms var(--ease-out); }
+  .cta-arrow:hover .arrow-icon { transform: translateX(4px); }
+
+  .count-up[data-count-target] { font-variant-numeric: tabular-nums; }
+
+  .pulse-node { animation: nodePulse 3s var(--ease-out) infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes nodePulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.04); }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0ms !important; transition-duration: 0ms !important; }
     .reveal { opacity: 1; transform: none; }
     .mesh-bg::before, .mesh-bg::after { animation: none; }
+    .tilt-card { transform: none !important; }
+    .pulse-node { animation: none; }
   }
 }

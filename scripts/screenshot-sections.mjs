@@ -7,7 +7,7 @@ const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
 const page = await ctx.newPage();
 
-await page.goto('http://localhost:8765/', { waitUntil: 'networkidle' });
+await page.goto('http://localhost:8766/', { waitUntil: 'networkidle' });
 await page.waitForTimeout(1500);
 
 const sections = ['proof', 'roi', 'process', 'work', 'audit', 'about', 'final-cta'];

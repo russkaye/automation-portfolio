@@ -24,6 +24,13 @@ export const initWorkflowAnim = () => {
         }
       }, i * 600);
     });
+    const total = nodes.length * 600 + 800;
+    setTimeout(() => {
+      nodes.forEach((node, i) => {
+        node.classList.add('pulse-node');
+        node.style.animationDelay = `${i * 400}ms`;
+      });
+    }, total);
   };
 
   const io = new IntersectionObserver((entries) => {

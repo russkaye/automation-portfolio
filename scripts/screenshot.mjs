@@ -7,7 +7,7 @@ const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
 const page = await ctx.newPage();
 
-await page.goto('http://localhost:8765/', { waitUntil: 'networkidle' });
+await page.goto('http://localhost:8766/', { waitUntil: 'networkidle' });
 await page.waitForTimeout(1500);
 
 await page.screenshot({ path: './scripts/screens/desktop-hero.png', fullPage: false });
@@ -16,7 +16,7 @@ await page.screenshot({ path: './scripts/screens/desktop-full.png', fullPage: tr
 
 const mobileCtx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
 const mobilePage = await mobileCtx.newPage();
-await mobilePage.goto('http://localhost:8765/', { waitUntil: 'networkidle' });
+await mobilePage.goto('http://localhost:8766/', { waitUntil: 'networkidle' });
 await mobilePage.waitForTimeout(1500);
 await mobilePage.screenshot({ path: './scripts/screens/mobile-hero.png', fullPage: false });
 await mobilePage.screenshot({ path: './scripts/screens/mobile-full.png', fullPage: true });

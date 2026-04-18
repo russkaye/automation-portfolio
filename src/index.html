@@ -43,8 +43,12 @@
 
   <nav id="nav" class="fixed top-0 inset-x-0 z-50 h-16 backdrop-blur-md bg-bg/70 border-b border-transparent transition-colors duration-300">
     <div class="container-content h-full flex items-center justify-between">
-      <a href="#" class="flex items-center gap-2 font-semibold text-[15px] text-ink">
-        <span class="w-7 h-7 rounded-md bg-ink text-bg inline-flex items-center justify-center text-[13px] font-bold">R</span>
+      <a href="#" class="flex items-center gap-2.5 font-semibold text-[15px] text-ink group">
+        <span class="w-7 h-7 rounded-md bg-ink inline-flex items-center justify-center transition-transform duration-300 group-hover:rotate-[-8deg]">
+          <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M10 22 L10 10 L18 10 A4 4 0 0 1 18 18 L13 18 L22 22" stroke="#FAFAF9" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
         <span class="hidden sm:inline">Russell Abregande</span>
       </a>
       <div class="hidden md:flex items-center gap-8 text-[14px] text-ink-muted">
@@ -58,20 +62,20 @@
 
   <main id="main">
     <!-- HERO -->
-    <section id="hero" class="section min-h-screen flex items-center relative overflow-hidden">
-      <div class="mesh-bg" aria-hidden="true"></div>
-      <div class="container-content w-full pt-24 md:pt-16">
-        <p class="reveal text-[13px] tracking-[0.12em] text-ink-muted uppercase font-medium mb-8" data-reveal-delay="0">AI Automation Specialist</p>
-        <h1 class="reveal font-display font-bold text-ink mb-8" style="font-size: clamp(48px, 8vw, 128px); letter-spacing: -0.03em; line-height: 0.95;" data-reveal-delay="200">
+    <section id="hero" class="min-h-[92vh] flex items-center relative overflow-hidden pt-20 pb-16">
+      <div class="mesh-bg" data-parallax-mesh aria-hidden="true"></div>
+      <div class="container-content w-full">
+        <p class="reveal text-[13px] tracking-[0.12em] text-ink-muted uppercase font-medium mb-6" data-reveal-delay="0">AI Automation Specialist</p>
+        <h1 class="reveal font-display font-bold text-ink mb-6" style="font-size: clamp(48px, 8vw, 128px); letter-spacing: -0.03em; line-height: 0.95;" data-reveal-delay="200">
           Stop paying people<br />to copy-paste.
         </h1>
-        <p class="reveal text-[20px] md:text-[22px] leading-relaxed text-ink-muted max-w-prose mb-12" data-reveal-delay="700">
-          I build automation systems that run your ops while you sleep. 15 workflows live across 4 industries — real estate, e-commerce, agencies, healthcare.
+        <p class="reveal text-[19px] md:text-[22px] leading-relaxed text-ink-muted max-w-prose mb-10" data-reveal-delay="700">
+          I build AI automation systems that run your ops while you sleep. 15 workflows and agents shipped across fintech, real estate, e-commerce, and agencies.
         </p>
         <div class="reveal flex flex-wrap items-center gap-6" data-reveal-delay="900">
-          <a href="https://calendly.com/russabregande" target="_blank" rel="noopener" class="btn-primary magnetic">
+          <a href="https://calendly.com/russabregande" target="_blank" rel="noopener" class="btn-primary magnetic cta-arrow">
             Book a 15-min call
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="arrow-icon"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
           <a href="#roi" class="link-underline text-ink-muted hover:text-ink">Calculate my ROI</a>
         </div>
@@ -82,27 +86,25 @@
     </section>
 
     <!-- PROOF BAR -->
-    <section id="proof" class="py-8 bg-bg-alt border-y border-black/5">
+    <section id="proof" class="py-6 bg-bg-alt border-y border-black/5">
       <div class="container-content">
-        <div class="flex flex-wrap justify-center items-center gap-x-10 gap-y-3 text-[14px] text-ink-muted font-medium">
-          <span><strong class="text-ink">15</strong> workflows shipped</span>
+        <div class="flex flex-wrap justify-center items-center gap-x-8 gap-y-2 text-[14px] text-ink-muted font-medium">
+          <span><strong class="text-ink count-up" data-count-target="15">0</strong> workflows &amp; agents</span>
           <span aria-hidden="true" class="opacity-40">·</span>
-          <span><strong class="text-ink">4</strong> industries</span>
+          <span><strong class="text-ink count-up" data-count-target="4">0</strong> industries</span>
           <span aria-hidden="true" class="opacity-40">·</span>
-          <span>n8n · Make · Zapier</span>
+          <span>n8n · Make · Zapier · Onyx RAG</span>
           <span aria-hidden="true" class="opacity-40">·</span>
-          <span>Google IT Certified</span>
-          <span aria-hidden="true" class="opacity-40">·</span>
-          <span>Lean Six Sigma</span>
+          <span>Google IT · Lean Six Sigma</span>
         </div>
       </div>
     </section>
 
     <!-- ROI CALCULATOR -->
-    <section id="roi" class="section">
+    <section id="roi" class="section-tight">
       <div class="container-content">
-        <div class="reveal max-w-prose mb-16">
-          <h2 class="font-display font-bold text-ink mb-4" style="font-size: clamp(32px, 5vw, 56px);">How much is manual work costing you?</h2>
+        <div class="reveal max-w-prose mb-10">
+          <h2 class="font-display font-bold text-ink mb-3" style="font-size: clamp(32px, 5vw, 56px);">How much is manual work costing you?</h2>
           <p class="text-[18px] text-ink-muted">Three inputs. Instant answer.</p>
         </div>
         <div class="reveal grid md:grid-cols-2 gap-6 items-stretch">
@@ -149,10 +151,10 @@
     </section>
 
     <!-- HOW IT WORKS -->
-    <section id="process" class="section bg-bg-alt">
+    <section id="process" class="section-tight bg-bg-alt">
       <div class="container-content">
-        <div class="reveal max-w-prose mb-16">
-          <h2 class="font-display font-bold text-ink mb-4" style="font-size: clamp(32px, 5vw, 56px);">From trigger to result — no humans in the loop.</h2>
+        <div class="reveal max-w-prose mb-10">
+          <h2 class="font-display font-bold text-ink mb-3" style="font-size: clamp(32px, 5vw, 56px);">From trigger to result — no humans in the loop.</h2>
           <p class="text-[18px] text-ink-muted">Every workflow is four nodes. Same shape, infinite variations.</p>
         </div>
 
@@ -209,7 +211,7 @@
           </svg>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8 mt-16 max-w-5xl mx-auto text-[15px] text-ink-muted">
+        <div class="grid md:grid-cols-3 gap-8 mt-10 max-w-5xl mx-auto text-[15px] text-ink-muted">
           <p class="reveal"><strong class="text-ink">Trigger.</strong> A form, a message, an order — anything can start the flow.</p>
           <p class="reveal" data-reveal-delay="120"><strong class="text-ink">Act.</strong> AI reads the data, qualifies it, and takes the next step in milliseconds.</p>
           <p class="reveal" data-reveal-delay="240"><strong class="text-ink">Report.</strong> Every action logs so you check it once a week — or never.</p>
@@ -218,54 +220,88 @@
     </section>
 
     <!-- WORK -->
-    <section id="work" class="section">
+    <section id="work" class="section-tight">
       <div class="container-content">
-        <div class="reveal max-w-prose mb-16">
-          <h2 class="font-display font-bold text-ink mb-4" style="font-size: clamp(32px, 5vw, 56px);">Systems I've shipped.</h2>
-          <p class="text-[18px] text-ink-muted">Each one replaces 3–8 hours a week of manual work.</p>
+        <div class="reveal max-w-prose mb-10">
+          <h2 class="font-display font-bold text-ink mb-3" style="font-size: clamp(32px, 5vw, 56px);">Systems &amp; agents I've shipped.</h2>
+          <p class="text-[18px] text-ink-muted">Workflow automations for ops, plus RAG agents for document-heavy work.</p>
         </div>
-        <div class="grid md:grid-cols-3 gap-6">
-          <article class="reveal group rounded-2xl bg-white border border-black/5 p-8 transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,102,255,0.08)]">
-            <p class="text-[12px] font-mono text-accent uppercase tracking-wider mb-6">n8n · Real estate</p>
-            <h3 class="font-display font-semibold text-ink text-[24px] mb-3" style="line-height: 1.15;">AI lead scorer for a brokerage</h3>
-            <p class="text-[15px] text-ink-muted mb-8">30 leads/day, slow to qualify. Now an AI reads each lead, scores it, routes to the right agent, and writes the first reply.</p>
-            <div class="pt-6 border-t border-black/5">
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <article class="reveal tilt-card rounded-2xl bg-white border border-black/5 p-7 transition-[border,box-shadow] duration-300 hover:border-accent/40 hover:shadow-[0_20px_60px_rgba(0,102,255,0.08)]">
+            <p class="text-[12px] font-mono text-accent uppercase tracking-wider mb-5">n8n · Real estate</p>
+            <h3 class="font-display font-semibold text-ink text-[22px] mb-3" style="line-height: 1.15;">AI lead scorer for a brokerage</h3>
+            <p class="text-[15px] text-ink-muted mb-6">30 leads/day, slow to qualify. An AI reads each lead, scores it, routes to the right agent, and writes the first reply.</p>
+            <div class="pt-5 border-t border-black/5">
               <p class="text-[12px] text-ink-muted uppercase tracking-wider">Response time</p>
-              <p class="font-display font-semibold text-ink text-[26px] mt-1">4 hrs → 90 sec</p>
+              <p class="font-display font-semibold text-ink text-[24px] mt-1">4 hrs → 90 sec</p>
             </div>
           </article>
 
-          <article class="reveal group rounded-2xl bg-white border border-black/5 p-8 transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,102,255,0.08)]" data-reveal-delay="120">
-            <p class="text-[12px] font-mono text-accent uppercase tracking-wider mb-6">Make · E-commerce</p>
-            <h3 class="font-display font-semibold text-ink text-[24px] mb-3" style="line-height: 1.15;">Order fulfillment bridge</h3>
-            <p class="text-[15px] text-ink-muted mb-8">Shopify → 3PL → accounting → customer email, all in one scenario. Fraud flags intercept bad orders before they ship.</p>
-            <div class="pt-6 border-t border-black/5">
+          <article class="reveal tilt-card rounded-2xl bg-white border border-black/5 p-7 transition-[border,box-shadow] duration-300 hover:border-accent/40 hover:shadow-[0_20px_60px_rgba(0,102,255,0.08)]" data-reveal-delay="100">
+            <p class="text-[12px] font-mono text-accent uppercase tracking-wider mb-5">Make · E-commerce</p>
+            <h3 class="font-display font-semibold text-ink text-[22px] mb-3" style="line-height: 1.15;">Order fulfillment bridge</h3>
+            <p class="text-[15px] text-ink-muted mb-6">Shopify → 3PL → accounting → customer email in one scenario. Fraud flags intercept bad orders before they ship.</p>
+            <div class="pt-5 border-t border-black/5">
               <p class="text-[12px] text-ink-muted uppercase tracking-wider">Ops time per order</p>
-              <p class="font-display font-semibold text-ink text-[26px] mt-1">12 min → 0</p>
+              <p class="font-display font-semibold text-ink text-[24px] mt-1">12 min → 0</p>
             </div>
           </article>
 
-          <article class="reveal group rounded-2xl bg-white border border-black/5 p-8 transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,102,255,0.08)]" data-reveal-delay="240">
-            <p class="text-[12px] font-mono text-accent uppercase tracking-wider mb-6">Zapier · Agency</p>
-            <h3 class="font-display font-semibold text-ink text-[24px] mb-3" style="line-height: 1.15;">Client onboarding pipeline</h3>
-            <p class="text-[15px] text-ink-muted mb-8">Signed contract triggers 17 downstream actions — Notion workspace, Slack channel, Drive folder, welcome email, kickoff calendar invite.</p>
-            <div class="pt-6 border-t border-black/5">
+          <article class="reveal tilt-card rounded-2xl bg-white border border-black/5 p-7 transition-[border,box-shadow] duration-300 hover:border-accent/40 hover:shadow-[0_20px_60px_rgba(0,102,255,0.08)]" data-reveal-delay="200">
+            <p class="text-[12px] font-mono text-accent uppercase tracking-wider mb-5">Zapier · Agency</p>
+            <h3 class="font-display font-semibold text-ink text-[22px] mb-3" style="line-height: 1.15;">Client onboarding pipeline</h3>
+            <p class="text-[15px] text-ink-muted mb-6">Signed contract triggers 17 downstream actions — Notion workspace, Slack channel, Drive folder, welcome email, kickoff invite.</p>
+            <div class="pt-5 border-t border-black/5">
               <p class="text-[12px] text-ink-muted uppercase tracking-wider">Onboarding time</p>
-              <p class="font-display font-semibold text-ink text-[26px] mt-1">2 days → 10 min</p>
+              <p class="font-display font-semibold text-ink text-[24px] mt-1">2 days → 10 min</p>
             </div>
+          </article>
+
+          <article class="reveal tilt-card rounded-2xl bg-white border border-black/5 p-7 transition-[border,box-shadow] duration-300 hover:border-accent/40 hover:shadow-[0_20px_60px_rgba(0,102,255,0.08)]" data-reveal-delay="100">
+            <p class="text-[12px] font-mono text-accent uppercase tracking-wider mb-5">RAG Agent · Fintech</p>
+            <h3 class="font-display font-semibold text-ink text-[22px] mb-3" style="line-height: 1.15;">Change request agent</h3>
+            <p class="text-[15px] text-ink-muted mb-6">Two pathways — major overhaul vs quick patch. The agent walks engineers through targeted questions, drafts the full technical justification, and auto-routes to email + task board.</p>
+            <div class="pt-5 border-t border-black/5">
+              <p class="text-[12px] text-ink-muted uppercase tracking-wider">Draft time</p>
+              <p class="font-display font-semibold text-ink text-[24px] mt-1">45 min → 3 min</p>
+            </div>
+          </article>
+
+          <article class="reveal tilt-card rounded-2xl bg-white border border-black/5 p-7 transition-[border,box-shadow] duration-300 hover:border-accent/40 hover:shadow-[0_20px_60px_rgba(0,102,255,0.08)]" data-reveal-delay="200">
+            <p class="text-[12px] font-mono text-accent uppercase tracking-wider mb-5">RAG Agent · Regulated services</p>
+            <h3 class="font-display font-semibold text-ink text-[22px] mb-3" style="line-height: 1.15;">Policy Q&amp;A agent</h3>
+            <p class="text-[15px] text-ink-muted mb-6">Indexed thousands of internal policy docs. Staff ask plain-English questions, get answers with citations and a full audit trail of every retrieval step.</p>
+            <div class="pt-5 border-t border-black/5">
+              <p class="text-[12px] text-ink-muted uppercase tracking-wider">Lookup time</p>
+              <p class="font-display font-semibold text-ink text-[24px] mt-1">20 min → 15 sec</p>
+            </div>
+          </article>
+
+          <article class="reveal tilt-card rounded-2xl bg-accent text-white p-7 flex flex-col justify-between transition-[box-shadow] duration-300 hover:shadow-[0_20px_60px_rgba(0,102,255,0.25)]" data-reveal-delay="300">
+            <div>
+              <p class="text-[12px] font-mono uppercase tracking-wider mb-5 opacity-80">Your workflow here</p>
+              <h3 class="font-display font-semibold text-[22px] mb-3" style="line-height: 1.15;">Next build could be yours.</h3>
+              <p class="text-[15px] opacity-90 mb-6">Describe your bottleneck — I'll send a teardown in 48 hours.</p>
+            </div>
+            <a href="#audit" class="inline-flex items-center gap-2 font-medium text-[15px] cta-arrow">
+              Start the audit
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
           </article>
         </div>
-        <div class="reveal mt-12">
+
+        <div class="reveal mt-10">
           <a href="workflows.html" class="link-underline text-ink font-medium text-[15px]">See all 15 workflows →</a>
         </div>
       </div>
     </section>
 
     <!-- AUDIT FORM -->
-    <section id="audit" class="section bg-bg-alt">
+    <section id="audit" class="section-tight bg-bg-alt">
       <div class="container-content max-w-3xl">
-        <div class="reveal mb-12">
-          <h2 class="font-display font-bold text-ink mb-4" style="font-size: clamp(32px, 5vw, 56px);">Got a bottleneck? I'll tear it apart, free.</h2>
+        <div class="reveal mb-8">
+          <h2 class="font-display font-bold text-ink mb-3" style="font-size: clamp(32px, 5vw, 56px);">Got a bottleneck? I'll tear it apart, free.</h2>
           <p class="text-[18px] text-ink-muted">Drop a one-liner. In 48 hours you get a custom teardown — the exact workflow I'd build, what it costs, what it saves.</p>
         </div>
         <form id="audit-form" action="https://formspree.io/f/xpwaplkv" method="POST" class="reveal space-y-6 rounded-2xl bg-white border border-black/5 p-8">
@@ -290,20 +326,29 @@
     </section>
 
     <!-- ABOUT -->
-    <section id="about" class="section">
+    <section id="about" class="section-tight">
       <div class="container-content max-w-4xl">
-        <div class="grid md:grid-cols-[200px_1fr] gap-12 items-start">
+        <div class="grid md:grid-cols-[180px_1fr] gap-10 items-start">
           <div class="reveal">
-            <img src="assets/img/russell-portrait.jpg" alt="Russell Abregande" width="200" height="200" loading="lazy" class="rounded-2xl w-full aspect-square object-cover border border-black/5" />
+            <img src="assets/img/russell-portrait.jpg" alt="Russell Abregande" width="180" height="180" loading="lazy" class="rounded-2xl w-full aspect-square object-cover border border-black/5 transition-transform duration-500 hover:scale-[1.02]" />
           </div>
           <div class="reveal" data-reveal-delay="120">
-            <h2 class="font-display font-bold text-ink mb-6" style="font-size: clamp(32px, 5vw, 56px);">Hi, I'm Russell.</h2>
-            <p class="text-[18px] text-ink-muted leading-relaxed mb-6">I'm an AI automation and systems specialist based in Manila. I've spent the last few years building workflows that replace the boring parts of running a business — lead scoring, order routing, report generation, onboarding.</p>
-            <p class="text-[18px] text-ink-muted leading-relaxed mb-8">I work solo, ship fast, and don't use jargon. If your team is drowning in copy-paste, we should talk.</p>
+            <h2 class="font-display font-bold text-ink mb-4" style="font-size: clamp(32px, 5vw, 56px);">Hi, I'm Russell.</h2>
+            <p class="text-[17px] text-ink-muted leading-relaxed mb-4">I'm an AI automation and systems specialist based in Manila. I build workflows and RAG agents that replace the boring parts of running a business — lead scoring, order routing, policy Q&amp;A, internal ticket drafting, onboarding.</p>
+            <p class="text-[17px] text-ink-muted leading-relaxed mb-6">I work solo, ship fast, and don't use jargon. If your team is drowning in copy-paste, we should talk.</p>
             <div class="flex flex-wrap gap-6">
-              <a href="https://linkedin.com/in/russabregande" target="_blank" rel="noopener" class="link-underline text-ink">LinkedIn →</a>
-              <a href="https://github.com/russkaye" target="_blank" rel="noopener" class="link-underline text-ink">GitHub →</a>
-              <a href="mailto:russabregande@gmail.com" class="link-underline text-ink">Email →</a>
+              <a href="https://linkedin.com/in/russabregande" target="_blank" rel="noopener" class="link-underline text-ink cta-arrow">
+                LinkedIn
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon inline-block ml-1" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
+              <a href="https://github.com/russkaye" target="_blank" rel="noopener" class="link-underline text-ink cta-arrow">
+                GitHub
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon inline-block ml-1" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
+              <a href="mailto:russabregande@gmail.com" class="link-underline text-ink cta-arrow">
+                Email
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon inline-block ml-1" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
             </div>
           </div>
         </div>
@@ -311,14 +356,14 @@
     </section>
 
     <!-- FINAL CTA -->
-    <section id="final-cta" class="section relative overflow-hidden min-h-[70vh] flex items-center">
+    <section id="final-cta" class="relative overflow-hidden min-h-[56vh] flex items-center py-20 md:py-24">
       <div class="mesh-bg" aria-hidden="true"></div>
       <div class="container-content text-center">
-        <h2 class="reveal font-display font-bold text-ink mb-6" style="font-size: clamp(40px, 7vw, 96px); letter-spacing: -0.03em; line-height: 0.95;">Ready to stop copy-pasting?</h2>
-        <p class="reveal text-[20px] text-ink-muted mb-12 max-w-prose mx-auto" data-reveal-delay="120">15-min call. No deck. No pitch. Just your workflow on a shared screen.</p>
-        <a href="https://calendly.com/russabregande" target="_blank" rel="noopener" class="reveal btn-primary magnetic text-[16px] px-8 py-4" data-reveal-delay="240">
+        <h2 class="reveal font-display font-bold text-ink mb-4" style="font-size: clamp(40px, 7vw, 96px); letter-spacing: -0.03em; line-height: 0.95;">Ready to stop copy-pasting?</h2>
+        <p class="reveal text-[20px] text-ink-muted mb-8 max-w-prose mx-auto" data-reveal-delay="120">15-min call. No deck. No pitch. Just your workflow on a shared screen.</p>
+        <a href="https://calendly.com/russabregande" target="_blank" rel="noopener" class="reveal btn-primary magnetic cta-arrow text-[16px] px-8 py-4" data-reveal-delay="240">
           Book the call
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
       </div>
     </section>

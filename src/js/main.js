@@ -1,10 +1,12 @@
 import { initRoiCalc } from './roi-calc.js';
 import { initWorkflowAnim } from './workflow-anim.js';
 
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hoverCapable = () => !window.matchMedia('(hover: none)').matches;
+
 const initReveal = () => {
   const items = document.querySelectorAll('.reveal');
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) {
+  if (reducedMotion()) {
     items.forEach((el) => el.classList.add('is-visible'));
     return;
   }
@@ -37,8 +39,7 @@ const initNavScroll = () => {
 };
 
 const initMagnetic = () => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (window.matchMedia('(hover: none)').matches) return;
+  if (reducedMotion() || !hoverCapable()) return;
   document.querySelectorAll('.magnetic').forEach((btn) => {
     btn.addEventListener('mousemove', (e) => {
       const rect = btn.getBoundingClientRect();
@@ -50,6 +51,75 @@ const initMagnetic = () => {
       btn.style.transform = '';
     });
   });
+};
+
+const initCardTilt = () => {
+  if (reducedMotion() || !hoverCapable()) return;
+  const cards = document.querySelectorAll('.tilt-card');
+  cards.forEach((card) => {
+    let raf = 0;
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
+      const rx = (py - 0.5) * -6;
+      const ry = (px - 0.5) * 8;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+      });
+    });
+    card.addEventListener('mouseleave', () => {
+      cancelAnimationFrame(raf);
+      card.style.transform = '';
+    });
+  });
+};
+
+const initHeroParallax = () => {
+  if (reducedMotion()) return;
+  const mesh = document.querySelector('[data-parallax-mesh]');
+  if (!mesh) return;
+  let raf = 0;
+  const onScroll = () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const y = window.scrollY;
+      if (y > 600) return;
+      mesh.style.transform = `translate3d(0, ${y * 0.25}px, 0)`;
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+};
+
+const initCountUp = () => {
+  const items = document.querySelectorAll('[data-count-target]');
+  if (!items.length) return;
+  if (reducedMotion()) {
+    items.forEach((el) => { el.textContent = el.dataset.countTarget; });
+    return;
+  }
+  const animate = (el) => {
+    const target = Number(el.dataset.countTarget || 0);
+    const duration = 1200;
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(target * eased).toString();
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        animate(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  items.forEach((el) => io.observe(el));
 };
 
 const initAuditForm = () => {
@@ -81,6 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initReveal();
   initNavScroll();
   initMagnetic();
+  initCardTilt();
+  initHeroParallax();
+  initCountUp();
   initRoiCalc();
   initWorkflowAnim();
   initAuditForm();
