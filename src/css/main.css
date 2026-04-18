@@ -152,17 +152,11 @@
 
   .count-up[data-count-target] { font-variant-numeric: tabular-nums; }
 
-  .pulse-circle { animation: circlePulse 3.2s var(--ease-out) infinite; transform-box: fill-box; transform-origin: center; }
-  @keyframes circlePulse {
-    0%, 100% { transform: scale(1); }
-    50%      { transform: scale(1.08); }
-  }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0ms !important; transition-duration: 0ms !important; }
     .reveal { opacity: 1; transform: none; }
     .mesh-bg::before, .mesh-bg::after { animation: none; }
     .tilt-card { transform: none !important; }
-    .pulse-circle { animation: none; }
   }
 }
