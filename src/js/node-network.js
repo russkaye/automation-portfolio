@@ -43,11 +43,11 @@ export const initNodeNetwork = () => {
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
+  if (!ctx) return;
   let width = 0;
   let height = 0;
   let dpr = 1;
   let nodes = [];
-  let scrollOffset = 0;
   let rafId = 0;
   let running = false;
 
@@ -83,8 +83,8 @@ export const initNodeNetwork = () => {
         if (alpha > 0) {
           ctx.strokeStyle = `rgba(${LINE_COLOR_RGB}, ${alpha})`;
           ctx.beginPath();
-          ctx.moveTo(a.x, a.y + scrollOffset % height);
-          ctx.lineTo(b.x, b.y + scrollOffset % height);
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
           ctx.stroke();
         }
       }
@@ -93,12 +93,13 @@ export const initNodeNetwork = () => {
     ctx.fillStyle = NODE_COLOR;
     for (const n of nodes) {
       ctx.beginPath();
-      ctx.arc(n.x, n.y + scrollOffset % height, NODE_RADIUS, 0, Math.PI * 2);
+      ctx.arc(n.x, n.y, NODE_RADIUS, 0, Math.PI * 2);
       ctx.fill();
     }
   };
 
   const loop = () => {
+    if (!running) return;
     draw();
     rafId = requestAnimationFrame(loop);
   };
@@ -128,9 +129,6 @@ export const initNodeNetwork = () => {
   if (reducedMotion()) return;
 
   window.addEventListener('resize', debounce(resize, 100), { passive: true });
-  window.addEventListener('scroll', () => {
-    scrollOffset = window.scrollY * 0.05;
-  }, { passive: true });
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stop();
