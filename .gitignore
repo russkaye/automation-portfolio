@@ -7,3 +7,4 @@ Thumbs.db
 .vscode/
 *.log
 dist/
+/src/css/compiled.css

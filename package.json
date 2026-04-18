@@ -1,0 +1,43 @@
+{
+  "name": "automation-portfolio",
+  "version": "1.0.0",
+  "description": "AI Automation Specialist portfolio showcasing production-ready workflows for n8n, Make, and Zapier.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "node --test tests/",
+    "build:css": "postcss src/css/main.css -o src/css/compiled.css",
+    "build:copy-css": "cpx src/css/compiled.css docs/assets/css",
+    "build:copy-assets": "cpx \"src/assets/**/*\" docs/assets",
+    "build:copy-meta": "cpx src/sitemap.xml docs/ && cpx src/robots.txt docs/",
+    "build:html": "html-minifier-terser --collapse-whitespace --remove-comments --minify-css true --minify-js true src/index.html -o docs/index.html",
+    "build:js": "terser src/js/main.js src/js/roi-calc.js src/js/workflow-anim.js --compress --mangle --module -o docs/assets/js/main.min.js",
+    "clean": "rimraf docs/assets/css docs/assets/js docs/assets/fonts docs/assets/img docs/index.html",
+    "build": "npm run clean && npm run build:css && npm run build:copy-css && npm run build:copy-assets && npm run build:copy-meta && npm run build:js && npm run build:html",
+    "dev": "npx tailwindcss -i src/css/main.css -o src/css/compiled.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/russkaye/automation-portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/russkaye/automation-portfolio/issues"
+  },
+  "homepage": "https://github.com/russkaye/automation-portfolio#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.5.0",
+    "cpx2": "^7.0.2",
+    "html-minifier-terser": "^7.2.0",
+    "postcss": "^8.5.10",
+    "postcss-cli": "^11.0.1",
+    "rimraf": "^5.0.10",
+    "tailwindcss": "^3.4.19",
+    "terser": "^5.46.1"
+  }
+}

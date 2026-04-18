@@ -1,0 +1,146 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #FAFAF9;
+    --bg-alt: #F4F4F3;
+    --ink: #0A0A0A;
+    --ink-muted: #52525B;
+    --accent: #0066FF;
+    --accent-soft: #E6F0FF;
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 24px;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 {
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+  p { line-height: 1.6; }
+  ::selection { background: var(--accent); color: white; }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .container-content { max-width: 1200px; margin-inline: auto; padding-inline: 24px; }
+  @media (min-width: 768px) { .container-content { padding-inline: 48px; } }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px;
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 15px;
+    transition: transform 200ms var(--ease-out), background 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+    will-change: transform;
+  }
+  .btn-primary:hover { background: #1a1a1a; box-shadow: 0 8px 24px rgba(10,10,10,0.12); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .btn-accent {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px;
+    background: var(--accent);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 15px;
+    transition: background 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  }
+  .btn-accent:hover { background: #0052cc; box-shadow: 0 8px 24px rgba(0,102,255,0.18); }
+
+  .link-underline { position: relative; font-weight: 500; }
+  .link-underline::after {
+    content: ''; position: absolute; left: 0; bottom: -2px;
+    height: 1px; width: 0; background: currentColor;
+    transition: width 200ms var(--ease-out);
+  }
+  .link-underline:hover::after { width: 100%; }
+
+  .mesh-bg {
+    position: absolute; inset: 0; z-index: -1; overflow: hidden;
+    pointer-events: none;
+  }
+  .mesh-bg::before, .mesh-bg::after {
+    content: ''; position: absolute;
+    width: 60vmax; height: 60vmax; border-radius: 50%;
+    filter: blur(120px); opacity: 0.4;
+    animation: meshDrift 60s linear infinite;
+  }
+  .mesh-bg::before {
+    background: radial-gradient(circle, #C7D2FE 0%, transparent 60%);
+    top: -20%; left: -10%;
+  }
+  .mesh-bg::after {
+    background: radial-gradient(circle, #FDE68A 0%, transparent 60%);
+    bottom: -20%; right: -10%;
+    animation-direction: reverse;
+  }
+  @keyframes meshDrift {
+    from { transform: translate(0, 0) rotate(0deg); }
+    to { transform: translate(40px, -40px) rotate(360deg); }
+  }
+
+  .section { padding-block: 80px; position: relative; }
+  @media (min-width: 768px) { .section { padding-block: 120px; } }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0ms !important; transition-duration: 0ms !important; }
+    .reveal { opacity: 1; transform: none; }
+    .mesh-bg::before, .mesh-bg::after { animation: none; }
+  }
+}
