@@ -116,6 +116,7 @@
 
   .reveal { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
   .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  /* Variants must be declared after .reveal — direction-aware reveal depends on source-order override. */
   .reveal-down { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
   .reveal-up   { opacity: 0; transform: translateY(-18px); transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out); }
   .reveal-down.is-visible, .reveal-up.is-visible { opacity: 1; transform: translateY(0); }

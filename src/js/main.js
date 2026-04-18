@@ -25,13 +25,14 @@ const initReveal = () => {
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       const el = entry.target;
+      clearTimeout(el._revealTimer);
       if (entry.isIntersecting) {
         const dir = document.documentElement.dataset.scrollDir || 'down';
         const variant = dir === 'up' ? 'reveal-up' : 'reveal-down';
         el.classList.remove('reveal-up', 'reveal-down');
         el.classList.add(variant);
         const delay = Number(el.dataset.revealDelay || 0);
-        setTimeout(() => el.classList.add('is-visible'), delay);
+        el._revealTimer = setTimeout(() => el.classList.add('is-visible'), delay);
       } else {
         el.classList.remove('is-visible', 'reveal-up', 'reveal-down');
       }
