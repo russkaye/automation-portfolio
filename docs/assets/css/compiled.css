@@ -650,17 +650,17 @@ p { line-height: 1.6; }
 .cta-arrow .arrow-icon { transition: transform 250ms var(--ease-out); }
 .cta-arrow:hover .arrow-icon { transform: translateX(4px); }
 .count-up[data-count-target] { font-variant-numeric: tabular-nums; }
-.pulse-node { animation: nodePulse 3s var(--ease-out) infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes nodePulse {
+.pulse-circle { animation: circlePulse 3.2s var(--ease-out) infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes circlePulse {
     0%, 100% { transform: scale(1); }
-    50%      { transform: scale(1.04); }
+    50%      { transform: scale(1.08); }
   }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0ms !important; transition-duration: 0ms !important; }
     .reveal { opacity: 1; transform: none; }
     .mesh-bg::before, .mesh-bg::after { animation: none; }
     .tilt-card { transform: none !important; }
-    .pulse-node { animation: none; }
+    .pulse-circle { animation: none; }
   }
 .sr-only {
   position: absolute;
@@ -768,6 +768,9 @@ p { line-height: 1.6; }
 .aspect-square {
   aspect-ratio: 1 / 1;
 }
+.h-1\.5 {
+  height: 0.375rem;
+}
 .h-16 {
   height: 4rem;
 }
@@ -782,6 +785,9 @@ p { line-height: 1.6; }
 }
 .min-h-\[92vh\] {
   min-height: 92vh;
+}
+.w-1\.5 {
+  width: 0.375rem;
 }
 .w-7 {
   width: 1.75rem;
@@ -893,6 +899,9 @@ p { line-height: 1.6; }
 .rounded-2xl {
   border-radius: 1rem;
 }
+.rounded-full {
+  border-radius: 9999px;
+}
 .rounded-md {
   border-radius: 0.375rem;
 }
@@ -963,6 +972,10 @@ p { line-height: 1.6; }
 .p-8 {
   padding: 2rem;
 }
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -970,6 +983,10 @@ p { line-height: 1.6; }
 .px-8 {
   padding-left: 2rem;
   padding-right: 2rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
 }
 .py-12 {
   padding-top: 3rem;

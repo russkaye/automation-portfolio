@@ -27,8 +27,10 @@ export const initWorkflowAnim = () => {
     const total = nodes.length * 600 + 800;
     setTimeout(() => {
       nodes.forEach((node, i) => {
-        node.classList.add('pulse-node');
-        node.style.animationDelay = `${i * 400}ms`;
+        const circle = node.querySelector('.node-circle');
+        if (!circle) return;
+        circle.classList.add('pulse-circle');
+        circle.style.animationDelay = `${i * 400}ms`;
       });
     }, total);
   };
