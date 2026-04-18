@@ -1,21 +1,39 @@
 import { initRoiCalc } from './roi-calc.js';
 import { initWorkflowAnim } from './workflow-anim.js';
+import { initNodeNetwork } from './node-network.js';
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hoverCapable = () => !window.matchMedia('(hover: none)').matches;
 
+const initScrollDir = () => {
+  let lastY = window.scrollY;
+  document.documentElement.dataset.scrollDir = 'down';
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (Math.abs(y - lastY) < 4) return;
+    document.documentElement.dataset.scrollDir = y > lastY ? 'down' : 'up';
+    lastY = y;
+  }, { passive: true });
+};
+
 const initReveal = () => {
   const items = document.querySelectorAll('.reveal');
   if (reducedMotion()) {
-    items.forEach((el) => el.classList.add('is-visible'));
+    items.forEach((el) => el.classList.add('reveal-down', 'is-visible'));
     return;
   }
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
+      const el = entry.target;
       if (entry.isIntersecting) {
-        const delay = Number(entry.target.dataset.revealDelay || 0);
-        setTimeout(() => entry.target.classList.add('is-visible'), delay);
-        io.unobserve(entry.target);
+        const dir = document.documentElement.dataset.scrollDir || 'down';
+        const variant = dir === 'up' ? 'reveal-up' : 'reveal-down';
+        el.classList.remove('reveal-up', 'reveal-down');
+        el.classList.add(variant);
+        const delay = Number(el.dataset.revealDelay || 0);
+        setTimeout(() => el.classList.add('is-visible'), delay);
+      } else {
+        el.classList.remove('is-visible', 'reveal-up', 'reveal-down');
       }
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
@@ -76,22 +94,6 @@ const initCardTilt = () => {
   });
 };
 
-const initHeroParallax = () => {
-  if (reducedMotion()) return;
-  const mesh = document.querySelector('[data-parallax-mesh]');
-  if (!mesh) return;
-  let raf = 0;
-  const onScroll = () => {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => {
-      const y = window.scrollY;
-      if (y > 600) return;
-      mesh.style.transform = `translate3d(0, ${y * 0.25}px, 0)`;
-    });
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-};
-
 const initCountUp = () => {
   const items = document.querySelectorAll('[data-count-target]');
   if (!items.length) return;
@@ -148,11 +150,12 @@ const initAuditForm = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  initScrollDir();
+  initNodeNetwork();
   initReveal();
   initNavScroll();
   initMagnetic();
   initCardTilt();
-  initHeroParallax();
   initCountUp();
   initRoiCalc();
   initWorkflowAnim();
