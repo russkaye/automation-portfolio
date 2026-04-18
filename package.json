@@ -7,13 +7,13 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "node --test tests/",
+    "test": "node --test tests/*.test.js",
     "build:css": "postcss src/css/main.css -o src/css/compiled.css",
     "build:copy-css": "cpx src/css/compiled.css docs/assets/css",
     "build:copy-assets": "cpx \"src/assets/**/*\" docs/assets",
     "build:copy-meta": "cpx src/sitemap.xml docs/ && cpx src/robots.txt docs/",
     "build:html": "html-minifier-terser --collapse-whitespace --remove-comments --minify-css true --minify-js true src/index.html -o docs/index.html",
-    "build:js": "terser src/js/main.js src/js/roi-calc.js src/js/workflow-anim.js --compress --mangle --module -o docs/assets/js/main.min.js",
+    "build:js": "esbuild src/js/main.js --bundle --minify --format=esm --target=es2020 --outfile=docs/assets/js/main.min.js",
     "clean": "rimraf docs/assets/css docs/assets/js docs/assets/fonts docs/assets/img docs/index.html",
     "build": "npm run clean && npm run build:css && npm run build:copy-css && npm run build:copy-assets && npm run build:copy-meta && npm run build:js && npm run build:html",
     "dev": "npx tailwindcss -i src/css/main.css -o src/css/compiled.css --watch"
@@ -33,7 +33,9 @@
   "devDependencies": {
     "autoprefixer": "^10.5.0",
     "cpx2": "^7.0.2",
+    "esbuild": "^0.25.12",
     "html-minifier-terser": "^7.2.0",
+    "playwright": "1.49",
     "postcss": "^8.5.10",
     "postcss-cli": "^11.0.1",
     "rimraf": "^5.0.10",

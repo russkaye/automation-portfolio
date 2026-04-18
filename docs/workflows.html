@@ -18,8 +18,8 @@
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            'purple-deep': '#4C1D95',
-            'purple-lavender': '#A78BFA',
+            'purple-deep': '#0066FF',
+            'purple-lavender': '#E6F0FF',
             'n8n': '#FF6D00',
             'make': '#A855F7',
             'zapier': '#FF4A00',
@@ -45,15 +45,16 @@
       <div class="flex items-center justify-between h-16">
         <!-- Left: Logo -->
         <div class="flex items-center gap-3">
-          <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-purple-deep text-white text-sm font-bold">RK</span>
+          <a href="index.html" class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-black text-white text-sm font-bold hover:bg-gray-900 transition-colors">R</a>
           <span class="text-gray-900 font-semibold text-sm sm:text-base">Russell Abregande</span>
         </div>
         <!-- Right: Desktop links -->
         <div class="hidden md:flex items-center gap-6">
+          <a href="index.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Home</a>
           <a href="#" class="text-sm font-bold text-gray-900">Workflows</a>
-          <a href="contact.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Contact</a>
-          <a href="https://russkaye.github.io" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-sm font-medium text-purple-deep border border-purple-deep rounded-lg px-4 py-2 hover:bg-purple-deep hover:text-white transition-colors">
-            View CV
+          <a href="index.html#about" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">About</a>
+          <a href="https://calendly.com/russabregande" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-medium bg-black text-white rounded-md px-4 py-2 hover:bg-gray-900 transition-colors">
+            Book a call
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
           </a>
         </div>
@@ -67,10 +68,11 @@
     <!-- Mobile menu -->
     <div id="mobileMenu" class="hidden md:hidden border-t border-gray-200 bg-white">
       <div class="px-4 py-4 space-y-3">
+        <a href="index.html" class="block text-sm font-medium text-gray-500 hover:text-gray-900">Home</a>
         <a href="#" class="block text-sm font-bold text-gray-900">Workflows</a>
-        <a href="contact.html" class="block text-sm font-medium text-gray-500 hover:text-gray-900">Contact</a>
-        <a href="https://russkaye.github.io" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-sm font-medium text-purple-deep border border-purple-deep rounded-lg px-4 py-2 hover:bg-purple-deep hover:text-white transition-colors">
-          View CV
+        <a href="index.html#about" class="block text-sm font-medium text-gray-500 hover:text-gray-900">About</a>
+        <a href="https://calendly.com/russabregande" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-medium bg-black text-white rounded-md px-4 py-2 hover:bg-gray-900 transition-colors">
+          Book a call
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
         </a>
       </div>
@@ -113,7 +115,7 @@
       <svg class="mx-auto w-12 h-12 text-gray-300 mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
       <h3 class="text-lg font-semibold text-gray-900 mb-1">No workflows found</h3>
       <p class="text-gray-500 text-sm mb-6">Try adjusting your filters to see more results.</p>
-      <button id="resetFiltersBtn" class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-deep text-white text-sm font-semibold rounded-lg hover:bg-purple-800 transition-colors">
+      <button id="resetFiltersBtn" class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-deep text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
         Reset filters
       </button>
@@ -435,7 +437,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
       <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Need a custom workflow?</h2>
       <p class="text-gray-500 mb-8 max-w-lg mx-auto">Let's discuss your automation needs and build something tailored to your business.</p>
-      <a href="https://calendly.com/russabregande" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 bg-purple-deep text-white text-sm font-semibold rounded-lg hover:bg-purple-800 transition-colors">
+      <a href="https://calendly.com/russabregande" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 bg-purple-deep text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">
         Book a Consultation
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
       </a>

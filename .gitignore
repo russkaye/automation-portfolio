@@ -8,3 +8,4 @@ Thumbs.db
 *.log
 dist/
 /src/css/compiled.css
+/scripts/screens/
