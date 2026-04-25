@@ -18,6 +18,12 @@ const initScrollDir = () => {
 
 const initReveal = () => {
   const items = document.querySelectorAll('.reveal');
+  items.forEach((el, index) => {
+    const rhythm = index % 5;
+    el.style.setProperty('--reveal-distance', `${14 + (rhythm % 3) * 4}px`);
+    el.style.setProperty('--reveal-scale', rhythm === 1 ? '0.982' : '0.992');
+    el.style.setProperty('--reveal-duration', `${700 + rhythm * 70}ms`);
+  });
   if (reducedMotion()) {
     items.forEach((el) => el.classList.add('reveal-down', 'is-visible'));
     return;
@@ -45,13 +51,7 @@ const initNavScroll = () => {
   const nav = document.getElementById('nav');
   if (!nav) return;
   const onScroll = () => {
-    if (window.scrollY > 8) {
-      nav.classList.remove('border-transparent');
-      nav.classList.add('border-black/5', 'shadow-[0_1px_20px_rgba(0,0,0,0.04)]');
-    } else {
-      nav.classList.add('border-transparent');
-      nav.classList.remove('border-black/5', 'shadow-[0_1px_20px_rgba(0,0,0,0.04)]');
-    }
+    nav.classList.toggle('is-scrolled', window.scrollY > 8);
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();

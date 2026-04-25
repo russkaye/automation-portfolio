@@ -42,22 +42,24 @@
   <canvas id="node-network" class="node-network-canvas" aria-hidden="true"></canvas>
   <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-ink focus:text-bg focus:px-4 focus:py-2 focus:rounded z-[100]">Skip to content</a>
 
-  <nav id="nav" class="fixed top-0 inset-x-0 z-50 h-16 backdrop-blur-md bg-bg/70 border-b border-transparent transition-colors duration-300">
-    <div class="container-content h-full flex items-center justify-between">
-      <a href="#" class="flex items-center gap-2.5 font-semibold text-[15px] text-ink group">
-        <span class="w-7 h-7 rounded-md bg-ink inline-flex items-center justify-center transition-transform duration-300 group-hover:rotate-[-8deg]">
-          <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true">
-            <path d="M10 22 L10 10 L18 10 A4 4 0 0 1 18 18 L13 18 L22 22" stroke="#FAFAF9" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-        <span class="hidden sm:inline">Russell Abregande</span>
-      </a>
-      <div class="hidden md:flex items-center gap-8 text-[14px] text-ink-muted">
-        <a href="#work" class="link-underline hover:text-ink transition-colors">Work</a>
-        <a href="#process" class="link-underline hover:text-ink transition-colors">Process</a>
-        <a href="#about" class="link-underline hover:text-ink transition-colors">About</a>
+  <nav id="nav" class="fixed top-4 inset-x-0 z-50 pointer-events-none">
+    <div class="container-content">
+      <div class="nav-island pointer-events-auto">
+        <a href="#" class="flex items-center gap-2.5 font-semibold text-[15px] text-ink group">
+          <span class="w-7 h-7 rounded-md bg-ink inline-flex items-center justify-center transition-transform duration-300 group-hover:rotate-[-8deg]">
+            <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true">
+              <path d="M10 22 L10 10 L18 10 A4 4 0 0 1 18 18 L13 18 L22 22" stroke="#FAFAF9" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="hidden sm:inline">Russell Abregande</span>
+        </a>
+        <div class="hidden md:flex items-center gap-8 text-[14px] text-ink-muted">
+          <a href="#work" class="link-underline hover:text-ink transition-colors">Work</a>
+          <a href="#process" class="link-underline hover:text-ink transition-colors">Process</a>
+          <a href="#about" class="link-underline hover:text-ink transition-colors">About</a>
+        </div>
+        <a href="https://calendly.com/russabregande" class="btn-primary text-[14px] py-2 px-4" target="_blank" rel="noopener">Book a call</a>
       </div>
-      <a href="https://calendly.com/russabregande" class="btn-primary text-[14px] py-2 px-4" target="_blank" rel="noopener">Book a call</a>
     </div>
   </nav>
 
@@ -80,8 +82,8 @@
           <a href="#roi" class="link-underline text-ink-muted hover:text-ink">Calculate my ROI</a>
         </div>
       </div>
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-ink-muted opacity-60" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-ink-muted" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="scroll-cue-icon"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
       </div>
     </section>
 
